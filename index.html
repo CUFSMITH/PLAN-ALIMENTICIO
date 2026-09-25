@@ -1,892 +1,1142 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Plan Nutricional • Ronnie Coleman</title>
-
-  <!-- Configuración obligatoria para Pantalla Completa (Modo App Standalone) en iOS -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Piletita de Cheddar - Plan Nutricional</title>
+  
+  <!-- iOS PWA Standalone Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Plan Ronnie">
-  <meta name="theme-color" content="#06080d">
-  <meta name="format-detection" content="telephone=no">
-
-  <!-- Enlaces dinámicos de iconos Apple iOS -->
-  <link id="apple-touch-icon-element" rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
-  <link id="manifest-placeholder" rel="manifest">
-
-  <!-- Framework visual y fuentes -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="apple-mobile-web-app-title" content="Piletita Nutri">
+  <meta name="theme-color" content="#07090e">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
   <style>
     :root {
-      --bg-dark: #06080d;
-      --card-dark: #0b0f17;
-      --border-dark: rgba(255, 255, 255, 0.05);
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --bg: #07090e;
+      --card-bg: #0d1117;
+      --border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f3f6;
+      --text-dim: #7d8590;
+      
+      /* Legend / Pill Colors */
+      --c-carbo: #f0883e;
+      --bg-carbo: rgba(240, 136, 62, 0.14);
+      --c-prote: #f778ba;
+      --bg-prote: rgba(247, 120, 186, 0.14);
+      --c-grasa: #a371f7;
+      --bg-grasa: rgba(163, 113, 247, 0.14);
+      --c-verdura: #56d364;
+      --bg-verdura: rgba(86, 211, 100, 0.14);
+      --c-supl: #58a6ff;
+      --bg-supl: rgba(88, 166, 255, 0.14);
+      --cheddar: #f5a623;
     }
 
     * {
-      -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: #e2e8f0;
-      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-top: max(16px, env(safe-area-inset-top));
+      padding-bottom: max(32px, env(safe-area-inset-bottom));
       min-height: 100vh;
-      min-height: 100dvh;
-      padding-top: max(env(safe-area-inset-top, 0px), 10px);
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 74px);
-      -webkit-font-smoothing: antialiased;
-      overscroll-behavior-y: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .font-mono-time {
-      font-family: var(--font-mono);
+    /* Barra superior con efecto glow */
+    .top-glow-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f5a623, #ff5e3a, #00f2fe, #4facfe, #a371f7);
+      z-index: 100;
     }
 
-    /* Píldoras compactas idénticas al estilo de la referencia */
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header Bar */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid #f5a623;
+      background: #161b22;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(245, 166, 35, 0.4);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-badge {
+      position: absolute;
+      bottom: -3px;
+      background: #f5a623;
+      color: #000;
+      font-size: 8px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .title-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .team-badge {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--cheddar);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .app-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .athlete-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .athlete-tag {
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--c-supl);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    /* Actions Toolbar */
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-action {
+      background: #161b22;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-action:hover, .btn-action:active {
+      background: #21262d;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-cheddar {
+      background: rgba(245, 166, 35, 0.15);
+      border-color: rgba(245, 166, 35, 0.4);
+      color: #f5a623;
+    }
+
+    .btn-cheddar:hover, .btn-cheddar:active {
+      background: rgba(245, 166, 35, 0.25);
+      border-color: #f5a623;
+    }
+
+    /* Barra de leyenda y filtros */
+    .legend-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 2px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+    .legend-bar::-webkit-scrollbar { display: none; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      opacity: 0.85;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .legend-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .dot-carbo { background: var(--c-carbo); }
+    .dot-prote { background: var(--c-prote); }
+    .dot-grasa { background: var(--c-grasa); }
+    .dot-verdura { background: var(--c-verdura); }
+    .dot-supl { background: var(--c-supl); }
+
+    .legend-carbo { color: var(--c-carbo); }
+    .legend-prote { color: var(--c-prote); }
+    .legend-grasa { color: var(--c-grasa); }
+    .legend-verdura { color: var(--c-verdura); }
+    .legend-supl { color: var(--c-supl); }
+
+    /* Switch día entreno / off */
+    .mode-switch {
+      display: flex;
+      background: #161b22;
+      border-radius: 8px;
+      padding: 3px;
+      border: 1px solid var(--border);
+      margin: 2px 0;
+    }
+
+    .mode-tab {
+      flex: 1;
+      text-align: center;
+      padding: 7px 0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mode-tab.active {
+      background: #21262d;
+      color: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+
+    /* Lista cronológica */
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .meal-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .meal-time {
+      width: 44px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #484f58;
+      padding-top: 3px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .meal-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .meal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .meal-name {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .meal-tag-pill {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Estilo de pills idéntico a la captura */
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.32rem;
-      padding: 0.2rem 0.55rem;
-      border-radius: 9999px;
-      font-size: 0.72rem;
-      line-height: 1.15;
+      gap: 4px;
+      padding: 4px 9px;
+      border-radius: 12px;
+      font-size: 11.5px;
       font-weight: 500;
-      border-width: 1px;
-      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      white-space: normal;
-    }
-    .pill:active {
-      transform: scale(0.96);
+      line-height: 1.25;
+      border: 1px solid transparent;
+      user-select: none;
+      transition: opacity 0.2s, transform 0.1s;
     }
 
     .pill-prefix {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.64rem;
-      text-transform: lowercase;
+      font-size: 10px;
+      font-weight: 800;
       opacity: 0.9;
     }
 
-    /* [c] CARBO: Ámbar / Naranja */
     .pill-carbo {
-      background: rgba(245, 158, 11, 0.10);
-      border-color: rgba(245, 158, 11, 0.38);
-      color: #fbbf24;
+      background: var(--bg-carbo);
+      color: #ffa657;
+      border-color: rgba(240, 136, 62, 0.35);
     }
+    .pill-carbo .pill-prefix { color: var(--c-carbo); }
 
-    /* [p] PROTE: Fucsia / Rosa */
     .pill-prote {
-      background: rgba(244, 63, 94, 0.10);
-      border-color: rgba(244, 63, 94, 0.38);
-      color: #fb7185;
+      background: var(--bg-prote);
+      color: #ff94c9;
+      border-color: rgba(247, 120, 186, 0.35);
     }
+    .pill-prote .pill-prefix { color: var(--c-prote); }
 
-    /* [g] GRASA: Violeta / Índigo */
     .pill-grasa {
-      background: rgba(139, 92, 246, 0.10);
-      border-color: rgba(139, 92, 246, 0.38);
-      color: #a78bfa;
+      background: var(--bg-grasa);
+      color: #c49eff;
+      border-color: rgba(163, 113, 247, 0.35);
     }
+    .pill-grasa .pill-prefix { color: var(--c-grasa); }
 
-    /* [v] VERDURA: Verde menta */
     .pill-verdura {
-      background: rgba(16, 185, 129, 0.10);
-      border-color: rgba(16, 185, 129, 0.38);
-      color: #34d399;
+      background: var(--bg-verdura);
+      color: #7ee787;
+      border-color: rgba(86, 211, 100, 0.35);
     }
+    .pill-verdura .pill-prefix { color: var(--c-verdura); }
 
-    /* [s] SUPL: Cyan brillante */
     .pill-supl {
-      background: rgba(14, 165, 233, 0.10);
-      border-color: rgba(14, 165, 233, 0.38);
-      color: #38bdf8;
+      background: var(--bg-supl);
+      color: #79c0ff;
+      border-color: rgba(88, 166, 255, 0.35);
+    }
+    .pill-supl .pill-prefix { color: var(--c-supl); }
+
+    /* Footer Stats Banner */
+    .stats-footer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 6px;
+      margin-top: 10px;
+      text-align: center;
     }
 
-    /* Pill informativa neutra */
-    .pill-info {
-      background: rgba(148, 163, 184, 0.08);
-      border-color: rgba(148, 163, 184, 0.22);
-      color: #94a3b8;
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      font-family: ui-monospace, SFMono-Regular, monospace;
     }
 
-    .timeline-row {
-      border-bottom: 1px solid var(--border-dark);
-      transition: all 0.2s ease;
-    }
-    .timeline-row.completed {
-      opacity: 0.32;
-    }
-    .timeline-row.completed .meal-name {
-      text-decoration: line-through;
-      color: #64748b;
+    .stat-lbl {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* Modal iOS estilo Bottom Sheet */
-    @keyframes slideSheetUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    /* Modal / Popups */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
-    .ios-sheet {
-      animation: slideSheetUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .modal-card {
+      background: #161b22;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .btn-full {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-green {
+      background: #238636;
+      color: #fff;
+    }
+
+    .btn-cheddar-action {
+      background: #f5a623;
+      color: #000;
+      font-weight: 800;
+    }
+
+    .member-card {
+      background: #21262d;
+      border: 1.5px solid var(--border);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .member-card:hover {
+      background: #30363d;
+      border-color: rgba(245, 166, 35, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .member-card.active-member {
+      border-color: #f5a623;
+      background: rgba(245, 166, 35, 0.1);
+    }
+
+    .member-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f5a623;
+      color: #000;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill.dimmed {
+      opacity: 0.15;
     }
   </style>
 </head>
-
 <body>
-  <!-- Barra superior con gradiente neón de acento -->
-  <div class="h-[2.5px] w-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-rose-500 sticky top-0 z-50"></div>
 
-  <div class="max-w-xl mx-auto px-3.5 sm:px-5 pt-3 pb-8">
+  <div class="top-glow-bar"></div>
 
-    <!-- Header principal -->
-    <header class="pt-1 pb-3 border-b border-white/[0.08]">
-      <div class="flex items-center justify-between gap-3 mb-2.5">
-        
-        <div class="flex items-center gap-3">
-          <!-- Avatar de Ronnie Coleman con cargador seguro (sin error de imagen rota) -->
-          <div class="relative cursor-pointer group" onclick="triggerPhotoUpload()" title="Toca para cambiar la foto de Ronnie">
-            <div id="avatar-container" class="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/80 shadow-lg shadow-amber-500/20 bg-slate-900 flex items-center justify-center relative">
-              <img id="avatar-img" 
-                   src="" 
-                   alt="Ronnie Coleman" 
-                   class="w-full h-full object-cover hidden"
-                   onerror="handleImageError()">
-
-              <!-- Fallback dinámico nativo con Ronnie vectorizado -->
-              <div id="avatar-fallback" class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-amber-600 via-amber-700 to-slate-950 text-white p-1">
-                <i class="fa-solid fa-dumbbell text-xs text-amber-200"></i>
-                <span class="text-[7.5px] font-black font-mono-time uppercase tracking-tighter">RONNIE</span>
-              </div>
-
-              <!-- Indicador de cámara al tocar -->
-              <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <i class="fa-solid fa-camera text-xs text-white"></i>
-              </div>
-            </div>
-
-            <span class="absolute -bottom-1 -right-1 bg-amber-500 text-black text-[9px] font-black px-1 rounded font-mono-time shadow">KING</span>
-          </div>
-
-          <!-- Input oculto para subir la imagen de Ronnie Coleman -->
-          <input type="file" id="direct-photo-input" accept="image/*" class="hidden" onchange="processUploadedImage(event)">
-
-          <div>
-            <h1 class="text-sm sm:text-base font-black tracking-wider uppercase text-white font-mono-time">
-              PLAN NUTRICIONAL
-            </h1>
-            <p class="text-[10px] text-amber-400 font-mono-time font-bold tracking-widest uppercase">
-              "YEAH BUDDY!" • 15-9-26
-            </p>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="avatar-btn" id="avatarBtn" title="Configurar acceso directo iOS">
+          <img id="avatarImg" src="" alt="Ronnie">
+          <div class="avatar-badge">KING</div>
+        </div>
+        <div class="title-box">
+          <div class="team-badge">🧀 PILETITA DE CHEDDAR</div>
+          <div class="app-title">PLAN NUTRICIONAL</div>
+          <div class="athlete-sub" id="athleteHeader">
+            <span id="athleteNameText">FACUNDO REINOSO</span>
+            <span class="athlete-tag" id="athleteWeightText">103.6 KG</span>
           </div>
         </div>
-
-        <!-- Botón para configurar Pantalla Completa PWA en iPhone -->
-        <button onclick="openStandaloneModal()" 
-                class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-cyan-500/15 border border-amber-500/40 text-amber-300 text-[11px] font-mono-time font-bold flex items-center gap-1.5 active:scale-95 transition-transform shadow-md">
-          <i class="fa-brands fa-apple text-xs text-white"></i>
-          <span>MODO APP</span>
-        </button>
       </div>
 
-      <!-- Leyenda de colores interactiva idéntica a la imagen de referencia -->
-      <div class="flex items-center justify-between overflow-x-auto py-1 text-[10px] font-mono-time font-bold tracking-wider text-slate-400">
-        <button onclick="filterMacro('carbo')" class="macro-badge flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-white/5 active:scale-95" data-filter="carbo">
-          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span class="text-slate-300">CARBO</span>
+      <div class="toolbar">
+        <button class="btn-action btn-cheddar" id="openMembersBtn">
+          <span>🧀</span> MIEMBRO
         </button>
-        <button onclick="filterMacro('prote')" class="macro-badge flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-white/5 active:scale-95" data-filter="prote">
-          <span class="w-2 h-2 rounded-full bg-rose-400"></span>
-          <span class="text-slate-300">PROTE</span>
-        </button>
-        <button onclick="filterMacro('grasa')" class="macro-badge flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-white/5 active:scale-95" data-filter="grasa">
-          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-          <span class="text-slate-300">GRASA</span>
-        </button>
-        <button onclick="filterMacro('verdura')" class="macro-badge flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-white/5 active:scale-95" data-filter="verdura">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span class="text-slate-300">VERDURA</span>
-        </button>
-        <button onclick="filterMacro('supl')" class="macro-badge flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-white/5 active:scale-95" data-filter="supl">
-          <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-          <span class="text-slate-300">SUPL</span>
+        <button class="btn-action" id="openAppModalBtn">
+          📱 APP
         </button>
       </div>
     </header>
 
-    <!-- Controles de vista y modo de entrenamiento -->
-    <div class="flex items-center justify-between gap-2 my-3">
-      <!-- Selector Cronograma vs Macros -->
-      <div class="inline-flex p-0.5 bg-[#0f141f] rounded-lg border border-white/5">
-        <button id="btn-tab-cronograma" onclick="switchView('cronograma')" 
-                class="px-3 py-1.5 rounded-md text-[11px] font-semibold font-mono-time transition-all bg-slate-800 text-white shadow">
-          CRONOGRAMA
-        </button>
-        <button id="btn-tab-macros" onclick="switchView('macros')" 
-                class="px-3 py-1.5 rounded-md text-[11px] font-medium font-mono-time text-slate-400 hover:text-slate-200 transition-all">
-          POR MACROS
-        </button>
+    <!-- Legend bar (filtrar tocando el macro) -->
+    <div class="legend-bar">
+      <div class="legend-item legend-carbo" data-type="carbo">
+        <div class="legend-dot dot-carbo"></div> CARBO
       </div>
-
-      <!-- Selector Modo: Entreno vs Día Descanso -->
-      <div class="flex items-center gap-1 bg-[#0f141f] p-0.5 rounded-lg border border-white/5">
-        <button id="btn-mode-on" onclick="setMode('on')" 
-                class="px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
-          ENTRENO
-        </button>
-        <button id="btn-mode-off" onclick="setMode('off')" 
-                class="px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md text-slate-400 hover:text-slate-200">
-          DÍA OFF
-        </button>
+      <div class="legend-item legend-prote" data-type="prote">
+        <div class="legend-dot dot-prote"></div> PROTE
+      </div>
+      <div class="legend-item legend-grasa" data-type="grasa">
+        <div class="legend-dot dot-grasa"></div> GRASA
+      </div>
+      <div class="legend-item legend-verdura" data-type="verdura">
+        <div class="legend-dot dot-verdura"></div> VERDURA
+      </div>
+      <div class="legend-item legend-supl" data-type="supl">
+        <div class="legend-dot dot-supl"></div> SUPL
       </div>
     </div>
 
-    <!-- Banner cuando hay filtro de macro activo -->
-    <div id="filter-banner" class="hidden items-center justify-between px-2.5 py-1.5 mb-3 bg-slate-800/60 border border-slate-700/60 rounded-md text-[11px]">
-      <span id="filter-banner-text" class="text-slate-300 font-mono-time"></span>
-      <button onclick="clearFilter()" class="text-rose-400 font-bold px-1 active:scale-95">Quitar filtro ×</button>
+    <!-- Selector Día Entreno vs Off -->
+    <div class="mode-switch">
+      <div class="mode-tab active" id="tabEntreno">Día Entrenamiento</div>
+      <div class="mode-tab" id="tabOff">Día Descanso (OFF)</div>
     </div>
 
-    <!-- VISTA 1: CRONOGRAMA MINIMALISTA (Estilo captura de referencia) -->
-    <main id="view-cronograma" class="divide-y divide-white/[0.05]">
-
-      <!-- 07:45 DESAYUNO -->
-      <div class="timeline-row py-3" data-row-id="desayuno">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">07:45</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">DESAYUNO</span>
-              <button onclick="toggleMealCheck('desayuno')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 4 huevos revueltos (coco / oliva / queso 0 carb)</span>
-              <span class="pill pill-verdura" data-m="verdura"><span class="pill-prefix">v</span> Hojas verdes / champis / espárragos</span>
-              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> 2 gajos palta + 4 aceitunas o frutos secos</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Té verde o café</span>
-              <span id="creatina-desayuno" class="pill pill-supl hidden" data-m="supl"><span class="pill-prefix">s</span> 1 serv Creatina (DÍA OFF)</span>
-              <span class="pill pill-info"><span class="pill-prefix text-rose-400 font-bold">!</span> Sin carbos ni endulzantes</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10:30 COLACIÓN (MEDIA MAÑANA) -->
-      <div class="timeline-row py-3" data-row-id="colacion">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">10:30</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">COLACIÓN</span>
-              <button onclick="toggleMealCheck('colacion')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 servicio Proteína con agua</span>
-              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> 10 frutos secos</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Té verde o café</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 13:30 ALMUERZO -->
-      <div class="timeline-row py-3" data-row-id="almuerzo">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">13:30</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">ALMUERZO</span>
-              <button onclick="toggleMealCheck('almuerzo')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 puño papa / batata / arroz / quinoa</span>
-              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 palma carne / pollo / pescado</span>
-              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> 1 palta chica o 15 frutos o 15 aceitunas</span>
-              <span class="pill pill-verdura" data-m="verdura"><span class="pill-prefix">v</span> Verde / brócoli / tomate (empezar a probar)</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 cap Omega 3 Fish Oil</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 16:30 TARDE -->
-      <div class="timeline-row py-3" data-row-id="tarde">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">16:30</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">TARDE</span>
-              <button onclick="toggleMealCheck('tarde')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> Kanikama / yogurth griego / atún / 3 claras / prote</span>
-              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> 1/2 palta o 9 frutos o 9 aceitunas</span>
-              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 fruta</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Té verde</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 17:45 PRE WORK -->
-      <div class="timeline-row py-3 training-section" data-row-id="prework">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">17:45</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">PRE WORK</span>
-              <button onclick="toggleMealCheck('prework')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv EAAS</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv Creatina</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Pre-entrenamiento o café</span>
-              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 fruta (solo si hace falta)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- INTRA ENTRENO -->
-      <div class="timeline-row py-2.5 training-section" data-row-id="intra">
-        <div class="flex items-center gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-600">INTRA</span>
-          <div class="flex-1 flex items-center justify-between">
-            <span class="text-[11px] font-mono-time text-slate-400 font-bold uppercase tracking-wider flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-              ENTRENAMIENTO A FUEGO
-            </span>
-            <span class="text-[10px] font-mono-time text-amber-400">LIGHTWEIGHT!</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 19:30 POST WORK -->
-      <div class="timeline-row py-3 training-section" data-row-id="postwork">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">19:30</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <div class="flex items-center gap-2">
-                <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">POST WORK</span>
-                <span class="text-[9px] font-mono-time text-sky-400 px-1 border border-sky-400/30 rounded">INMEDIATO</span>
-              </div>
-              <button onclick="toggleMealCheck('postwork')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 banana + 1 fruta (o 1.5 puños carbos)</span>
-              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 scoop prote (si no cenas &lt;1h)</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv Glutamina</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv EAAS</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv Creatina</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 21:30 CENA -->
-      <div class="timeline-row py-3" data-row-id="cena">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">21:30</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">CENA</span>
-              <button onclick="toggleMealCheck('cena')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 palma pollo o preferentemente pescado</span>
-              <span class="pill pill-verdura" data-m="verdura"><span class="pill-prefix">v</span> Verde / brócoli / zapallo / zapallito / champis</span>
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 cap Omega 3 Fish Oil</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 23:30 ANTOJO DULCE -->
-      <div class="timeline-row py-3" data-row-id="antojo">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">23:30</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <div class="flex items-center gap-1.5">
-                <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">ANTOJO DULCE</span>
-                <span class="text-[9px] font-mono-time text-slate-500 border border-slate-800 px-1 rounded">&gt;2hs CENA</span>
-              </div>
-              <button onclick="toggleMealCheck('antojo')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-info"><span class="pill-prefix">RECETA</span> Receta dulce o 1/2 tortilla o Caseína</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ZZZ A DORMIR -->
-      <div class="timeline-row py-3" data-row-id="dormir">
-        <div class="flex items-baseline gap-3">
-          <span class="w-11 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold">ZZZ</span>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="meal-name font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">A DORMIR</span>
-              <button onclick="toggleMealCheck('dormir')" class="check-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform p-1">
-                <i class="fa-regular fa-circle-check text-xs"></i>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5 items-center">
-              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 3 cápsulas ZMA</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <!-- Lista de Comidas -->
+    <main class="schedule-list" id="scheduleContainer">
+      <!-- Inyectado dinámicamente por JavaScript -->
     </main>
 
-    <!-- VISTA 2: DESGLOSE POR MACROS -->
-    <div id="view-macros" class="hidden space-y-3.5 pt-1">
-      
-      <!-- PROTEÍNAS -->
-      <div class="p-3.5 rounded-xl bg-[#0a0e16] border border-rose-500/25">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-rose-300 font-mono-time">Proteínas [p]</h3>
-          </div>
-          <span class="text-[10px] font-mono-time text-slate-400">Alto requerimiento</span>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          <span class="pill pill-prote"><span class="pill-prefix">07:45</span> 4 huevos revueltos</span>
-          <span class="pill pill-prote"><span class="pill-prefix">10:30</span> 1 scoop proteína con agua</span>
-          <span class="pill pill-prote"><span class="pill-prefix">13:30</span> 1 palma carne / pollo / pescado</span>
-          <span class="pill pill-prote"><span class="pill-prefix">16:30</span> Kanikama / yogur griego / atún / claras</span>
-          <span class="pill pill-prote"><span class="pill-prefix">19:30</span> 1 scoop prote (post-entreno)</span>
-          <span class="pill pill-prote"><span class="pill-prefix">21:30</span> 1 palma pollo o pescado</span>
-        </div>
+    <!-- Footer Stats -->
+    <footer class="stats-footer">
+      <div class="stat-item">
+        <div class="stat-val" id="statKcal">~3.450</div>
+        <div class="stat-lbl">KCAL</div>
       </div>
-
-      <!-- CARBOHIDRATOS -->
-      <div class="p-3.5 rounded-xl bg-[#0a0e16] border border-amber-500/25">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono-time">Carbohidratos & Frutas [c]</h3>
-          </div>
-          <span class="text-[10px] font-mono-time text-slate-400">Ciclados / Estratégicos</span>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          <span class="pill pill-info"><span class="pill-prefix text-rose-400">07:45</span> 0 Carbohidratos (sin frutas ni edulcorantes)</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">13:30</span> 1 puño papa / batata / arroz / quinoa</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">16:30</span> 1 fruta</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">17:45</span> 1 fruta (solo si hace falta)</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">19:30</span> 1 banana + 1 fruta (o 1.5 puños carbos)</span>
-        </div>
+      <div class="stat-item">
+        <div class="stat-val" id="statProte">326g</div>
+        <div class="stat-lbl">PROTEÍNA</div>
       </div>
-
-      <!-- GRASAS -->
-      <div class="p-3.5 rounded-xl bg-[#0a0e16] border border-indigo-500/25">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-300 font-mono-time">Grasas Saludables [g]</h3>
-          </div>
-          <span class="text-[10px] font-mono-time text-slate-400">Soporte hormonal</span>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          <span class="pill pill-grasa"><span class="pill-prefix">07:45</span> Aceite coco/oliva + 2 gajos palta + 4 frutos</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">10:30</span> 10 frutos secos</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">13:30</span> 1 palta chica o 15 frutos o 15 aceitunas</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">16:30</span> 1/2 palta chica o 9 frutos o 9 aceitunas</span>
-        </div>
+      <div class="stat-item">
+        <div class="stat-val" id="statCarbo">308g</div>
+        <div class="stat-lbl">CARBOS</div>
       </div>
-
-      <!-- VERDURAS -->
-      <div class="p-3.5 rounded-xl bg-[#0a0e16] border border-emerald-500/25">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono-time">Verduras & Fibras [v]</h3>
-          </div>
-          <span class="text-[10px] font-mono-time text-emerald-400">Libre saciedad</span>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          <span class="pill pill-verdura"><span class="pill-prefix">07:45</span> Hojas verdes / champignones / espárragos</span>
-          <span class="pill pill-verdura"><span class="pill-prefix">13:30</span> Ensalada verde / brócoli / tomate</span>
-          <span class="pill pill-verdura"><span class="pill-prefix">21:30</span> Verde / brócoli / zapallo / zapallito / champis</span>
-        </div>
+      <div class="stat-item">
+        <div class="stat-val" id="statGrasa">91g</div>
+        <div class="stat-lbl">GRASA</div>
       </div>
-
-      <!-- SUPLEMENTOS -->
-      <div class="p-3.5 rounded-xl bg-[#0a0e16] border border-sky-500/25">
-        <div class="flex items-center justify-between mb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-sky-300 font-mono-time">Suplementos & Infusiones [s]</h3>
-          </div>
-          <span class="text-[10px] font-mono-time text-slate-400">Rendimiento</span>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          <span class="pill pill-supl"><span class="pill-prefix">CREATINA</span> 1 serv Pre + 1 Post (en Desayuno en Días OFF)</span>
-          <span class="pill pill-supl"><span class="pill-prefix">EAAS</span> 1 serv Pre-work + 1 serv Post-work</span>
-          <span class="pill pill-supl"><span class="pill-prefix">GLUTAMINA</span> 1 serv Inmediato Post</span>
-          <span class="pill pill-supl"><span class="pill-prefix">OMEGA 3</span> 1 cap en Almuerzo + 1 cap en Cena</span>
-          <span class="pill pill-supl"><span class="pill-prefix">ZMA</span> 3 cápsulas antes de dormir</span>
-          <span class="pill pill-supl"><span class="pill-prefix">INFUSIONES</span> Té verde o café sin endulzar</span>
-        </div>
-      </div>
-
-    </div>
-
+    </footer>
   </div>
 
-  <!-- Footer con resumen de macros diario y progreso -->
-  <footer class="fixed bottom-0 inset-x-0 bg-[#06080df2] backdrop-blur-lg border-t border-white/[0.08] py-2.5 px-3 z-40" style="padding-bottom: max(0.6rem, env(safe-area-inset-bottom));">
-    <div class="max-w-xl mx-auto grid grid-cols-4 divide-x divide-white/[0.08] text-center">
-      <div class="px-1">
-        <span class="block text-slate-500 font-mono-time text-[9px] uppercase tracking-wider">CHECKLIST</span>
-        <span id="footer-checklist-stat" class="text-white font-black font-mono-time text-xs sm:text-sm">0 / 8</span>
+  <!-- MODAL DE MIEMBROS -->
+  <div class="modal-overlay" id="membersModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">🧀 Miembro de Piletita de Cheddar</div>
+        <button class="modal-close" id="closeMembersModal">&times;</button>
       </div>
-      <div class="px-1">
-        <span class="block text-rose-400 font-mono-time text-[9px] uppercase tracking-wider">PROTEÍNA</span>
-        <span class="text-white font-black font-mono-time text-xs sm:text-sm">ALTA</span>
+
+      <div style="font-size:12px; color:#c9d1d9; line-height:1.4">
+        Elegí quién sos para ver tu plan personalizado según el Excel del nutricionista:
       </div>
-      <div class="px-1">
-        <span class="block text-amber-400 font-mono-time text-[9px] uppercase tracking-wider">CARBOS</span>
-        <span class="text-white font-black font-mono-time text-xs sm:text-sm">CICLADOS</span>
+
+      <div style="display:flex; flex-direction:column; gap:10px" id="membersList">
+        <!-- Renderizado por JS -->
       </div>
-      <div class="px-1">
-        <span class="block text-indigo-400 font-mono-time text-[9px] uppercase tracking-wider">GRASA</span>
-        <span class="text-white font-black font-mono-time text-xs sm:text-sm">SALUDABLE</span>
+
+      <div style="border-top:1px solid var(--border); padding-top:12px; display:flex; flex-direction:column; gap:8px">
+        <div style="font-size:11px; color:var(--text-dim); text-align:center">
+          ¿Querés pasarle el link directo a este miembro por WhatsApp?
+        </div>
+        <button class="btn-full btn-cheddar-action" id="shareMemberLinkBtn">
+          <span>🔗</span> COPIAR LINK DIRECTO DE MI PLAN
+        </button>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- Modal iOS: Solución definitiva al problema de Pantalla Completa sin Safari -->
-  <div id="standalone-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="ios-sheet w-full max-w-lg bg-[#0d121c] border border-white/10 rounded-t-3xl sm:rounded-2xl p-5 text-slate-200 max-h-[92vh] overflow-y-auto">
-      
-      <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">👑</span>
-          <div>
-            <h3 class="font-bold text-sm text-white font-mono-time">MODO APP EN IPHONE (PANTALLA COMPLETA)</h3>
-            <p class="text-[10px] text-amber-400 font-mono-time">Sin barra de Safari + Foto de Ronnie Coleman</p>
-          </div>
-        </div>
-        <button onclick="closeStandaloneModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs hover:text-white">✕</button>
+  <!-- MODAL INSTALACIÓN IPHONE -->
+  <div class="modal-overlay" id="appModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">📱 Instalar App en iPhone</div>
+        <button class="modal-close" id="closeAppModal">&times;</button>
       </div>
 
-      <!-- Preview del ícono -->
-      <div class="bg-black/60 p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center gap-2.5 text-center mb-4">
-        <div class="relative">
-          <canvas id="profile-canvas" width="180" height="180" class="w-20 h-20 rounded-[20px] shadow-2xl border-2 border-amber-500/80 object-cover"></canvas>
-          <span class="absolute -bottom-2 inset-x-0 mx-auto w-max px-2 py-0.5 bg-black/90 border border-white/20 rounded-full text-[8.5px] font-mono-time text-amber-300">
-            Ícono 180×180
-          </span>
-        </div>
-
-        <div class="flex flex-wrap gap-2 justify-center w-full mt-2">
-          <label class="px-3 py-1.5 rounded-lg bg-amber-500 text-black font-extrabold text-[11px] font-mono-time flex items-center gap-1.5 cursor-pointer active:scale-95 transition-transform shadow">
-            <i class="fa-solid fa-camera"></i>
-            <span>CAMBIAR FOTO DE RONNIE</span>
-            <input type="file" accept="image/*" class="hidden" onchange="processUploadedImage(event)">
-          </label>
-
-          <button onclick="downloadIconPng()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-mono-time flex items-center gap-1.5 active:scale-95 transition-transform border border-white/10">
-            <i class="fa-solid fa-download text-amber-400"></i>
-            <span>Bajar .PNG</span>
-          </button>
-        </div>
+      <div style="font-size:12px; color:#c9d1d9; line-height:1.5">
+        Para que se abra en <b>pantalla completa sin barras de Safari</b> y con el logo de <b>Ronnie Coleman</b> en tu pantalla de inicio:
       </div>
 
-      <!-- Explicación de los 2 Métodos para abrir SIN BARRAS DE SAFARI -->
-      <div class="space-y-3.5 text-xs">
-        
-        <!-- Método 1: Perfil Apple WebClip (.mobileconfig) -->
-        <div class="p-3.5 rounded-xl bg-gradient-to-br from-amber-500/15 to-rose-500/15 border border-amber-500/35 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-[10px] font-mono-time">MÉTODO 1: DIRECTO CON TU FOTO</span>
-            <span class="text-[10px] font-mono-time text-amber-300 font-bold">100% PANTALLA COMPLETA</span>
-          </div>
-          <p class="text-slate-200 text-[11px] leading-relaxed">
-            Los atajos normales abren pestañas en Safari. La forma oficial de Apple para tener <strong>pantalla completa real con tu foto de Ronnie</strong> es instalando un <em>Perfil WebClip</em> generado en 1 segundo por esta misma app:
-          </p>
-          <button onclick="generateAndInstallWebClipProfile()" 
-                  class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-rose-600 text-black font-black text-xs font-mono-time flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg">
-            <i class="fa-brands fa-apple text-sm"></i>
-            <span>INSTALAR PERFIL DE PANTALLA COMPLETA (.mobileconfig)</span>
-          </button>
-          <p class="text-[10px] text-slate-400">
-            <strong>Cómo activarlo:</strong> Al tocar el botón, Safari dirá <em>"Perfil descargado"</em>. Abre <strong>Ajustes del iPhone</strong> -> toca <strong>"Perfil descargado"</strong> arriba -> <strong>Instalar</strong>. ¡Listo! Quedará en tu pantalla de inicio como una aplicación nativa.
-          </p>
-        </div>
-
-        <!-- Método 2: Safari Nativo Compartir -->
-        <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono-time font-bold text-[10px]">MÉTODO 2: SAFARI OFICIAL</span>
-            <span class="text-[10px] font-mono-time text-slate-400">Sin perfiles</span>
-          </div>
-          <p class="text-slate-300 text-[11px] leading-relaxed">
-            Si subes esta app a la web (ej: <em>Netlify Drop</em> o <em>Vercel</em>) junto con el archivo <code>apple-touch-icon.png</code> descargado:
-          </p>
-          <ol class="list-decimal list-inside space-y-1 text-slate-400 text-[11px] pl-1">
-            <li>Abre la web en <strong>Safari</strong>.</li>
-            <li>Toca el botón central <strong>Compartir</strong> (<i class="fa-solid fa-arrow-up-from-bracket text-sky-400"></i>).</li>
-            <li>Selecciona <strong>"Agregar a inicio"</strong> (<i class="fa-regular fa-square-plus"></i>).</li>
-          </ol>
-          <p class="text-[10px] text-emerald-400">
-            Al tener activado <code>apple-mobile-web-app-capable: yes</code>, se abrirá automáticamente en modo app completa sin barras.
-          </p>
-        </div>
-
-      </div>
-
-      <!-- Feedback Toast container inside modal -->
-      <div id="modal-toast" class="hidden mt-3 p-2 bg-emerald-500/20 border border-emerald-500/40 rounded-lg text-emerald-300 text-[11px] text-center font-mono-time"></div>
-
-      <button onclick="closeStandaloneModal()" class="w-full mt-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono-time text-xs font-semibold">
-        Cerrar
+      <button class="btn-full btn-green" id="dlProfileBtn">
+        <span>⚡</span> INSTALAR PERFIL iOS (.mobileconfig)
       </button>
 
+      <div style="font-size:11px; color:var(--text-dim); line-height:1.4">
+        1. Toca el botón verde y presiona <b>Permitir</b>.<br>
+        2. Ve a <b>Ajustes de tu iPhone &gt; Perfil descargado</b> y pulsa <b>Instalar</b>.<br>
+        3. ¡Listo! Queda en tu inicio como app nativa a pantalla completa.
+      </div>
+
+      <div style="border-top:1px solid var(--border); padding-top:12px">
+        <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:6px">O con el método tradicional de Safari:</div>
+        <div style="font-size:11px; color:var(--text-dim); line-height:1.4">
+          Toca <b>Compartir</b> en Safari &gt; <b>"Agregar a inicio"</b>.
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // Estado de la aplicación
+    /* =========================================================
+       PILETITA DE CHEDDAR - BASE DE DATOS DE MIEMBROS
+       (Extraídos directamente de los Excels del nutricionista)
+       ========================================================= */
+    const MEMBERS = {
+      facundo: {
+        id: "facundo",
+        athlete: { nombre: "FACUNDO", apellido: "REINOSO", peso: "103.6", estatura: "195.5", edad: "24", grasa: "18.3" },
+        stats: { kcal: "~3.450", prote: "326g", carbo: "308g", grasa: "91g" },
+        meals: [
+          {
+            time: "07:45",
+            name: "DESAYUNO",
+            tag: "",
+            items: [
+              { type: "prote", text: "4 huevos completos revueltos" },
+              { type: "grasa", text: "aceite de coco / queso s/carbos / 1 cda oliva" },
+              { type: "verdura", text: "hojas verdes / champis / espárragos" },
+              { type: "grasa", text: "2 gajos de palta + 4 aceitunas o frutos secos" },
+              { type: "supl", text: "té verde o café (s/carbos ni endulzantes)" },
+              { type: "supl", text: "1 servicio Creatina (SOLO DÍAS OFF)", offOnly: true }
+            ]
+          },
+          {
+            time: "10:30",
+            name: "MEDIA MAÑANA",
+            tag: "",
+            items: [
+              { type: "prote", text: "1 servicio de Proteína con agua" },
+              { type: "grasa", text: "10 frutos secos" },
+              { type: "supl", text: "té verde o café" }
+            ]
+          },
+          {
+            time: "13:30",
+            name: "ALMUERZO",
+            tag: "",
+            items: [
+              { type: "prote", text: "1 palma de carne o pollo o pescado (hervido/grillado/horno)" },
+              { type: "grasa", text: "1 palta chica o 15 frutos secos o 15 aceitunas lavadas" },
+              { type: "carbo", text: "1 puño de papa o batata o arroz o quinoa" },
+              { type: "verdura", text: "ensalada verde o brócoli o tomate (probar)" },
+              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            ]
+          },
+          {
+            time: "16:30",
+            name: "TARDE",
+            tag: "",
+            items: [
+              { type: "prote", text: "kanikama c/limón / yogur griego / atún / 3 claras / proteína" },
+              { type: "grasa", text: "media palta chica o 9 frutos secos o 9 aceitunas" },
+              { type: "carbo", text: "1 fruta" },
+              { type: "supl", text: "té verde" }
+            ]
+          },
+          {
+            time: "17:45",
+            name: "PRE ENTRENO",
+            tag: "ENTRENO",
+            trainOnly: true,
+            items: [
+              { type: "supl", text: "1 servicio EAAS" },
+              { type: "supl", text: "1 servicio Creatina" },
+              { type: "supl", text: "1 servicio pre-entreno o café (si hace falta)" },
+              { type: "carbo", text: "1 fruta (solo si hace falta)" }
+            ]
+          },
+          {
+            time: "19:00",
+            name: "INTRA ENTRENO",
+            tag: "ENTRENO",
+            trainOnly: true,
+            items: [
+              { type: "supl", text: "ENTRENAMIENTO (hidratación en sorbos)" }
+            ]
+          },
+          {
+            time: "20:00",
+            name: "POST ENTRENO",
+            tag: "ENTRENO",
+            trainOnly: true,
+            items: [
+              { type: "prote", text: "1 servicio Proteína c/agua (si no cena en 1h)" },
+              { type: "supl", text: "1 servicio Glutamina" },
+              { type: "supl", text: "1 servicio EAAS" },
+              { type: "supl", text: "1 servicio Creatina" },
+              { type: "carbo", text: "1 banana + 1 fruta, o 1,5 puños de papa/batata/arroz/quinoa" }
+            ]
+          },
+          {
+            time: "21:30",
+            name: "CENA",
+            tag: "",
+            items: [
+              { type: "prote", text: "1 palma de pollo o preferentemente pescado" },
+              { type: "verdura", text: "ensalada verde / brócoli / zapallo / zapallito / champignones" },
+              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            ]
+          },
+          {
+            time: "23:00",
+            name: "ANTOJO DULCE",
+            tag: "OPCIONAL",
+            items: [
+              { type: "prote", text: "receta antojo dulce o media tortilla o caseína (si pasaron 2h)" }
+            ]
+          },
+          {
+            time: "00:00",
+            name: "A DORMIR",
+            tag: "",
+            items: [
+              { type: "supl", text: "3 cápsulas ZMA" }
+            ]
+          }
+        ]
+      },
+
+      santiago: {
+        id: "santiago",
+        athlete: { nombre: "SANTIAGO", apellido: "MICELI", peso: "85.2", estatura: "183", edad: "22", grasa: "11.1" },
+        stats: { kcal: "~3.100", prote: "285g", carbo: "290g", grasa: "80g" },
+        meals: [
+          {
+            time: "07:30",
+            name: "DESAYUNO",
+            tag: "",
+            items: [
+              { type: "prote", text: "4 huevos completos revueltos" },
+              { type: "grasa", text: "aceite de coco / queso s/carbos / 1 cda oliva" },
+              { type: "verdura", text: "hojas verdes / champis / espárragos" },
+              { type: "grasa", text: "2 gajos de palta + 2 aceitunas o frutos secos" },
+              { type: "supl", text: "té verde (s/carbos ni endulzantes)" },
+              { type: "supl", text: "1 servicio Creatina (SOLO DÍAS OFF)", offOnly: true }
+            ]
+          },
+          {
+            time: "10:30",
+            name: "MEDIA MAÑANA",
+            tag: "",
+            items: [
+              { type: "prote", text: "1 servicio de Proteína con agua" },
+              { type: "carbo", text: "6 frutos secos O 1 banana" }
+            ]
+          },
+          {
+            time: "13:00",
+            name: "ALMUERZO",
+            tag: "",
+            items: [
+              { type: "prote", text: "1 palma de carne o pollo o pescado (hervido/grillado/horno)" },
+              { type: "grasa", text: "1 palta chica o 15 frutos secos o 15 aceitunas lavadas" },
+              { type: "carbo", text: "1 puño de papa o batata o arroz o quinoa" },
+              { type: "verdura", text: "ensalada verde o brócoli o tomate" },
+              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            ]
+          },
+          {
+            time: "16:30",
+            name: "TARDE",
+            tag: "",
+            items: [
+              { type: "prote", text: "kanikama c/limón / yogur griego / atún / 3 claras / proteína" },
+              { type: "grasa", text: "media palta chica u 8 frutos secos u 8 aceitunas" },
+              { type: "carbo", text: "manzana verde o tamaño equivalente de berries" },
+              { type: "supl", text: "té verde" }
+            ]
+          },
+          {
+            time: "17:45",
+            name: "PRE ENTRENO",
+            tag: "ENTRENO",
+            trainOnly: true,
+            items: [
+              { type: "supl", text: "1 servicio BCAA" },
+              { type: "supl", text: "1 servicio Creatina" },
+              { type: "supl", text: "1 servicio pre-entrenamiento o café" },
+              { type: "carbo", text: "1 fruta" }
+            ]
+          },
+          {
+            time: "18:30",
+            name: "INTRA ENTRENO",
+            tag: "ENTRENO",
+            trainOnly: true,
+            items: [
+              { type: "supl", text: "ENTRENAMIENTO (1 medida Hydropus Endurance si hace falta)" }
+            ]
+          },
+          {
+            time: "20:00",
+            name: "POST ENTRENO",
+            tag: "ENTRENO",
+            trainOnly: true,
+            items: [
+              { type: "prote", text: "1 servicio Proteína c/agua (si no cena en 1h)" },
+              { type: "supl", text: "1 servicio Glutamina" },
+              { type: "supl", text: "1 servicio BCAA" },
+              { type: "supl", text: "1 servicio Creatina" },
+              { type: "carbo", text: "1 banana + 1 fruta, o 1,5 puños papa / batata / arroz / quinoa" }
+            ]
+          },
+          {
+            time: "21:30",
+            name: "CENA",
+            tag: "",
+            items: [
+              { type: "prote", text: "1 palma de pollo o preferentemente pescado" },
+              { type: "verdura", text: "ensalada verde / brócoli / zapallo / zapallito / champignones" },
+              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            ]
+          },
+          {
+            time: "23:00",
+            name: "ANTOJO DULCE",
+            tag: "OPCIONAL",
+            items: [
+              { type: "prote", text: "receta antojo dulce o media tortilla o caseína (si pasaron 2h)" }
+            ]
+          },
+          {
+            time: "00:00",
+            name: "A DORMIR",
+            tag: "",
+            items: [
+              { type: "supl", text: "1 servicio Arginina" },
+              { type: "supl", text: "1 servicio Glutamina" }
+            ]
+          }
+        ]
+      }
+    };
+
+    /* =========================================================
+       ESTADO DE LA APLICACIÓN
+       ========================================================= */
+    let currentMemberId = localStorage.getItem('cheddar_member') || 'facundo';
+    if (!MEMBERS[currentMemberId]) currentMemberId = 'facundo';
+    
+    let isTrainingDay = true;
     let activeFilter = null;
-    let currentMode = localStorage.getItem('ronnie_mode') || 'on';
-    let completedMeals = JSON.parse(localStorage.getItem('ronnie_completed_meals') || '{}');
-    let userPhotoBase64 = localStorage.getItem('ronnie_custom_avatar') || null;
 
-    // Inicialización del sistema
-    window.addEventListener('DOMContentLoaded', () => {
-      setupPwaManifest();
-      loadSavedAvatar();
-      setMode(currentMode, false);
-      restoreCompletedState();
-      updateChecklistCounter();
-    });
+    // Vector estilizado de Ronnie Coleman
+    const RONNIE_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23111827'/%3E%3Cstop offset='100%25' stop-color='%2305070a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='36' r='20' fill='%23f5a623'/%3E%3Cpath d='M20 85 C20 58 80 58 80 85 Z' fill='%23f5a623'/%3E%3Ccircle cx='43' cy='34' r='2.5' fill='%23000'/%3E%3Ccircle cx='57' cy='34' r='2.5' fill='%23000'/%3E%3Cpath d='M42 44 Q50 50 58 44' stroke='%23000' stroke-width='2' fill='none'/%3E%3Ctext x='50' y='93' font-size='9' font-weight='900' fill='%23ffffff' text-anchor='middle' font-family='sans-serif'%3EYEAH BUDDY%3C/text%3E%3C/svg%3E";
 
-    // Crear un Web App Manifest dinámico para garantizar 'display: standalone'
-    function setupPwaManifest() {
-      try {
-        const manifestData = {
-          name: "Plan Nutricional Ronnie Coleman",
-          short_name: "Plan Ronnie",
-          start_url: window.location.href,
-          display: "standalone",
-          background_color: "#06080d",
-          theme_color: "#06080d",
-          orientation: "portrait",
-          icons: [
-            {
-              src: "apple-touch-icon.png",
-              sizes: "180x180",
-              type: "image/png"
-            }
-          ]
-        };
-        const blob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(blob);
-        document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
-      } catch (err) {
-        console.warn('Manifest initialization:', err);
+    function init() {
+      // Detección de miembro por URL (?user=santiago)
+      const urlParams = new URLSearchParams(window.location.search);
+      const userParam = urlParams.get('user');
+      if (userParam && MEMBERS[userParam.toLowerCase()]) {
+        currentMemberId = userParam.toLowerCase();
+        localStorage.setItem('cheddar_member', currentMemberId);
       }
+
+      document.getElementById('avatarImg').src = RONNIE_AVATAR;
+
+      renderMembersList();
+      render();
+      attachEvents();
     }
 
-    // Cargar avatar seguro desde LocalStorage o renderizar fallback sin errores
-    function loadSavedAvatar() {
-      const avatarImg = document.getElementById('avatar-img');
-      const avatarFallback = document.getElementById('avatar-fallback');
+    function renderMembersList() {
+      const list = document.getElementById('membersList');
+      list.innerHTML = '';
 
-      if (userPhotoBase64) {
-        avatarImg.src = userPhotoBase64;
-        avatarImg.classList.remove('hidden');
-        avatarFallback.classList.add('hidden');
-        renderCanvasIcon(userPhotoBase64);
-      } else {
-        avatarImg.classList.add('hidden');
-        avatarFallback.classList.remove('hidden');
-        renderCanvasFallback();
-      }
-    }
-
-    function handleImageError() {
-      const avatarImg = document.getElementById('avatar-img');
-      const avatarFallback = document.getElementById('avatar-fallback');
-      avatarImg.classList.add('hidden');
-      avatarFallback.classList.remove('hidden');
-      renderCanvasFallback();
-    }
-
-    function triggerPhotoUpload() {
-      document.getElementById('direct-photo-input').click();
-    }
-
-    // Procesar foto subida localmente sin fallos de CORS
-    function processUploadedImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64Data = e.target.result;
-        userPhotoBase64 = base64Data;
+      Object.values(MEMBERS).forEach(m => {
+        const isCurrent = (m.id === currentMemberId);
+        const card = document.createElement('div');
+        card.className = `member-card ${isCurrent ? 'active-member' : ''}`;
         
-        try {
-          localStorage.setItem('ronnie_custom_avatar', base64Data);
-        } catch (err) {
-          console.warn('Quota warning:', err);
-        }
+        const initials = m.athlete.nombre.charAt(0) + (m.athlete.apellido ? m.athlete.apellido.charAt(0) : '');
+        card.innerHTML = `
+          <div class="member-info">
+            <div class="member-avatar">${initials}</div>
+            <div>
+              <div style="color:#fff; font-weight:800; font-size:13px">${m.athlete.nombre} ${m.athlete.apellido || ''}</div>
+              <div style="font-size:11px; color:var(--text-dim)">
+                ${m.athlete.peso} kg · ${m.athlete.estatura} cm · ${m.athlete.edad} años
+              </div>
+            </div>
+          </div>
+          <span style="font-size:12px; font-weight:700; color:${isCurrent ? '#f5a623' : '#7d8590'}">
+            ${isCurrent ? 'ACTIVO ✓' : 'Elegir &rarr;'}
+          </span>
+        `;
 
-        const avatarImg = document.getElementById('avatar-img');
-        const avatarFallback = document.getElementById('avatar-fallback');
-        avatarImg.src = base64Data;
-        avatarImg.classList.remove('hidden');
-        avatarFallback.classList.add('hidden');
+        card.onclick = () => {
+          currentMemberId = m.id;
+          localStorage.setItem('cheddar_member', currentMemberId);
+          renderMembersList();
+          render();
+          document.getElementById('membersModal').style.display = 'none';
+        };
 
-        renderCanvasIcon(base64Data);
-        showModalToast('¡Foto de Ronnie actualizada con éxito!');
-      };
-      reader.readAsDataURL(file);
+        list.appendChild(card);
+      });
     }
 
-    // Dibujar icono cuadrado para iOS en Canvas
-    function renderCanvasIcon(imageSrc) {
-      const canvas = document.getElementById('profile-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const size = 180;
+    function render() {
+      const plan = MEMBERS[currentMemberId];
+      if (!plan) return;
 
-      const img = new Image();
-      img.onload = () => {
-        ctx.fillStyle = '#06080d';
-        ctx.fillRect(0, 0, size, size);
+      // Header
+      const ath = plan.athlete;
+      document.getElementById('athleteNameText').textContent = `${ath.nombre} ${ath.apellido || ''}`.trim();
+      document.getElementById('athleteWeightText').textContent = ath.peso + " KG";
 
-        // Centrado inteligente en cara / hombros
-        const aspect = img.width / img.height;
-        let dw, dh, dx, dy;
-        if (aspect > 1) {
-          dh = size;
-          dw = size * aspect;
-          dx = (size - dw) / 2;
-          dy = 0;
-        } else {
-          dw = size;
-          dh = size / aspect;
-          dx = 0;
-          dy = (size - dh) / 3.5;
-        }
-
-        ctx.drawImage(img, dx, dy, dw, dh);
-
-        // Viñeta oscura inferior para texto nítido
-        const grad = ctx.createLinearGradient(0, size * 0.65, 0, size);
-        grad.addColorStop(0, 'rgba(6, 8, 13, 0)');
-        grad.addColorStop(1, 'rgba(6, 8, 13, 0.95)');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, size * 0.65, size, size * 0.35);
-
-        // Borde dorado neón
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 4;
-        ctx.strokeRect(2, 2, size - 4, size - 4);
-
-        updateAppleLinks(canvas);
-      };
-      img.src = imageSrc;
-    }
-
-    function renderCanvasFallback() {
-      const canvas = document.getElementById('profile-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const size = 180;
-
-      ctx.fillStyle = '#06080d';
-      ctx.fillRect(0, 0, size, size);
-
-      ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 5;
-      ctx.strokeRect(4, 4, size - 8, size - 8);
-
-      ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 22px monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('RONNIE', size / 2, 70);
-
-      ctx.font = '50px sans-serif';
-      ctx.fillText('🏋🏿‍♂️', size / 2, 130);
-
-      updateAppleLinks(canvas);
-    }
-
-    function updateAppleLinks(canvas) {
-      try {
-        const dataUrl = canvas.toDataURL('image/png');
-        const appleLink = document.getElementById('apple-touch-icon-element');
-        if (appleLink) appleLink.href = dataUrl;
-      } catch (e) {
-        console.warn(e);
+      // Stats
+      if (plan.stats) {
+        document.getElementById('statKcal').textContent = plan.stats.kcal;
+        document.getElementById('statProte').textContent = plan.stats.prote;
+        document.getElementById('statCarbo').textContent = plan.stats.carbo;
+        document.getElementById('statGrasa').textContent = plan.stats.grasa;
       }
+
+      // Schedule container
+      const container = document.getElementById('scheduleContainer');
+      container.innerHTML = '';
+
+      plan.meals.forEach(meal => {
+        if (!isTrainingDay && meal.trainOnly) return;
+
+        const row = document.createElement('div');
+        row.className = 'meal-row';
+
+        const visibleItems = meal.items.filter(item => {
+          if (!isTrainingDay && item.trainOnly) return false;
+          if (isTrainingDay && item.offOnly) return false;
+          return true;
+        });
+
+        if (visibleItems.length === 0) return;
+
+        let pillsHtml = '';
+        visibleItems.forEach(item => {
+          const prefix = item.type.charAt(0);
+          const isDimmed = activeFilter && activeFilter !== item.type;
+          pillsHtml += `
+            <div class="pill pill-${item.type} ${isDimmed ? 'dimmed' : ''}">
+              <span class="pill-prefix">[${prefix}]</span>
+              <span>${item.text}</span>
+            </div>
+          `;
+        });
+
+        row.innerHTML = `
+          <div class="meal-time">${meal.time || '--:--'}</div>
+          <div class="meal-content">
+            <div class="meal-header">
+              <span class="meal-name">${meal.name}</span>
+              ${meal.tag ? `<span class="meal-tag-pill">${meal.tag}</span>` : ''}
+            </div>
+            <div class="pills-container">
+              ${pillsHtml}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(row);
+      });
     }
 
-    function downloadIconPng() {
-      const canvas = document.getElementById('profile-canvas');
-      if (!canvas) return;
+    function attachEvents() {
+      // Toggle entreno / off
+      const tabEntreno = document.getElementById('tabEntreno');
+      const tabOff = document.getElementById('tabOff');
 
-      const link = document.createElement('a');
-      link.download = 'apple-touch-icon.png';
-      link.href = canvas.toDataURL('image/png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      tabEntreno.onclick = () => {
+        isTrainingDay = true;
+        tabEntreno.classList.add('active');
+        tabOff.classList.remove('active');
+        render();
+      };
+
+      tabOff.onclick = () => {
+        isTrainingDay = false;
+        tabOff.classList.add('active');
+        tabEntreno.classList.remove('active');
+        render();
+      };
+
+      // Filtro de macronutrientes en la leyenda
+      document.querySelectorAll('.legend-item').forEach(item => {
+        item.onclick = () => {
+          const type = item.getAttribute('data-type');
+          activeFilter = (activeFilter === type) ? null : type;
+          render();
+        };
+      });
+
+      // Modales
+      const membersModal = document.getElementById('membersModal');
+      const appModal = document.getElementById('appModal');
+
+      document.getElementById('openMembersBtn').onclick = () => {
+        renderMembersList();
+        membersModal.style.display = 'flex';
+      };
+      document.getElementById('closeMembersModal').onclick = () => membersModal.style.display = 'none';
+
+      document.getElementById('openAppModalBtn').onclick = () => appModal.style.display = 'flex';
+      document.getElementById('avatarBtn').onclick = () => appModal.style.display = 'flex';
+      document.getElementById('closeAppModal').onclick = () => appModal.style.display = 'none';
+
+      // Compartir link directo por WhatsApp
+      document.getElementById('shareMemberLinkBtn').onclick = () => {
+        const cleanUrl = window.location.origin + window.location.pathname + '?user=' + currentMemberId;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(cleanUrl).then(() => {
+            alert(`¡Link de ${MEMBERS[currentMemberId].athlete.nombre} copiado! Podés pasárselo por WhatsApp.`);
+          }).catch(() => {
+            prompt('Copiá este enlace directo:', cleanUrl);
+          });
+        } else {
+          prompt('Copiá este enlace directo:', cleanUrl);
+        }
+      };
+
+      // Generar perfil standalone para iPhone
+      document.getElementById('dlProfileBtn').onclick = generateAppleMobileConfig;
     }
 
-    // Generador de Perfil iOS (.mobileconfig) con FullScreen: true
-    // Este método instala la app directamente en pantalla completa sin pasar por las barras de Safari
-    function generateAndInstallWebClipProfile() {
-      const canvas = document.getElementById('profile-canvas');
-      if (!canvas) return;
-
-      // Obtener el base64 limpio de la imagen sin cabecera data:image/png;base64,
-      const dataUrl = canvas.toDataURL('image/png');
-      const base64Icon = dataUrl.replace(/^data:image\/png;base64,/, '');
-
+    /* =========================================================
+       GENERADOR DE PERFIL .MOBILECONFIG (PANTALLA COMPLETA IOS)
+       ========================================================= */
+    function generateAppleMobileConfig() {
       const currentUrl = window.location.href.split('#')[0];
-      const uuid1 = generateUUID();
-      const uuid2 = generateUUID();
+      const ath = MEMBERS[currentMemberId].athlete;
+      const title = `Plan ${ath.nombre}`;
 
-      // Estructura XML oficial de Apple para perfiles de configuración WebClip
-      const mobileConfigXml = `<?xml version="1.0" encoding="UTF-8"?>
+      const configXml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -895,22 +1145,20 @@
         <dict>
             <key>FullScreen</key>
             <true/>
-            <key>Icon</key>
-            <data>${base64Icon}</data>
             <key>IsRemovable</key>
             <true/>
             <key>Label</key>
-            <string>Plan Ronnie</string>
+            <string>${title}</string>
             <key>PayloadDescription</key>
-            <string>Acceso directo en pantalla completa para Plan Ronnie Coleman</string>
+            <string>Configura el acceso directo a pantalla completa de tu plan nutricional</string>
             <key>PayloadDisplayName</key>
-            <string>Plan Ronnie Coleman</string>
+            <string>${title}</string>
             <key>PayloadIdentifier</key>
-            <string>com.ronnie.nutrition.webclip.${uuid1}</string>
+            <string>com.cheddar.plan.${Date.now()}</string>
             <key>PayloadType</key>
             <string>com.apple.webClip.managed</string>
             <key>PayloadUUID</key>
-            <string>${uuid1}</string>
+            <string>A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D</string>
             <key>PayloadVersion</key>
             <integer>1</integer>
             <key>Precomposed</key>
@@ -920,195 +1168,36 @@
         </dict>
     </array>
     <key>PayloadDescription</key>
-    <string>Instala el Plan Nutricional de Ronnie Coleman en modo app sin barra de Safari.</string>
+    <string>Instala la App de Plan Nutricional Piletita de Cheddar</string>
     <key>PayloadDisplayName</key>
-    <string>Plan Ronnie Coleman (Modo App)</string>
+    <string>${title} App</string>
     <key>PayloadIdentifier</key>
-    <string>com.ronnie.nutrition.profile.${uuid2}</string>
+    <string>com.cheddar.profile.${Date.now()}</string>
     <key>PayloadOrganization</key>
-    <string>Ronnie Coleman Nutrition</string>
+    <string>Piletita de Cheddar</string>
     <key>PayloadRemovalDisallowed</key>
     <false/>
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadUUID</key>
-    <string>${uuid2}</string>
+    <string>98765432-1234-5678-ABCD-EF0123456789</string>
     <key>PayloadVersion</key>
     <integer>1</integer>
 </dict>
 </plist>`;
 
-      // Descargar como archivo .mobileconfig que iOS reconoce automáticamente
-      const blob = new Blob([mobileConfigXml], { type: 'application/x-apple-aspen-config' });
-      const downloadUrl = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = 'PlanRonnie.mobileconfig';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      showModalToast('Perfil descargado. Abre Ajustes en tu iPhone para instalarlo.');
+      const blob = new Blob([configXml], { type: 'application/x-apple-aspen-config' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PiletitaCheddar.mobileconfig';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
-    function generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-    }
-
-    function showModalToast(msg) {
-      const toast = document.getElementById('modal-toast');
-      if (!toast) return;
-      toast.innerText = msg;
-      toast.classList.remove('hidden');
-      setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 6000);
-    }
-
-    // Alternar vistas: Cronograma vs Macros
-    function switchView(view) {
-      const viewCronograma = document.getElementById('view-cronograma');
-      const viewMacros = document.getElementById('view-macros');
-      const btnCronograma = document.getElementById('btn-tab-cronograma');
-      const btnMacros = document.getElementById('btn-tab-macros');
-
-      if (view === 'cronograma') {
-        viewCronograma.classList.remove('hidden');
-        viewMacros.classList.add('hidden');
-        btnCronograma.className = 'px-3 py-1.5 rounded-md text-[11px] font-semibold font-mono-time transition-all bg-slate-800 text-white shadow';
-        btnMacros.className = 'px-3 py-1.5 rounded-md text-[11px] font-medium font-mono-time text-slate-400 hover:text-slate-200 transition-all';
-      } else {
-        viewCronograma.classList.add('hidden');
-        viewMacros.classList.remove('hidden');
-        btnMacros.className = 'px-3 py-1.5 rounded-md text-[11px] font-semibold font-mono-time transition-all bg-slate-800 text-white shadow';
-        btnCronograma.className = 'px-3 py-1.5 rounded-md text-[11px] font-medium font-mono-time text-slate-400 hover:text-slate-200 transition-all';
-      }
-    }
-
-    // Selector Día Entreno vs Día Descanso
-    function setMode(mode, save = true) {
-      currentMode = mode;
-      if (save) localStorage.setItem('ronnie_mode', mode);
-
-      const btnOn = document.getElementById('btn-mode-on');
-      const btnOff = document.getElementById('btn-mode-off');
-      const creatinaDesayuno = document.getElementById('creatina-desayuno');
-      const trainingSections = document.querySelectorAll('.training-section');
-
-      if (mode === 'on') {
-        btnOn.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30';
-        btnOff.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md text-slate-400 hover:text-slate-200';
-        if (creatinaDesayuno) creatinaDesayuno.classList.add('hidden');
-        trainingSections.forEach(el => {
-          el.style.opacity = '1';
-          el.style.pointerEvents = 'auto';
-        });
-      } else {
-        btnOff.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-        btnOn.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md text-slate-400 hover:text-slate-200';
-        if (creatinaDesayuno) creatinaDesayuno.classList.remove('hidden');
-        trainingSections.forEach(el => {
-          el.style.opacity = '0.30';
-          el.style.pointerEvents = 'none';
-        });
-      }
-    }
-
-    // Filtrado por macronutriente al tocar la leyenda superior
-    function filterMacro(macro) {
-      if (activeFilter === macro) {
-        clearFilter();
-        return;
-      }
-      activeFilter = macro;
-
-      const banner = document.getElementById('filter-banner');
-      const bannerText = document.getElementById('filter-banner-text');
-      banner.classList.remove('hidden');
-      banner.classList.add('flex');
-      bannerText.innerHTML = `Mostrando solo: <strong class="text-white uppercase font-bold">[${macro}]</strong>`;
-
-      document.querySelectorAll('.macro-badge').forEach(b => {
-        if (b.dataset.filter === macro) {
-          b.classList.add('bg-white/10');
-        } else {
-          b.classList.remove('bg-white/10');
-        }
-      });
-
-      document.querySelectorAll('#view-cronograma [data-m]').forEach(pill => {
-        if (pill.dataset.m === macro) {
-          pill.style.opacity = '1';
-          pill.style.transform = 'scale(1.03)';
-        } else {
-          pill.style.opacity = '0.15';
-          pill.style.transform = 'scale(0.98)';
-        }
-      });
-    }
-
-    function clearFilter() {
-      activeFilter = null;
-      const banner = document.getElementById('filter-banner');
-      banner.classList.add('hidden');
-      banner.classList.remove('flex');
-
-      document.querySelectorAll('.macro-badge').forEach(b => b.classList.remove('bg-white/10'));
-      document.querySelectorAll('#view-cronograma [data-m]').forEach(pill => {
-        pill.style.opacity = '1';
-        pill.style.transform = 'scale(1)';
-      });
-    }
-
-    // Checklist interactivo de comidas
-    function toggleMealCheck(mealId) {
-      completedMeals[mealId] = !completedMeals[mealId];
-      localStorage.setItem('ronnie_completed_meals', JSON.stringify(completedMeals));
-      applyCompletedState(mealId, completedMeals[mealId]);
-      updateChecklistCounter();
-    }
-
-    function applyCompletedState(mealId, isDone) {
-      const row = document.querySelector(`[data-row-id="${mealId}"]`);
-      if (!row) return;
-      const icon = row.querySelector('.check-btn i');
-      if (isDone) {
-        row.classList.add('completed');
-        if (icon) icon.className = 'fa-solid fa-circle-check text-xs text-emerald-400';
-      } else {
-        row.classList.remove('completed');
-        if (icon) icon.className = 'fa-regular fa-circle-check text-xs text-slate-600';
-      }
-    }
-
-    function restoreCompletedState() {
-      Object.keys(completedMeals).forEach(mId => {
-        if (completedMeals[mId]) applyCompletedState(mId, true);
-      });
-    }
-
-    function updateChecklistCounter() {
-      const total = 8;
-      const done = Object.values(completedMeals).filter(Boolean).length;
-      const el = document.getElementById('footer-checklist-stat');
-      if (el) el.innerText = `${done} / ${total}`;
-    }
-
-    // Modal de Modo App
-    function openStandaloneModal() {
-      const modal = document.getElementById('standalone-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeStandaloneModal() {
-      const modal = document.getElementById('standalone-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
