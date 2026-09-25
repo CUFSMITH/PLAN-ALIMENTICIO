@@ -2,467 +2,512 @@
 <html lang="es" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plan Nutricional</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#07090e">
+  
+  <!-- Configuración nativa para iPhone / iOS Safari PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Plan Nutrición">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Favicon y Apple Touch Icon fallback inmediato en SVG con el emoji 🏋🏿‍♂️ -->
+  <link id="apple-icon-link" rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2307090e%22 stroke=%22%2338bdf8%22 stroke-width=%223%22/><text y=%2270%22 font-size=%2265%22 x=%2250%22 text-anchor=%22middle%22>🏋🏿‍♂️</text></svg>">
+  <link id="favicon-link" rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%2280%22 font-size=%2280%22>🏋🏿‍♂️</text></svg>">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <style>
     :root {
-      --bg-dark: #080a0f;
-      --card-dark: #0d1117;
-      --border-dark: #1b212d;
+      --bg-main: #07090e;
+      --card-bg: #0d1118;
+      --border-line: rgba(255, 255, 255, 0.05);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
     body {
-      background-color: var(--bg-dark);
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-main);
+      color: #e2e8f0;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
+
     .font-mono-time {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
     }
-    
-    /* Pill styles based on reference aesthetic */
+
+    /* Píldoras compactas idénticas a la imagen de referencia */
     .pill {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      padding: 0.22rem 0.65rem;
+      padding: 0.18rem 0.55rem;
       border-radius: 9999px;
-      font-size: 0.76rem;
-      line-height: 1.15rem;
+      font-size: 0.73rem;
+      line-height: 1.15;
       font-weight: 500;
       border-width: 1px;
-      transition: all 0.15s ease-in-out;
+      transition: all 0.15s ease;
       white-space: normal;
     }
-    .pill:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.15);
-    }
+
     .pill-prefix {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-weight: 700;
-      font-size: 0.68rem;
-      opacity: 0.85;
+      font-size: 0.65rem;
+      text-transform: lowercase;
+      opacity: 0.9;
     }
 
-    /* Carbo - Amber / Orange */
+    /* [c] CARBO: Ámbar / Naranja */
     .pill-carbo {
-      background: rgba(245, 158, 11, 0.08);
-      border-color: rgba(245, 158, 11, 0.32);
-      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.09);
+      border-color: rgba(245, 158, 11, 0.35);
+      color: #fbbf24;
     }
-    /* Prote - Pink / Magenta / Coral */
+
+    /* [p] PROTE: Fucsia / Rosa */
     .pill-prote {
-      background: rgba(244, 63, 94, 0.08);
-      border-color: rgba(244, 63, 94, 0.32);
+      background: rgba(244, 63, 94, 0.09);
+      border-color: rgba(244, 63, 94, 0.35);
       color: #fb7185;
     }
-    /* Grasa - Purple / Indigo */
+
+    /* [g] GRASA: Violeta / Púrpura */
     .pill-grasa {
-      background: rgba(139, 92, 246, 0.09);
-      border-color: rgba(139, 92, 246, 0.32);
+      background: rgba(139, 92, 246, 0.10);
+      border-color: rgba(139, 92, 246, 0.35);
       color: #a78bfa;
     }
-    /* Verdura - Emerald / Mint Green */
+
+    /* [v] VERDURA: Verde menta */
     .pill-verdura {
-      background: rgba(16, 185, 129, 0.08);
-      border-color: rgba(16, 185, 129, 0.32);
+      background: rgba(16, 185, 129, 0.09);
+      border-color: rgba(16, 185, 129, 0.35);
       color: #34d399;
     }
-    /* Supl - Sky / Cyan Blue */
+
+    /* [s] SUPL: Cyan / Sky blue */
     .pill-supl {
-      background: rgba(14, 165, 233, 0.08);
-      border-color: rgba(14, 165, 233, 0.32);
+      background: rgba(14, 165, 233, 0.09);
+      border-color: rgba(14, 165, 233, 0.35);
       color: #38bdf8;
     }
-    /* Info badge */
-    .pill-info {
-      background: rgba(100, 116, 139, 0.12);
+
+    /* Pill para estados u observaciones */
+    .pill-muted {
+      background: rgba(148, 163, 184, 0.07);
       border-color: rgba(148, 163, 184, 0.22);
       color: #94a3b8;
     }
 
-    /* Subtle row divider */
-    .timeline-row {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      transition: background-color 0.15s ease;
+    /* Línea divisoria sutil */
+    .timeline-item {
+      border-bottom: 1px solid var(--border-line);
+      position: relative;
+      transition: background-color 0.2s ease, opacity 0.2s ease;
     }
-    .timeline-row:hover {
-      background-color: rgba(255, 255, 255, 0.015);
+
+    .timeline-item.completed {
+      opacity: 0.42;
     }
-    .timeline-row:last-child {
-      border-bottom: none;
+
+    .timeline-item.completed .meal-title {
+      text-decoration: line-through;
+      color: #64748b;
+    }
+
+    /* Animación del modal de instalación iOS */
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-sheet {
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
 
-<body class="min-h-screen text-slate-200 pb-20 selection:bg-rose-500/30 selection:text-rose-200">
+<body>
+  <!-- Barra de gradiente superior idéntica a la referencia -->
+  <div class="h-[2px] w-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-rose-500 sticky top-0 z-50"></div>
 
-  <!-- Top accent gradient line exactly like the reference -->
-  <div class="h-[2px] w-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-rose-500"></div>
+  <!-- Contenedor principal con safe-areas -->
+  <div class="max-w-xl mx-auto px-3.5 sm:px-5 pt-3 pb-8">
 
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-7 pb-24">
+    <!-- Header Principal Móvil -->
+    <header class="pt-1 pb-3 border-b border-white/[0.08]">
+      <div class="flex items-center justify-between mb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🏋🏿‍♂️</span>
+          <h1 class="text-base sm:text-lg font-black tracking-wider uppercase text-white font-mono-time">
+            PLAN NUTRICIONAL
+          </h1>
+        </div>
 
-    <!-- Header bar: Title & Legend -->
-    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-white/[0.08]">
-      <div>
-        <h1 class="text-xl sm:text-2xl font-black tracking-wider uppercase text-white font-mono-time">
-          PLAN NUTRICIONAL
-        </h1>
-        <p class="text-xs text-slate-500 mt-0.5">Vigente a partir del 15-9-26 • Optimizado para rendimiento</p>
+        <!-- Botón para ver cómo agregar al inicio en iPhone -->
+        <button onclick="openIosModal()" class="px-2 py-1 rounded-md bg-white/[0.05] border border-white/10 text-slate-300 text-[11px] font-mono-time flex items-center gap-1.5 active:scale-95 transition-transform">
+          <i class="fa-brands fa-apple text-xs"></i>
+          <span>App Móvil</span>
+        </button>
       </div>
 
-      <!-- Color Legend matching photo dots -->
-      <div class="flex items-center flex-wrap gap-x-4 gap-y-1.5 text-[11px] font-mono-time font-semibold tracking-wider text-slate-300">
-        <div class="flex items-center gap-1.5 cursor-pointer hover:opacity-80" onclick="filterMacro('carbo')">
+      <!-- Leyenda de colores con prefijos táctiles -->
+      <div class="flex items-center justify-between overflow-x-auto py-1 text-[10px] font-mono-time font-bold tracking-wider text-slate-400 no-scrollbar">
+        <button onclick="toggleMacroFilter('carbo')" class="macro-filter-btn flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors active:scale-95" data-filter="carbo">
           <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-          <span>CARBO</span>
-        </div>
-        <div class="flex items-center gap-1.5 cursor-pointer hover:opacity-80" onclick="filterMacro('prote')">
+          <span class="text-slate-300">CARBO</span>
+        </button>
+        <button onclick="toggleMacroFilter('prote')" class="macro-filter-btn flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors active:scale-95" data-filter="prote">
           <span class="w-2 h-2 rounded-full bg-rose-400"></span>
-          <span>PROTE</span>
-        </div>
-        <div class="flex items-center gap-1.5 cursor-pointer hover:opacity-80" onclick="filterMacro('grasa')">
+          <span class="text-slate-300">PROTE</span>
+        </button>
+        <button onclick="toggleMacroFilter('grasa')" class="macro-filter-btn flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors active:scale-95" data-filter="grasa">
           <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-          <span>GRASA</span>
-        </div>
-        <div class="flex items-center gap-1.5 cursor-pointer hover:opacity-80" onclick="filterMacro('verdura')">
+          <span class="text-slate-300">GRASA</span>
+        </button>
+        <button onclick="toggleMacroFilter('verdura')" class="macro-filter-btn flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors active:scale-95" data-filter="verdura">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span>VERDURA</span>
-        </div>
-        <div class="flex items-center gap-1.5 cursor-pointer hover:opacity-80" onclick="filterMacro('supl')">
+          <span class="text-slate-300">VERDURA</span>
+        </button>
+        <button onclick="toggleMacroFilter('supl')" class="macro-filter-btn flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors active:scale-95" data-filter="supl">
           <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-          <span>SUPL</span>
-        </div>
+          <span class="text-slate-300">SUPL</span>
+        </button>
       </div>
     </header>
 
-    <div class="flex items-center justify-between flex-wrap gap-3 my-5">
-      <!-- Tabs switcher -->
-      <div class="inline-flex p-1 bg-[#111622] rounded-xl border border-white/5">
-        <button id="tab-btn-timeline" onclick="switchView('timeline')"
-                class="px-4 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 bg-slate-800 text-white shadow">
-          <i class="fa-solid fa-list-ul text-[10px]"></i>
-          <span>Cronograma</span>
+    <!-- Selector de Vistas y Modo Día -->
+    <div class="flex items-center justify-between gap-2 my-3">
+      <!-- Selector de Pestaña -->
+      <div class="inline-flex p-0.5 bg-[#0f141f] rounded-lg border border-white/5">
+        <button id="btn-tab-timeline" onclick="switchTab('timeline')" class="px-3 py-1.5 rounded-md text-[11px] font-semibold font-mono-time transition-all bg-slate-800 text-white shadow-sm">
+          CRONOGRAMA
         </button>
-        <button id="tab-btn-macro" onclick="switchView('macro')"
-                class="px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-slate-200">
-          <i class="fa-solid fa-chart-pie text-[10px]"></i>
-          <span>Por Macros</span>
+        <button id="btn-tab-macros" onclick="switchTab('macros')" class="px-3 py-1.5 rounded-md text-[11px] font-medium font-mono-time text-slate-400 hover:text-slate-200 transition-all">
+          POR MACROS
         </button>
       </div>
 
-      <!-- Quick Training Day Toggle -->
-      <div class="flex items-center gap-2 text-xs">
-        <span class="text-slate-400 font-mono-time text-[11px]">MODO:</span>
-        <button id="btn-mode-on" onclick="setDayMode('on')" 
-                class="px-2.5 py-1 rounded-md text-[11px] font-mono-time font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+      <!-- Selector Día Entreno / OFF -->
+      <div class="flex items-center gap-1 bg-[#0f141f] p-0.5 rounded-lg border border-white/5">
+        <button id="mode-on" onclick="setMode('on')" class="px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
           ENTRENO
         </button>
-        <button id="btn-mode-off" onclick="setDayMode('off')" 
-                class="px-2.5 py-1 rounded-md text-[11px] font-mono-time font-bold bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200">
+        <button id="mode-off" onclick="setMode('off')" class="px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md text-slate-400 hover:text-slate-200">
           DÍA OFF
         </button>
       </div>
     </div>
 
-    <!-- Active filter alert notice if clicked -->
-    <div id="filter-banner" class="hidden items-center justify-between px-3 py-1.5 mb-4 bg-slate-800/60 border border-slate-700/60 rounded-lg text-xs text-slate-300">
-      <span id="filter-text">Filtrando por: <strong>TODOS</strong></span>
-      <button onclick="clearFilter()" class="text-rose-400 hover:text-rose-300 text-xs font-medium">Quitar filtro ×</button>
+    <!-- Indicador de filtro activo -->
+    <div id="filter-indicator" class="hidden items-center justify-between px-2.5 py-1.5 mb-3 bg-slate-800/50 border border-slate-700/60 rounded-md text-[11px]">
+      <span id="filter-indicator-text" class="text-slate-300 font-mono-time"></span>
+      <button onclick="clearFilter()" class="text-rose-400 font-semibold text-[11px] px-1">Restablecer ×</button>
     </div>
 
-    <main id="view-timeline" class="space-y-0.5">
+    <!-- VISTA 1: CRONOGRAMA MINIMALISTA (Estilo captura) -->
+    <main id="tab-timeline-content" class="divide-y divide-white/[0.05]">
 
       <!-- 07:45 DESAYUNO -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">07:45</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">DESAYUNO</span>
-            <span class="text-[10px] uppercase font-mono-time px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">0 Carbos</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-prote" data-macro="prote">
-              <span class="pill-prefix">P</span> 4 huevos revueltos (aceite coco/oliva/queso sin carbos)
-            </span>
-            <span class="pill pill-verdura" data-macro="verdura">
-              <span class="pill-prefix">V</span> Hojas verdes / champis / espárragos
-            </span>
-            <span class="pill pill-grasa" data-macro="grasa">
-              <span class="pill-prefix">G</span> 2 gajos palta + 4 aceitunas o frutos secos
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> Té verde o café
-            </span>
-            <span id="creatina-off-badge" class="pill pill-supl hidden" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 serv Creatina (Día OFF)
-            </span>
+      <div class="timeline-item py-3" data-meal="desayuno">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">07:45</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">DESAYUNO</span>
+              <button onclick="toggleCheckMeal('desayuno')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 4 huevos revueltos</span>
+              <span class="pill pill-verdura" data-m="verdura"><span class="pill-prefix">v</span> Hojas verdes / champis / espárragos</span>
+              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> Palta / aceitunas / frutos secos</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Té verde o café</span>
+              <span id="creatina-desayuno-pill" class="pill pill-supl hidden" data-m="supl"><span class="pill-prefix">s</span> 1 serv Creatina (Día OFF)</span>
+              <span class="pill pill-muted"><span class="pill-prefix font-bold text-rose-400">!</span> 0 carbos ni endulzantes</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 10:30 COLACIÓN -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">10:30</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">COLACIÓN</span>
-            <span class="text-[10px] text-slate-500">Media Mañana</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-prote" data-macro="prote">
-              <span class="pill-prefix">P</span> 1 scoop proteína con agua
-            </span>
-            <span class="pill pill-grasa" data-macro="grasa">
-              <span class="pill-prefix">G</span> 10 frutos secos
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> Té verde o café
-            </span>
+      <!-- 10:30 MEDIA MAÑANA -->
+      <div class="timeline-item py-3" data-meal="colacion">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">10:30</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">COLACIÓN</span>
+              <button onclick="toggleCheckMeal('colacion')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 scoop proteína + agua</span>
+              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> 10 frutos secos</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Té verde o café</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 13:30 ALMUERZO -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">13:30</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">ALMUERZO</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-carbo" data-macro="carbo">
-              <span class="pill-prefix">C</span> 1 puño papa / batata / arroz / quinoa
-            </span>
-            <span class="pill pill-prote" data-macro="prote">
-              <span class="pill-prefix">P</span> 1 palma carne / pollo / pescado
-            </span>
-            <span class="pill pill-grasa" data-macro="grasa">
-              <span class="pill-prefix">G</span> 1 palta chica o 15 frutos secos o 15 aceitunas lavadas
-            </span>
-            <span class="pill pill-verdura" data-macro="verdura">
-              <span class="pill-prefix">V</span> Verde / brócoli / tomate (empezar a probar)
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 cap Omega 3 Fish Oil
-            </span>
+      <div class="timeline-item py-3" data-meal="almuerzo">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">13:30</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">ALMUERZO</span>
+              <button onclick="toggleCheckMeal('almuerzo')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 puño papa / batata / arroz / quinoa</span>
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 palma carne / pollo / pescado</span>
+              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> Palta chica o 15 frutos secos / aceitunas</span>
+              <span class="pill pill-verdura" data-m="verdura"><span class="pill-prefix">v</span> Verde / brócoli / tomate</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 cap Omega 3</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 16:30 TARDE -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">16:30</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">TARDE</span>
-            <span class="text-[10px] text-slate-500">Previa</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-prote" data-macro="prote">
-              <span class="pill-prefix">P</span> Kanikama c/ limón o yogur griego o 1 lata atún o 3 claras o 1 scoop prote
-            </span>
-            <span class="pill pill-grasa" data-macro="grasa">
-              <span class="pill-prefix">G</span> 1/2 palta chica o 9 frutos secos o 9 aceitunas lavadas
-            </span>
-            <span class="pill pill-carbo" data-macro="carbo">
-              <span class="pill-prefix">C</span> 1 fruta
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> Té verde
-            </span>
+      <div class="timeline-item py-3" data-meal="tarde">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">16:30</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">TARDE</span>
+              <button onclick="toggleCheckMeal('tarde')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> Kanikama / yogur / atún / 3 claras / prote</span>
+              <span class="pill pill-grasa" data-m="grasa"><span class="pill-prefix">g</span> 1/2 palta o 9 frutos secos / aceitunas</span>
+              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 fruta</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Té verde</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 18:00 PRE WORK -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 training-only-row" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">18:00</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">PRE WORK</span>
-            <span class="text-[10px] uppercase font-mono-time px-1.5 py-0.2 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">Antes de Entrenar</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 serv EAAS
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 serv Creatina
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> Pre-entreno o café (opcional)
-            </span>
-            <span class="pill pill-carbo" data-macro="carbo">
-              <span class="pill-prefix">C</span> 1 fruta (solo si hace falta)
-            </span>
+      <!-- 17:45 PRE WORK (Solo día entreno) -->
+      <div class="timeline-item py-3 training-block" data-meal="prework">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">17:45</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">PRE WORK</span>
+              <button onclick="toggleCheckMeal('prework')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv EAAS</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv Creatina</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> Pre-entreno o café</span>
+              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 fruta (opcional)</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 19:30 POST WORK -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 training-only-row" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">19:30</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">POST WORK</span>
-            <span class="text-[10px] uppercase font-mono-time px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20">Inmediato</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-carbo" data-macro="carbo">
-              <span class="pill-prefix">C</span> 1 banana + 1 fruta (o 1.5 puños papa/batata/arroz)
-            </span>
-            <span class="pill pill-prote" data-macro="prote">
-              <span class="pill-prefix">P</span> 1 scoop prote (si no comés dentro de la hora)
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 serv Glutamina
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 serv EAAS
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 serv Creatina
-            </span>
+      <!-- 19:30 POST WORK (Solo día entreno) -->
+      <div class="timeline-item py-3 training-block" data-meal="postwork">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">19:30</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">POST WORK</span>
+                <span class="text-[9px] font-mono-time text-slate-400 border border-slate-700/60 px-1 rounded">INMEDIATO</span>
+              </div>
+              <button onclick="toggleCheckMeal('postwork')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-carbo" data-m="carbo"><span class="pill-prefix">c</span> 1 banana + 1 fruta (o 1.5 puños carbos)</span>
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 scoop prote (si no cenas en 1h)</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv Glutamina</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv EAAS</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 serv Creatina</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 21:30 CENA -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">21:30</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">CENA</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-prote" data-macro="prote">
-              <span class="pill-prefix">P</span> 1 palma pollo o preferentemente pescado
-            </span>
-            <span class="pill pill-verdura" data-macro="verdura">
-              <span class="pill-prefix">V</span> Verde / brócoli / zapallo / zapallito / champis (probar)
-            </span>
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 1 cap Omega 3 Fish Oil
-            </span>
+      <div class="timeline-item py-3" data-meal="cena">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">21:30</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">CENA</span>
+              <button onclick="toggleCheckMeal('cena')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> 1 palma pollo o preferente pescado</span>
+              <span class="pill pill-verdura" data-m="verdura"><span class="pill-prefix">v</span> Verde / brócoli / zapallo / champis</span>
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 1 cap Omega 3</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 23:30 ANTOJO DULCE -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">23:30</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">ANTOJO DULCE</span>
-            <span class="text-[10px] text-slate-500">Opcional (&gt; 2hs de cenar)</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-info">
-              <i class="fa-solid fa-cookie text-[10px] mr-1 text-amber-300"></i> Receta antojo dulce / 1/2 tortilla / Caseína
-            </span>
+      <!-- 23:30 ANTOJO DULCE (OPCIONAL) -->
+      <div class="timeline-item py-3" data-meal="antojo">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">23:30</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">ANTOJO DULCE</span>
+                <span class="text-[9px] font-mono-time text-slate-500 border border-slate-800 px-1 rounded">OPCIONAL (&gt;2h CENA)</span>
+              </div>
+              <button onclick="toggleCheckMeal('antojo')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-prote" data-m="prote"><span class="pill-prefix">p</span> Receta dulce / 1/2 tortilla / Caseína</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ZZZ A DORMIR -->
-      <div class="timeline-row py-4 px-2 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6" data-row>
-        <div class="w-16 shrink-0 font-mono-time text-xs text-slate-500 font-medium">ZZZ</div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-extrabold uppercase tracking-wide text-xs sm:text-sm text-slate-100 font-mono-time">A DORMIR</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 items-center">
-            <span class="pill pill-supl" data-macro="supl">
-              <span class="pill-prefix">S</span> 3 cápsulas ZMA
-            </span>
+      <div class="timeline-item py-3" data-meal="dormir">
+        <div class="flex items-baseline gap-3">
+          <span class="w-12 shrink-0 font-mono-time text-[11px] text-slate-500 font-semibold tracking-tight">ZZZ</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="meal-title font-extrabold uppercase tracking-wide text-xs text-slate-100 font-mono-time">A DORMIR</span>
+              <button onclick="toggleCheckMeal('dormir')" class="check-meal-btn text-slate-600 hover:text-emerald-400 active:scale-90 transition-transform">
+                <i class="fa-regular fa-circle-check text-xs"></i>
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="pill pill-supl" data-m="supl"><span class="pill-prefix">s</span> 3 cápsulas ZMA</span>
+            </div>
           </div>
         </div>
       </div>
 
     </main>
 
-    <div id="view-macro" class="hidden space-y-5">
+    <!-- VISTA 2: DESGLOSE POR MACROS -->
+    <div id="tab-macros-content" class="hidden space-y-4 pt-1">
       
-      <!-- PROTEÍNAS -->
-      <div class="p-4 rounded-xl bg-[#0d121c] border border-rose-500/20">
-        <div class="flex items-center gap-2.5 mb-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-rose-300 font-mono-time">Proteínas (P)</h2>
+      <!-- PROTEÍNA (P) -->
+      <div class="p-3.5 rounded-xl bg-[#0b0f17] border border-rose-500/25">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-rose-300 font-mono-time">Proteínas [p]</h3>
+          </div>
+          <span class="text-[10px] font-mono-time text-slate-400">~195g</span>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="pill pill-prote"><span class="pill-prefix">DESAYUNO</span> 4 huevos revueltos (+ opcional queso 0 carb)</span>
-          <span class="pill pill-prote"><span class="pill-prefix">MEDIA MAÑANA</span> 1 scoop proteína con agua</span>
-          <span class="pill pill-prote"><span class="pill-prefix">ALMUERZO</span> 1 palma carne / pollo / pescado</span>
-          <span class="pill pill-prote"><span class="pill-prefix">TARDE</span> Kanikama / yogur griego / atún / 3 claras / scoop</span>
-          <span class="pill pill-prote"><span class="pill-prefix">POST WORK</span> 1 scoop proteína (si no cenás en &lt;1h)</span>
-          <span class="pill pill-prote"><span class="pill-prefix">CENA</span> 1 palma pollo o preferentemente pescado</span>
-        </div>
-      </div>
-
-      <!-- CARBOHIDRATOS -->
-      <div class="p-4 rounded-xl bg-[#0d121c] border border-amber-500/20">
-        <div class="flex items-center gap-2.5 mb-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono-time">Carbohidratos & Frutas (C)</h2>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="pill pill-info"><span class="pill-prefix">DESAYUNO</span> 0 carbos (sin frutas ni endulzantes)</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">ALMUERZO</span> 1 puño de papa / batata / arroz / quinoa</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">TARDE</span> 1 fruta</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">PRE WORK</span> 1 fruta (solo si hace falta energía)</span>
-          <span class="pill pill-carbo"><span class="pill-prefix">POST WORK</span> 1 banana + 1 fruta (o 1.5 puños papa/batata/arroz)</span>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="pill pill-prote"><span class="pill-prefix">07:45</span> 4 huevos revueltos</span>
+          <span class="pill pill-prote"><span class="pill-prefix">10:30</span> 1 scoop proteína + agua</span>
+          <span class="pill pill-prote"><span class="pill-prefix">13:30</span> 1 palma carne / pollo / pescado</span>
+          <span class="pill pill-prote"><span class="pill-prefix">16:30</span> Kanikama / yogur griego / atún / claras</span>
+          <span class="pill pill-prote"><span class="pill-prefix">19:30</span> 1 scoop prote (post-entreno)</span>
+          <span class="pill pill-prote"><span class="pill-prefix">21:30</span> 1 palma pollo o preferente pescado</span>
+          <span class="pill pill-prote"><span class="pill-prefix">23:30</span> Receta dulce / Caseína (opcional)</span>
         </div>
       </div>
 
-      <!-- GRASAS -->
-      <div class="p-4 rounded-xl bg-[#0d121c] border border-indigo-500/20">
-        <div class="flex items-center gap-2.5 mb-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-300 font-mono-time">Grasas Saludables (G)</h2>
+      <!-- CARBOHIDRATOS (C) -->
+      <div class="p-3.5 rounded-xl bg-[#0b0f17] border border-amber-500/25">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300 font-mono-time">Carbohidratos & Frutas [c]</h3>
+          </div>
+          <span class="text-[10px] font-mono-time text-slate-400">~175g</span>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="pill pill-grasa"><span class="pill-prefix">DESAYUNO</span> Aceite de coco/oliva + 2 gajos palta + 4 aceitunas/frutos secos</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">MEDIA MAÑANA</span> 10 frutos secos</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">ALMUERZO</span> 1 palta chica o 15 frutos secos o 15 aceitunas lavadas</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">TARDE</span> 1/2 palta chica o 9 frutos secos o 9 aceitunas lavadas</span>
-          <span class="pill pill-grasa"><span class="pill-prefix">OMEGA 3</span> 1 cap almuerzo + 1 cap cena</span>
-        </div>
-      </div>
-
-      <!-- VERDURAS -->
-      <div class="p-4 rounded-xl bg-[#0d121c] border border-emerald-500/20">
-        <div class="flex items-center gap-2.5 mb-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono-time">Verduras & Fibras (V)</h2>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="pill pill-verdura"><span class="pill-prefix">DESAYUNO</span> Hojas verdes / champis / espárragos</span>
-          <span class="pill pill-verdura"><span class="pill-prefix">ALMUERZO</span> Verde / brócoli / tomate (empezar a probar)</span>
-          <span class="pill pill-verdura"><span class="pill-prefix">CENA</span> Verde / brócoli / zapallo / zapallito / champis</span>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="pill pill-muted"><span class="pill-prefix text-rose-400">07:45</span> 0 Carbohidratos (sin frutas)</span>
+          <span class="pill pill-carbo"><span class="pill-prefix">13:30</span> 1 puño papa / batata / arroz / quinoa</span>
+          <span class="pill pill-carbo"><span class="pill-prefix">16:30</span> 1 fruta</span>
+          <span class="pill pill-carbo"><span class="pill-prefix">17:45</span> 1 fruta (solo si hace falta)</span>
+          <span class="pill pill-carbo"><span class="pill-prefix">19:30</span> 1 banana + 1 fruta (o 1.5 puños papa/arroz)</span>
         </div>
       </div>
 
-      <!-- SUPLEMENTOS -->
-      <div class="p-4 rounded-xl bg-[#0d121c] border border-sky-500/20">
-        <div class="flex items-center gap-2.5 mb-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-sky-300 font-mono-time">Suplementos & Infusiones (S)</h2>
+      <!-- GRASAS SALUDABLES (G) -->
+      <div class="p-3.5 rounded-xl bg-[#0b0f17] border border-indigo-500/25">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-300 font-mono-time">Grasas Saludables [g]</h3>
+          </div>
+          <span class="text-[10px] font-mono-time text-slate-400">~68g</span>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="pill pill-supl"><span class="pill-prefix">CREATINA</span> 1 serv Pre + 1 serv Post (o en desayuno en Días OFF)</span>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="pill pill-grasa"><span class="pill-prefix">07:45</span> Aceite coco/oliva + 2 gajos palta + 4 frutos secos</span>
+          <span class="pill pill-grasa"><span class="pill-prefix">10:30</span> 10 frutos secos</span>
+          <span class="pill pill-grasa"><span class="pill-prefix">13:30</span> 1 palta chica o 15 frutos secos / aceitunas</span>
+          <span class="pill pill-grasa"><span class="pill-prefix">16:30</span> 1/2 palta chica o 9 frutos secos / aceitunas</span>
+        </div>
+      </div>
+
+      <!-- VERDURAS & FIBRAS (V) -->
+      <div class="p-3.5 rounded-xl bg-[#0b0f17] border border-emerald-500/25">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono-time">Verduras & Fibras [v]</h3>
+          </div>
+          <span class="text-[10px] font-mono-time text-emerald-400">Libre / A probar</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="pill pill-verdura"><span class="pill-prefix">07:45</span> Hojas verdes / champignones / espárragos</span>
+          <span class="pill pill-verdura"><span class="pill-prefix">13:30</span> Ensalada verde / brócoli / tomate</span>
+          <span class="pill pill-verdura"><span class="pill-prefix">21:30</span> Verde / brócoli / zapallo / zapallito / champis</span>
+        </div>
+      </div>
+
+      <!-- SUPLEMENTACIÓN (S) -->
+      <div class="p-3.5 rounded-xl bg-[#0b0f17] border border-sky-500/25">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-sky-300 font-mono-time">Suplementos & Infusiones [s]</h3>
+          </div>
+          <span class="text-[10px] font-mono-time text-slate-400">Diario</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="pill pill-supl"><span class="pill-prefix">CREATINA</span> 1 serv Pre + 1 Post (o en desayuno en Días OFF)</span>
           <span class="pill pill-supl"><span class="pill-prefix">EAAS</span> 1 serv Pre-work + 1 serv Inmediato Post</span>
-          <span class="pill pill-supl"><span class="pill-prefix">GLUTAMINA</span> 1 serv Post-work</span>
+          <span class="pill pill-supl"><span class="pill-prefix">GLUTAMINA</span> 1 serv Inmediato Post</span>
           <span class="pill pill-supl"><span class="pill-prefix">OMEGA 3</span> 1 cap Almuerzo + 1 cap Cena</span>
           <span class="pill pill-supl"><span class="pill-prefix">ZMA</span> 3 cápsulas antes de dormir</span>
-          <span class="pill pill-supl"><span class="pill-prefix">TÉ / CAFÉ</span> Desayuno, Media Mañana y Tarde</span>
+          <span class="pill pill-supl"><span class="pill-prefix">BEBIDAS</span> Té verde o café sin endulzar</span>
         </div>
       </div>
 
@@ -470,101 +515,271 @@
 
   </div>
 
-  <footer class="fixed bottom-0 inset-x-0 bg-[#080a0fe6] backdrop-blur-md border-t border-white/[0.08] py-2.5 px-4 z-40">
-    <div class="max-w-4xl mx-auto flex items-center justify-around text-center divide-x divide-white/[0.08] text-xs">
-      <div class="px-2">
-        <span class="block text-slate-400 font-mono-time text-[10px] uppercase">Comidas</span>
-        <span class="text-white font-bold font-mono-time text-sm">6 - 7</span>
+  <!-- Barra de macros inferior idéntica al footer de la imagen -->
+  <footer class="fixed bottom-0 inset-x-0 bg-[#07090ef2] backdrop-blur-lg border-t border-white/[0.08] py-2.5 px-3 z-40" style="padding-bottom: max(0.6rem, env(safe-area-inset-bottom));">
+    <div class="max-w-xl mx-auto grid grid-cols-4 divide-x divide-white/[0.08] text-center">
+      <div class="px-1">
+        <span class="block text-slate-500 font-mono-time text-[9px] uppercase tracking-wider">KCAL</span>
+        <span class="text-white font-black font-mono-time text-xs sm:text-sm">~2.450</span>
       </div>
-      <div class="px-2">
-        <span class="block text-rose-400 font-mono-time text-[10px] uppercase">Proteína</span>
-        <span class="text-white font-bold font-mono-time text-sm">Alta</span>
+      <div class="px-1">
+        <span class="block text-rose-400 font-mono-time text-[9px] uppercase tracking-wider">PROTEÍNA</span>
+        <span class="text-white font-black font-mono-time text-xs sm:text-sm">195g</span>
       </div>
-      <div class="px-2">
-        <span class="block text-amber-400 font-mono-time text-[10px] uppercase">Carbos</span>
-        <span class="text-white font-bold font-mono-time text-sm">Ciclados</span>
+      <div class="px-1">
+        <span class="block text-amber-400 font-mono-time text-[9px] uppercase tracking-wider">CARBOS</span>
+        <span class="text-white font-black font-mono-time text-xs sm:text-sm">175g</span>
       </div>
-      <div class="px-2">
-        <span class="block text-indigo-400 font-mono-time text-[10px] uppercase">Grasas</span>
-        <span class="text-white font-bold font-mono-time text-sm">Moderadas</span>
+      <div class="px-1">
+        <span class="block text-indigo-400 font-mono-time text-[9px] uppercase tracking-wider">GRASA</span>
+        <span class="text-white font-black font-mono-time text-xs sm:text-sm">68g</span>
       </div>
     </div>
   </footer>
 
+  <!-- Modal explicativo para iPhone Safari -->
+  <div id="ios-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="modal-sheet w-full max-w-md bg-[#0e131d] border border-white/10 rounded-t-2xl sm:rounded-2xl p-5 text-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+        <div class="flex items-center gap-2.5">
+          <canvas id="preview-icon-canvas" width="44" height="44" class="rounded-xl shadow"></canvas>
+          <div>
+            <h3 class="font-bold text-sm text-white">Instalar en iPhone</h3>
+            <p class="text-[11px] text-slate-400">Tenerla como app nativa</p>
+          </div>
+        </div>
+        <button onclick="closeIosModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="space-y-3.5 text-xs text-slate-300">
+        <div class="flex items-start gap-3 p-2.5 rounded-lg bg-white/[0.03]">
+          <span class="w-6 h-6 rounded-full bg-slate-800 text-sky-400 flex items-center justify-center font-mono-time text-xs font-bold shrink-0">1</span>
+          <p>Abre este enlace desde <strong>Safari</strong> en tu iPhone.</p>
+        </div>
+        <div class="flex items-start gap-3 p-2.5 rounded-lg bg-white/[0.03]">
+          <span class="w-6 h-6 rounded-full bg-slate-800 text-sky-400 flex items-center justify-center font-mono-time text-xs font-bold shrink-0">2</span>
+          <p>Toca el botón <strong>Compartir</strong> en la barra inferior de Safari (<i class="fa-solid fa-arrow-up-from-bracket text-sky-400 mx-0.5"></i>).</p>
+        </div>
+        <div class="flex items-start gap-3 p-2.5 rounded-lg bg-white/[0.03]">
+          <span class="w-6 h-6 rounded-full bg-slate-800 text-sky-400 flex items-center justify-center font-mono-time text-xs font-bold shrink-0">3</span>
+          <p>Desliza hacia abajo y elige <strong class="text-white">"Agregar a inicio"</strong> (<i class="fa-regular fa-square-plus text-sky-400 mx-0.5"></i>).</p>
+        </div>
+        <div class="flex items-start gap-3 p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+          <span class="text-base">✨</span>
+          <p class="text-[11px]">¡Listo! Aparecerá en tu pantalla con el icono de <strong>🏋🏿‍♂️</strong> y abrirá a pantalla completa sin barra de navegación.</p>
+        </div>
+      </div>
+
+      <button onclick="closeIosModal()" class="w-full mt-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono-time text-xs font-semibold">
+        Entendido
+      </button>
+    </div>
+  </div>
+
   <script>
-    let activeFilter = null;
-    let dayMode = 'on'; // 'on' (entreno) or 'off' (descanso)
+    function generateAndInjectAppleIcon() {
+      try {
+        const size = 192;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
 
-    function switchView(view) {
-      const timeline = document.getElementById('view-timeline');
-      const macro = document.getElementById('view-macro');
-      const btnTimeline = document.getElementById('tab-btn-timeline');
-      const btnMacro = document.getElementById('tab-btn-macro');
+        // Fondo oscuro premium con bordes redondeados (estilo app de iOS)
+        const radius = 44;
+        ctx.fillStyle = '#07090e';
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(0, 0, size, size, radius);
+        } else {
+          ctx.rect(0, 0, size, size);
+        }
+        ctx.fill();
 
-      if (view === 'timeline') {
-        timeline.classList.remove('hidden');
-        macro.classList.add('hidden');
-        btnTimeline.className = 'px-4 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 bg-slate-800 text-white shadow';
-        btnMacro.className = 'px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-slate-200';
-      } else {
-        timeline.classList.add('hidden');
-        macro.classList.remove('hidden');
-        btnMacro.className = 'px-4 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 bg-slate-800 text-white shadow';
-        btnTimeline.className = 'px-4 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-slate-200';
+        // Borde fino cian brillante de acento
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.stroke();
+
+        // Dibujar el emoji 🏋🏿‍♂️ centrado perfectamente
+        ctx.font = '106px -apple-system, "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🏋🏿‍♂️', size / 2, size / 2 + 6);
+
+        // Convertir a DataURL PNG de alta resolución
+        const iconDataUrl = canvas.toDataURL('image/png');
+
+        // Actualizar link de apple-touch-icon
+        let appleIcon = document.getElementById('apple-icon-link');
+        if (appleIcon) {
+          appleIcon.href = iconDataUrl;
+        }
+
+        // Actualizar favicon estándar
+        let favicon = document.getElementById('favicon-link');
+        if (favicon) {
+          favicon.href = iconDataUrl;
+        }
+
+        // Mini preview en el modal
+        const previewCanvas = document.getElementById('preview-icon-canvas');
+        if (previewCanvas) {
+          const pCtx = previewCanvas.getContext('2d');
+          pCtx.drawImage(canvas, 0, 0, 44, 44);
+        }
+      } catch (err) {
+        console.warn('Canvas icon generation error:', err);
       }
     }
 
-    function setDayMode(mode) {
-      dayMode = mode;
-      const btnOn = document.getElementById('btn-mode-on');
-      const btnOff = document.getElementById('btn-mode-off');
-      const creatinaOffBadge = document.getElementById('creatina-off-badge');
-      const trainingRows = document.querySelectorAll('.training-only-row');
+    let currentFilter = null;
+    let currentMode = localStorage.getItem('plan_mode') || 'on';
+    let checkedMeals = JSON.parse(localStorage.getItem('checked_meals') || '{}');
+
+    // Inicializar interfaz
+    window.addEventListener('DOMContentLoaded', () => {
+      generateAndInjectAppleIcon();
+      setMode(currentMode, false);
+      restoreCheckedMeals();
+    });
+
+    // Pestañas Cronograma vs Macros
+    function switchTab(tab) {
+      const timelineContent = document.getElementById('tab-timeline-content');
+      const macrosContent = document.getElementById('tab-macros-content');
+      const btnTimeline = document.getElementById('btn-tab-timeline');
+      const btnMacros = document.getElementById('btn-tab-macros');
+
+      if (tab === 'timeline') {
+        timelineContent.classList.remove('hidden');
+        macrosContent.classList.add('hidden');
+        btnTimeline.className = 'px-3 py-1.5 rounded-md text-[11px] font-semibold font-mono-time transition-all bg-slate-800 text-white shadow-sm';
+        btnMacros.className = 'px-3 py-1.5 rounded-md text-[11px] font-medium font-mono-time text-slate-400 hover:text-slate-200 transition-all';
+      } else {
+        timelineContent.classList.add('hidden');
+        macrosContent.classList.remove('hidden');
+        btnMacros.className = 'px-3 py-1.5 rounded-md text-[11px] font-semibold font-mono-time transition-all bg-slate-800 text-white shadow-sm';
+        btnTimeline.className = 'px-3 py-1.5 rounded-md text-[11px] font-medium font-mono-time text-slate-400 hover:text-slate-200 transition-all';
+      }
+    }
+
+    function setMode(mode, save = true) {
+      currentMode = mode;
+      if (save) localStorage.setItem('plan_mode', mode);
+
+      const btnOn = document.getElementById('mode-on');
+      const btnOff = document.getElementById('mode-off');
+      const creatinaDesayuno = document.getElementById('creatina-desayuno-pill');
+      const trainingBlocks = document.querySelectorAll('.training-block');
 
       if (mode === 'on') {
-        btnOn.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono-time font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
-        btnOff.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono-time font-bold bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200';
-        creatinaOffBadge.classList.add('hidden');
-        trainingRows.forEach(row => row.classList.remove('opacity-30'));
+        btnOn.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        btnOff.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md text-slate-400 hover:text-slate-200';
+        if (creatinaDesayuno) creatinaDesayuno.classList.add('hidden');
+        trainingBlocks.forEach(b => {
+          b.style.opacity = '1';
+          b.style.pointerEvents = 'auto';
+        });
       } else {
-        btnOff.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono-time font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-        btnOn.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono-time font-bold bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200';
-        creatinaOffBadge.classList.remove('hidden');
-        trainingRows.forEach(row => row.classList.add('opacity-30'));
+        btnOff.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        btnOn.className = 'px-2.5 py-1 text-[10px] font-mono-time font-bold rounded-md text-slate-400 hover:text-slate-200';
+        if (creatinaDesayuno) creatinaDesayuno.classList.remove('hidden');
+        trainingBlocks.forEach(b => {
+          b.style.opacity = '0.28';
+          b.style.pointerEvents = 'none';
+        });
       }
     }
 
-    function filterMacro(type) {
-      if (activeFilter === type) {
+    function toggleMacroFilter(macro) {
+      if (currentFilter === macro) {
         clearFilter();
         return;
       }
-      activeFilter = type;
-      const banner = document.getElementById('filter-banner');
-      const text = document.getElementById('filter-text');
-      banner.classList.remove('hidden');
-      banner.classList.add('flex');
-      text.innerHTML = `Mostrando solo: <strong class="uppercase text-white">${type}</strong>`;
+      currentFilter = macro;
 
-      document.querySelectorAll('#view-timeline [data-macro]').forEach(pill => {
-        if (pill.dataset.macro === type) {
-          pill.style.opacity = '1';
-          pill.style.filter = 'none';
+      const indicator = document.getElementById('filter-indicator');
+      const indicatorText = document.getElementById('filter-indicator-text');
+      indicator.classList.remove('hidden');
+      indicator.classList.add('flex');
+      indicatorText.innerHTML = `Mostrando sólo: <strong class="text-white uppercase font-bold">[${macro}]</strong>`;
+
+      // Resaltar u opacar botones de la leyenda
+      document.querySelectorAll('.macro-filter-btn').forEach(btn => {
+        if (btn.dataset.filter === macro) {
+          btn.classList.add('bg-white/10');
         } else {
-          pill.style.opacity = '0.2';
-          pill.style.filter = 'grayscale(1)';
+          btn.classList.remove('bg-white/10');
+        }
+      });
+
+      // Opacar los elementos no coincidentes
+      document.querySelectorAll('#tab-timeline-content [data-m]').forEach(pill => {
+        if (pill.dataset.m === macro) {
+          pill.style.opacity = '1';
+          pill.style.transform = 'scale(1.03)';
+        } else {
+          pill.style.opacity = '0.15';
+          pill.style.transform = 'scale(0.98)';
         }
       });
     }
 
     function clearFilter() {
-      activeFilter = null;
-      document.getElementById('filter-banner').classList.add('hidden');
-      document.getElementById('filter-banner').classList.remove('flex');
-      document.querySelectorAll('#view-timeline [data-macro]').forEach(pill => {
+      currentFilter = null;
+      const indicator = document.getElementById('filter-indicator');
+      indicator.classList.add('hidden');
+      indicator.classList.remove('flex');
+
+      document.querySelectorAll('.macro-filter-btn').forEach(btn => btn.classList.remove('bg-white/10'));
+      document.querySelectorAll('#tab-timeline-content [data-m]').forEach(pill => {
         pill.style.opacity = '1';
-        pill.style.filter = 'none';
+        pill.style.transform = 'scale(1)';
       });
+    }
+
+    function toggleCheckMeal(mealId) {
+      checkedMeals[mealId] = !checkedMeals[mealId];
+      localStorage.setItem('checked_meals', JSON.stringify(checkedMeals));
+      applyMealCheckStyle(mealId, checkedMeals[mealId]);
+    }
+
+    function applyMealCheckStyle(mealId, isChecked) {
+      const row = document.querySelector(`[data-meal="${mealId}"]`);
+      if (!row) return;
+      const icon = row.querySelector('.check-meal-btn i');
+      if (isChecked) {
+        row.classList.add('completed');
+        if (icon) {
+          icon.className = 'fa-solid fa-circle-check text-xs text-emerald-400';
+        }
+      } else {
+        row.classList.remove('completed');
+        if (icon) {
+          icon.className = 'fa-regular fa-circle-check text-xs text-slate-600';
+        }
+      }
+    }
+
+    function restoreCheckedMeals() {
+      Object.keys(checkedMeals).forEach(mealId => {
+        if (checkedMeals[mealId]) {
+          applyMealCheckStyle(mealId, true);
+        }
+      });
+    }
+
+    function openIosModal() {
+      const modal = document.getElementById('ios-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeIosModal() {
+      const modal = document.getElementById('ios-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
   </script>
 </body>
