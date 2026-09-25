@@ -3,34 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Piletita de Cheddar - Plan Nutricional</title>
+  <title>Plan Nutricional - Piletita de Cheddar</title>
   
   <!-- iOS PWA Standalone Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Piletita Nutri">
-  <meta name="theme-color" content="#07090e">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Plan Nutri">
+  <meta name="theme-color" content="#060709">
+  <link id="appleTouchIcon" rel="apple-touch-icon" href="">
 
   <style>
     :root {
-      --bg: #07090e;
-      --card-bg: #0d1117;
+      --bg: #060709;
+      --card-bg: #0d1017;
       --border: rgba(255, 255, 255, 0.08);
+      --border-subtle: rgba(255, 255, 255, 0.06);
       --text-main: #f0f3f6;
-      --text-dim: #7d8590;
-      
-      /* Legend / Pill Colors */
-      --c-carbo: #f0883e;
-      --bg-carbo: rgba(240, 136, 62, 0.14);
-      --c-prote: #f778ba;
-      --bg-prote: rgba(247, 120, 186, 0.14);
-      --c-grasa: #a371f7;
-      --bg-grasa: rgba(163, 113, 247, 0.14);
-      --c-verdura: #56d364;
-      --bg-verdura: rgba(86, 211, 100, 0.14);
-      --c-supl: #58a6ff;
-      --bg-supl: rgba(88, 166, 255, 0.14);
+      --text-dim: #717886;
+      --text-time: #555e6c;
+
+      /* Macronutrientes (colores de la primera imagen) */
+      --c-carbo: #e3883a;
+      --bg-carbo: rgba(227, 136, 58, 0.12);
+      --border-carbo: rgba(227, 136, 58, 0.38);
+
+      --c-prote: #f06292;
+      --bg-prote: rgba(240, 98, 146, 0.12);
+      --border-prote: rgba(240, 98, 146, 0.38);
+
+      --c-grasa: #a78bfa;
+      --bg-grasa: rgba(167, 139, 250, 0.12);
+      --border-grasa: rgba(167, 139, 250, 0.38);
+
+      --c-verdura: #4ade80;
+      --bg-verdura: rgba(74, 222, 128, 0.12);
+      --border-verdura: rgba(74, 222, 128, 0.38);
+
+      --c-supl: #38bdf8;
+      --bg-supl: rgba(56, 189, 248, 0.12);
+      --border-supl: rgba(56, 189, 248, 0.38);
+
+      --c-note: #cbd5e1;
+      --bg-note: rgba(255, 255, 255, 0.05);
+      --border-note: rgba(255, 255, 255, 0.15);
+
       --cheddar: #f5a623;
     }
 
@@ -38,39 +54,40 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text-main);
-      padding-top: max(16px, env(safe-area-inset-top));
-      padding-bottom: max(32px, env(safe-area-inset-bottom));
+      padding-top: max(12px, env(safe-area-inset-top));
+      padding-bottom: calc(75px + env(safe-area-inset-bottom));
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-x: hidden;
     }
 
-    /* Barra superior con efecto glow */
+    /* Línea superior con gradiente de neón */
     .top-glow-bar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, #f5a623, #ff5e3a, #00f2fe, #4facfe, #a371f7);
-      z-index: 100;
+      background: linear-gradient(90deg, #00f2fe, #4facfe, #a78bfa, #f06292, #f5a623);
+      z-index: 1000;
     }
 
     .container {
       width: 100%;
       max-width: 480px;
-      padding: 16px 20px;
+      padding: 12px 18px 24px 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     /* Header Bar */
@@ -78,7 +95,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 6px;
+      padding: 4px 0 6px 0;
     }
 
     .header-left {
@@ -88,19 +105,19 @@
     }
 
     .avatar-btn {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
-      border: 2px solid #f5a623;
-      background: #161b22;
-      overflow: hidden;
+      border: 2px solid #e3a018;
+      background: #14171f;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 12px rgba(245, 166, 35, 0.4);
+      box-shadow: 0 0 14px rgba(227, 160, 24, 0.4);
       position: relative;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
     .avatar-btn img {
@@ -111,13 +128,13 @@
 
     .avatar-badge {
       position: absolute;
-      bottom: -3px;
-      background: #f5a623;
+      bottom: 0px;
+      background: #e3a018;
       color: #000;
-      font-size: 8px;
+      font-size: 7.5px;
       font-weight: 900;
       padding: 1px 4px;
-      border-radius: 4px;
+      border-radius: 3px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -125,95 +142,74 @@
     .title-box {
       display: flex;
       flex-direction: column;
-    }
-
-    .team-badge {
-      font-size: 9px;
-      font-weight: 800;
-      color: var(--cheddar);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      gap: 2px;
     }
 
     .app-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      color: #fff;
+      color: #ffffff;
     }
 
     .athlete-sub {
       font-size: 11px;
       color: var(--text-dim);
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.4px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .athlete-tag {
-      background: rgba(88, 166, 255, 0.15);
-      color: var(--c-supl);
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-    }
-
-    /* Actions Toolbar */
+    /* Toolbar superior */
     .toolbar {
       display: flex;
-      gap: 8px;
+      gap: 7px;
       align-items: center;
     }
 
     .btn-action {
-      background: #161b22;
+      background: #12161f;
       border: 1px solid var(--border);
       color: var(--text-main);
-      padding: 7px 12px;
+      padding: 6px 11px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
       transition: all 0.2s;
-      white-space: nowrap;
     }
 
-    .btn-action:hover, .btn-action:active {
-      background: #21262d;
-      border-color: rgba(255, 255, 255, 0.2);
+    .btn-action:active {
+      transform: scale(0.96);
+      background: #1a202c;
     }
 
     .btn-cheddar {
-      background: rgba(245, 166, 35, 0.15);
+      background: rgba(245, 166, 35, 0.12);
       border-color: rgba(245, 166, 35, 0.4);
       color: #f5a623;
     }
 
-    .btn-cheddar:hover, .btn-cheddar:active {
-      background: rgba(245, 166, 35, 0.25);
-      border-color: #f5a623;
+    .btn-app {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
     }
 
     /* Barra de leyenda y filtros */
     .legend-bar {
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
-      gap: 12px;
-      padding: 6px 2px;
-      border-bottom: 1px solid var(--border);
+      gap: 14px;
+      padding: 2px 2px 8px 2px;
       overflow-x: auto;
-      white-space: nowrap;
       scrollbar-width: none;
     }
     .legend-bar::-webkit-scrollbar { display: none; }
@@ -221,15 +217,17 @@
     .legend-item {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 10px;
+      gap: 5px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.5px;
       cursor: pointer;
-      opacity: 0.85;
       text-transform: uppercase;
       user-select: none;
+      transition: opacity 0.2s;
     }
+
+    .legend-item.dimmed { opacity: 0.25; }
 
     .legend-dot {
       width: 6px;
@@ -249,198 +247,289 @@
     .legend-verdura { color: var(--c-verdura); }
     .legend-supl { color: var(--c-supl); }
 
-    /* Switch día entreno / off */
-    .mode-switch {
+    /* Fila de controles dobles */
+    .controls-row {
       display: flex;
-      background: #161b22;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .toggle-group {
+      display: flex;
+      background: #11141c;
       border-radius: 8px;
       padding: 3px;
       border: 1px solid var(--border);
-      margin: 2px 0;
     }
 
-    .mode-tab {
-      flex: 1;
-      text-align: center;
-      padding: 7px 0;
-      font-size: 11px;
+    .toggle-btn {
+      background: transparent;
+      border: none;
+      padding: 7px 12px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      color: var(--text-dim);
+      color: #656d79;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .mode-tab.active {
-      background: #21262d;
-      color: #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    .toggle-btn.active {
+      background: #1e2433;
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
-    /* Lista cronológica */
+    .toggle-btn.active-gold {
+      background: rgba(227, 160, 24, 0.15);
+      border: 1px solid rgba(227, 160, 24, 0.45);
+      color: #f5a623;
+    }
+
+    /* Lista de comidas espaciosa */
     .schedule-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
-    .meal-row {
+    .meal-section {
       display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      position: relative;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: opacity 0.2s;
     }
 
-    .meal-time {
+    .meal-section:last-child {
+      border-bottom: none;
+    }
+
+    .meal-section.completed {
+      opacity: 0.45;
+    }
+
+    .meal-time-col {
       width: 44px;
       font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: #484f58;
+      color: var(--text-time);
       padding-top: 3px;
       flex-shrink: 0;
-      text-align: right;
+      text-align: left;
     }
 
-    .meal-content {
+    .meal-body {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 9px;
     }
 
-    .meal-header {
+    .meal-header-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
     }
 
-    .meal-name {
-      font-size: 13px;
+    .meal-title {
+      font-size: 13.5px;
       font-weight: 800;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      color: #fff;
+      color: #ffffff;
     }
 
-    .meal-tag-pill {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text-dim);
-      text-transform: uppercase;
+    .meal-check-btn {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
 
-    .pills-container {
+    .meal-check-btn.checked {
+      background: #38ef7d;
+      border-color: #38ef7d;
+    }
+
+    .meal-check-btn.checked::after {
+      content: '✓';
+      font-size: 11px;
+      font-weight: 900;
+      color: #060709;
+    }
+
+    .pills-flow {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 7px;
+      align-items: center;
     }
 
-    /* Estilo de pills idéntico a la captura */
+    /* Estilo de pills finas y redondeadas */
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 4px 9px;
-      border-radius: 12px;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 18px;
       font-size: 11.5px;
       font-weight: 500;
       line-height: 1.25;
       border: 1px solid transparent;
       user-select: none;
-      transition: opacity 0.2s, transform 0.1s;
+      transition: all 0.2s;
+    }
+
+    .pill.dimmed {
+      opacity: 0.12;
+      transform: scale(0.97);
     }
 
     .pill-prefix {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
-      opacity: 0.9;
     }
 
     .pill-carbo {
       background: var(--bg-carbo);
       color: #ffa657;
-      border-color: rgba(240, 136, 62, 0.35);
+      border-color: var(--border-carbo);
     }
     .pill-carbo .pill-prefix { color: var(--c-carbo); }
 
     .pill-prote {
       background: var(--bg-prote);
       color: #ff94c9;
-      border-color: rgba(247, 120, 186, 0.35);
+      border-color: var(--border-prote);
     }
     .pill-prote .pill-prefix { color: var(--c-prote); }
 
     .pill-grasa {
       background: var(--bg-grasa);
       color: #c49eff;
-      border-color: rgba(163, 113, 247, 0.35);
+      border-color: var(--border-grasa);
     }
     .pill-grasa .pill-prefix { color: var(--c-grasa); }
 
     .pill-verdura {
       background: var(--bg-verdura);
       color: #7ee787;
-      border-color: rgba(86, 211, 100, 0.35);
+      border-color: var(--border-verdura);
     }
     .pill-verdura .pill-prefix { color: var(--c-verdura); }
 
     .pill-supl {
       background: var(--bg-supl);
       color: #79c0ff;
-      border-color: rgba(88, 166, 255, 0.35);
+      border-color: var(--border-supl);
     }
     .pill-supl .pill-prefix { color: var(--c-supl); }
 
-    /* Footer Stats Banner */
-    .stats-footer {
+    .pill-note {
+      background: var(--bg-note);
+      color: #cbd5e1;
+      border-color: var(--border-note);
+      font-size: 11px;
+    }
+    .pill-note .pill-prefix { color: #f5a623; }
+
+    /* Vista Por Macros */
+    .macros-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .macros-group-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* Barra inferior fija tipo Dock */
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 13, 20, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 10px 16px max(14px, env(safe-area-inset-bottom)) 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 900;
+    }
+
+    .bottom-dock-content {
+      width: 100%;
+      max-width: 480px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      background: #0d1117;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 6px;
-      margin-top: 10px;
       text-align: center;
     }
 
-    .stat-item {
+    .dock-col {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      border-right: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .stat-item:last-child { border-right: none; }
+    .dock-col:last-child { border-right: none; }
 
-    .stat-val {
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-      font-family: ui-monospace, SFMono-Regular, monospace;
-    }
-
-    .stat-lbl {
-      font-size: 9px;
+    .dock-lbl {
+      font-size: 8.5px;
       font-weight: 700;
-      color: var(--text-dim);
+      color: #656d79;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* Modal / Popups */
+    .dock-val {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+    }
+
+    .dock-val.highlight {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      color: #e6edf3;
+      letter-spacing: 0.6px;
+    }
+
+    /* Modales */
     .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      z-index: 999;
+      z-index: 2000;
       display: none;
       align-items: center;
       justify-content: center;
@@ -448,7 +537,7 @@
     }
 
     .modal-card {
-      background: #161b22;
+      background: #141721;
       border: 1px solid var(--border);
       border-radius: 16px;
       width: 100%;
@@ -456,9 +545,9 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      max-height: 85vh;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      max-height: 88vh;
       overflow-y: auto;
     }
 
@@ -483,8 +572,25 @@
       background: none;
       border: none;
       color: var(--text-dim);
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
+    }
+
+    .member-item {
+      background: #1c212d;
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .member-item.active {
+      border-color: #f5a623;
+      background: rgba(245, 166, 35, 0.12);
     }
 
     .btn-full {
@@ -499,6 +605,11 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-full:active {
+      transform: scale(0.98);
     }
 
     .btn-green {
@@ -506,60 +617,43 @@
       color: #fff;
     }
 
-    .btn-cheddar-action {
-      background: #f5a623;
-      color: #000;
-      font-weight: 800;
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: #c9d1d9;
     }
 
-    .member-card {
-      background: #21262d;
-      border: 1.5px solid var(--border);
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
+    /* Preview del ícono en iOS */
+    .icon-preview-box {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.2s;
-    }
-
-    .member-card:hover {
-      background: #30363d;
-      border-color: rgba(245, 166, 35, 0.5);
-      transform: translateY(-1px);
-    }
-
-    .member-card.active-member {
-      border-color: #f5a623;
-      background: rgba(245, 166, 35, 0.1);
-    }
-
-    .member-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #f5a623;
-      color: #000;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-
-    .member-info {
-      display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 10px;
+      padding: 14px;
+      background: #0b0d13;
+      border-radius: 14px;
+      border: 1px solid var(--border);
     }
 
-    .pill.dimmed {
-      opacity: 0.15;
+    .ios-icon-frame {
+      width: 76px;
+      height: 76px;
+      border-radius: 18px; /* Radio oficial iOS squircle 22% */
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+    }
+
+    .ios-icon-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ios-icon-label {
+      font-size: 11px;
+      color: #c9d1d9;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -571,17 +665,13 @@
     <!-- Header -->
     <header class="header">
       <div class="header-left">
-        <div class="avatar-btn" id="avatarBtn" title="Configurar acceso directo iOS">
-          <img id="avatarImg" src="" alt="Ronnie">
+        <div class="avatar-btn" id="avatarBtn" title="Cambiar Foto / Configurar App">
+          <img id="avatarImg" src="" alt="Logo">
           <div class="avatar-badge">KING</div>
         </div>
         <div class="title-box">
-          <div class="team-badge">🧀 PILETITA DE CHEDDAR</div>
           <div class="app-title">PLAN NUTRICIONAL</div>
-          <div class="athlete-sub" id="athleteHeader">
-            <span id="athleteNameText">FACUNDO REINOSO</span>
-            <span class="athlete-tag" id="athleteWeightText">103.6 KG</span>
-          </div>
+          <div class="athlete-sub" id="headerSubtitle">"YEAH BUDDY!" • 15-9-26</div>
         </div>
       </div>
 
@@ -589,13 +679,13 @@
         <button class="btn-action btn-cheddar" id="openMembersBtn">
           <span>🧀</span> MIEMBRO
         </button>
-        <button class="btn-action" id="openAppModalBtn">
-          📱 APP
+        <button class="btn-action btn-app" id="openAppModalBtn">
+          🍏 MODO APP
         </button>
       </div>
     </header>
 
-    <!-- Legend bar (filtrar tocando el macro) -->
+    <!-- Legend bar (Filtro interactivo) -->
     <div class="legend-bar">
       <div class="legend-item legend-carbo" data-type="carbo">
         <div class="legend-dot dot-carbo"></div> CARBO
@@ -614,39 +704,47 @@
       </div>
     </div>
 
-    <!-- Selector Día Entreno vs Off -->
-    <div class="mode-switch">
-      <div class="mode-tab active" id="tabEntreno">Día Entrenamiento</div>
-      <div class="mode-tab" id="tabOff">Día Descanso (OFF)</div>
+    <!-- Controles duales (CRONOGRAMA | POR MACROS) y (ENTRENO | DÍA OFF) -->
+    <div class="controls-row">
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="tabCronograma">CRONOGRAMA</button>
+        <button class="toggle-btn" id="tabMacros">POR MACROS</button>
+      </div>
+      <div class="toggle-group">
+        <button class="toggle-btn active-gold" id="tabEntreno">ENTRENO</button>
+        <button class="toggle-btn" id="tabOff">DÍA OFF</button>
+      </div>
     </div>
 
-    <!-- Lista de Comidas -->
-    <main class="schedule-list" id="scheduleContainer">
+    <!-- Área principal de comidas -->
+    <main class="schedule-list" id="mainContent">
       <!-- Inyectado dinámicamente por JavaScript -->
     </main>
-
-    <!-- Footer Stats -->
-    <footer class="stats-footer">
-      <div class="stat-item">
-        <div class="stat-val" id="statKcal">~3.450</div>
-        <div class="stat-lbl">KCAL</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val" id="statProte">326g</div>
-        <div class="stat-lbl">PROTEÍNA</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val" id="statCarbo">308g</div>
-        <div class="stat-lbl">CARBOS</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val" id="statGrasa">91g</div>
-        <div class="stat-lbl">GRASA</div>
-      </div>
-    </footer>
   </div>
 
-  <!-- MODAL DE MIEMBROS -->
+  <!-- Barra inferior Dock -->
+  <footer class="bottom-dock">
+    <div class="bottom-dock-content">
+      <div class="dock-col">
+        <div class="dock-lbl">CHECKLIST</div>
+        <div class="dock-val" id="dockChecklist">0 / 8</div>
+      </div>
+      <div class="dock-col">
+        <div class="dock-lbl">PROTEÍNA</div>
+        <div class="dock-val highlight">ALTA</div>
+      </div>
+      <div class="dock-col">
+        <div class="dock-lbl">CARBOS</div>
+        <div class="dock-val highlight">CICLADOS</div>
+      </div>
+      <div class="dock-col">
+        <div class="dock-lbl">GRASA</div>
+        <div class="dock-val highlight">SALUDABLE</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL MIEMBROS -->
   <div class="modal-overlay" id="membersModal">
     <div class="modal-card">
       <div class="modal-head">
@@ -654,171 +752,189 @@
         <button class="modal-close" id="closeMembersModal">&times;</button>
       </div>
 
-      <div style="font-size:12px; color:#c9d1d9; line-height:1.4">
-        Elegí quién sos para ver tu plan personalizado según el Excel del nutricionista:
+      <div style="font-size:12px; color:#c9d1d9">
+        Selecciona tu perfil para cargar tu plan nutricional completo:
       </div>
 
       <div style="display:flex; flex-direction:column; gap:10px" id="membersList">
         <!-- Renderizado por JS -->
       </div>
 
-      <div style="border-top:1px solid var(--border); padding-top:12px; display:flex; flex-direction:column; gap:8px">
-        <div style="font-size:11px; color:var(--text-dim); text-align:center">
-          ¿Querés pasarle el link directo a este miembro por WhatsApp?
-        </div>
-        <button class="btn-full btn-cheddar-action" id="shareMemberLinkBtn">
-          <span>🔗</span> COPIAR LINK DIRECTO DE MI PLAN
-        </button>
-      </div>
+      <button class="btn-full" id="shareMemberBtn" style="background:#f5a623; color:#000; font-weight:800; margin-top:8px">
+        <span>🔗</span> COPIAR LINK DIRECTO DE MI PLAN
+      </button>
     </div>
   </div>
 
-  <!-- MODAL INSTALACIÓN IPHONE -->
+  <!-- MODAL FOTO DE LA APP / INSTALAR EN IPHONE -->
   <div class="modal-overlay" id="appModal">
     <div class="modal-card">
       <div class="modal-head">
-        <div class="modal-title">📱 Instalar App en iPhone</div>
+        <div class="modal-title">🍏 Foto de la App e Ícono iPhone</div>
         <button class="modal-close" id="closeAppModal">&times;</button>
       </div>
 
-      <div style="font-size:12px; color:#c9d1d9; line-height:1.5">
-        Para que se abra en <b>pantalla completa sin barras de Safari</b> y con el logo de <b>Ronnie Coleman</b> en tu pantalla de inicio:
+      <!-- Preview del Ícono en iOS -->
+      <div class="icon-preview-box">
+        <div class="ios-icon-frame">
+          <img id="iconPreviewImg" src="" alt="Icono iOS">
+        </div>
+        <div class="ios-icon-label">Así se verá en la pantalla de tu iPhone</div>
       </div>
 
-      <button class="btn-full btn-green" id="dlProfileBtn">
-        <span>⚡</span> INSTALAR PERFIL iOS (.mobileconfig)
+      <!-- Botón para subir foto del carrete -->
+      <button class="btn-full btn-outline" id="pickPhotoBtn">
+        <span>📷</span> SUBIR FOTO DEL CARRETE / CAMBIAR LOGO
+      </button>
+      <input type="file" id="photoFileInput" accept="image/*" style="display:none">
+
+      <button class="btn-full btn-outline" id="resetRonnieBtn" style="font-size:11px; padding:8px">
+        <span>↺</span> Restaurar Ronnie Coleman
       </button>
 
-      <div style="font-size:11px; color:var(--text-dim); line-height:1.4">
-        1. Toca el botón verde y presiona <b>Permitir</b>.<br>
-        2. Ve a <b>Ajustes de tu iPhone &gt; Perfil descargado</b> y pulsa <b>Instalar</b>.<br>
-        3. ¡Listo! Queda en tu inicio como app nativa a pantalla completa.
-      </div>
+      <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; flex-direction:column; gap:8px">
+        <div style="font-size:11px; font-weight:700; color:#fff">Instalar con esta foto en tu pantalla de inicio:</div>
+        
+        <button class="btn-full btn-green" id="dlProfileBtn">
+          <span>⚡</span> INSTALAR PERFIL iOS (.mobileconfig)
+        </button>
 
-      <div style="border-top:1px solid var(--border); padding-top:12px">
-        <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:6px">O con el método tradicional de Safari:</div>
-        <div style="font-size:11px; color:var(--text-dim); line-height:1.4">
-          Toca <b>Compartir</b> en Safari &gt; <b>"Agregar a inicio"</b>.
+        <div style="font-size:10.5px; color:var(--text-dim); line-height:1.4">
+          • Abre en <b>pantalla completa sin barras de Safari</b> con la foto elegida.<br>
+          • Al tocar el botón verde pulsa <b>Permitir</b> y luego ve a <b>Ajustes &gt; Perfil descargado &gt; Instalar</b>.
         </div>
+
+        <button class="btn-full btn-outline" id="dlPngBtn" style="font-size:11px; padding:9px; margin-top:4px">
+          <span>💾</span> Descargar apple-touch-icon.png
+        </button>
       </div>
     </div>
   </div>
 
   <script>
     /* =========================================================
-       PILETITA DE CHEDDAR - BASE DE DATOS DE MIEMBROS
-       (Extraídos directamente de los Excels del nutricionista)
+       DEFAULT RONNIE COLEMAN ICON (Base64 PNG 180x180)
+       ========================================================= */
+    const RONNIE_DEFAULT_B64 = "{pal180_b64}";
+    const RONNIE_DATA_URL = "data:image/png;base64," + RONNIE_DEFAULT_B64;
+
+    /* Icono actual de la app */
+    let currentIconDataUrl = localStorage.getItem('nutri_custom_icon') || RONNIE_DATA_URL;
+
+    /* =========================================================
+       DATOS OFICIALES DE LOS PLANES (PILETITA DE CHEDDAR)
        ========================================================= */
     const MEMBERS = {
       facundo: {
         id: "facundo",
-        athlete: { nombre: "FACUNDO", apellido: "REINOSO", peso: "103.6", estatura: "195.5", edad: "24", grasa: "18.3" },
-        stats: { kcal: "~3.450", prote: "326g", carbo: "308g", grasa: "91g" },
+        name: "FACUNDO REINOSO",
+        subtitle: `"YEAH BUDDY!" • 15-9-26`,
+        weight: "103.6 KG",
         meals: [
           {
+            id: "m1",
             time: "07:45",
             name: "DESAYUNO",
-            tag: "",
-            items: [
-              { type: "prote", text: "4 huevos completos revueltos" },
-              { type: "grasa", text: "aceite de coco / queso s/carbos / 1 cda oliva" },
-              { type: "verdura", text: "hojas verdes / champis / espárragos" },
-              { type: "grasa", text: "2 gajos de palta + 4 aceitunas o frutos secos" },
-              { type: "supl", text: "té verde o café (s/carbos ni endulzantes)" },
-              { type: "supl", text: "1 servicio Creatina (SOLO DÍAS OFF)", offOnly: true }
+            pills: [
+              { type: "prote", prefix: "p", text: "4 huevos revueltos (coco / oliva / queso 0 carb)" },
+              { type: "verdura", prefix: "v", text: "Hojas verdes / champis / espárragos" },
+              { type: "grasa", prefix: "g", text: "2 gajos palta + 4 aceitunas o frutos secos" },
+              { type: "supl", prefix: "s", text: "Té verde o café" },
+              { type: "supl", prefix: "s", text: "1 servicio Creatina (DÍAS OFF)", offOnly: true },
+              { type: "note", prefix: "!", text: "Sin carbos ni endulzantes" }
             ]
           },
           {
+            id: "m2",
             time: "10:30",
-            name: "MEDIA MAÑANA",
-            tag: "",
-            items: [
-              { type: "prote", text: "1 servicio de Proteína con agua" },
-              { type: "grasa", text: "10 frutos secos" },
-              { type: "supl", text: "té verde o café" }
+            name: "COLACIÓN",
+            pills: [
+              { type: "prote", prefix: "p", text: "1 servicio Proteína con agua" },
+              { type: "grasa", prefix: "g", text: "10 frutos secos" },
+              { type: "supl", prefix: "s", text: "Té verde o café" }
             ]
           },
           {
+            id: "m3",
             time: "13:30",
             name: "ALMUERZO",
-            tag: "",
-            items: [
-              { type: "prote", text: "1 palma de carne o pollo o pescado (hervido/grillado/horno)" },
-              { type: "grasa", text: "1 palta chica o 15 frutos secos o 15 aceitunas lavadas" },
-              { type: "carbo", text: "1 puño de papa o batata o arroz o quinoa" },
-              { type: "verdura", text: "ensalada verde o brócoli o tomate (probar)" },
-              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            pills: [
+              { type: "carbo", prefix: "c", text: "1 puño papa / batata / arroz / quinoa" },
+              { type: "prote", prefix: "p", text: "1 palma carne / pollo / pescado" },
+              { type: "grasa", prefix: "g", text: "1 palta chica o 15 frutos o 15 aceitunas" },
+              { type: "verdura", prefix: "v", text: "Verde / brócoli / tomate (empezar a probar)" },
+              { type: "supl", prefix: "s", text: "1 cap Omega 3 Fish Oil" }
             ]
           },
           {
+            id: "m4",
             time: "16:30",
             name: "TARDE",
-            tag: "",
-            items: [
-              { type: "prote", text: "kanikama c/limón / yogur griego / atún / 3 claras / proteína" },
-              { type: "grasa", text: "media palta chica o 9 frutos secos o 9 aceitunas" },
-              { type: "carbo", text: "1 fruta" },
-              { type: "supl", text: "té verde" }
+            pills: [
+              { type: "prote", prefix: "p", text: "kanikama / yogur griego / atún / 3 claras / 1 scoop" },
+              { type: "grasa", prefix: "g", text: "1/2 palta chica o 9 frutos o 9 aceitunas" },
+              { type: "carbo", prefix: "c", text: "1 fruta" },
+              { type: "supl", prefix: "s", text: "Té verde" }
             ]
           },
           {
+            id: "m5",
             time: "17:45",
             name: "PRE ENTRENO",
-            tag: "ENTRENO",
             trainOnly: true,
-            items: [
-              { type: "supl", text: "1 servicio EAAS" },
-              { type: "supl", text: "1 servicio Creatina" },
-              { type: "supl", text: "1 servicio pre-entreno o café (si hace falta)" },
-              { type: "carbo", text: "1 fruta (solo si hace falta)" }
+            pills: [
+              { type: "supl", prefix: "s", text: "1 serv EAAS" },
+              { type: "supl", prefix: "s", text: "1 serv Creatina" },
+              { type: "supl", prefix: "s", text: "pre-entreno o café (si hace falta)" },
+              { type: "carbo", prefix: "c", text: "1 fruta (si hace falta)" }
             ]
           },
           {
+            id: "m6",
             time: "19:00",
             name: "INTRA ENTRENO",
-            tag: "ENTRENO",
             trainOnly: true,
-            items: [
-              { type: "supl", text: "ENTRENAMIENTO (hidratación en sorbos)" }
+            pills: [
+              { type: "supl", prefix: "s", text: "ENTRENAMIENTO (hidratación en sorbos)" }
             ]
           },
           {
+            id: "m7",
             time: "20:00",
             name: "POST ENTRENO",
-            tag: "ENTRENO",
             trainOnly: true,
-            items: [
-              { type: "prote", text: "1 servicio Proteína c/agua (si no cena en 1h)" },
-              { type: "supl", text: "1 servicio Glutamina" },
-              { type: "supl", text: "1 servicio EAAS" },
-              { type: "supl", text: "1 servicio Creatina" },
-              { type: "carbo", text: "1 banana + 1 fruta, o 1,5 puños de papa/batata/arroz/quinoa" }
+            pills: [
+              { type: "prote", prefix: "p", text: "1 serv Proteína c/agua (si no cena en 1h)" },
+              { type: "supl", prefix: "s", text: "1 serv Glutamina" },
+              { type: "supl", prefix: "s", text: "1 serv EAAS" },
+              { type: "supl", prefix: "s", text: "1 serv Creatina" },
+              { type: "carbo", prefix: "c", text: "1 banana + 1 fruta o 1,5 puños papa / batata / arroz" }
             ]
           },
           {
+            id: "m8",
             time: "21:30",
             name: "CENA",
-            tag: "",
-            items: [
-              { type: "prote", text: "1 palma de pollo o preferentemente pescado" },
-              { type: "verdura", text: "ensalada verde / brócoli / zapallo / zapallito / champignones" },
-              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            pills: [
+              { type: "prote", prefix: "p", text: "1 palma pollo o preferentemente pescado" },
+              { type: "verdura", prefix: "v", text: "Verde / brócoli / zapallo / champis" },
+              { type: "supl", prefix: "s", text: "1 cap Omega 3 Fish Oil" }
             ]
           },
           {
+            id: "m9",
             time: "23:00",
             name: "ANTOJO DULCE",
-            tag: "OPCIONAL",
-            items: [
-              { type: "prote", text: "receta antojo dulce o media tortilla o caseína (si pasaron 2h)" }
+            pills: [
+              { type: "prote", prefix: "p", text: "Receta antojo dulce o 1/2 tortilla o caseína (si pasaron 2h)" }
             ]
           },
           {
+            id: "m10",
             time: "00:00",
             name: "A DORMIR",
-            tag: "",
-            items: [
-              { type: "supl", text: "3 cápsulas ZMA" }
+            pills: [
+              { type: "supl", prefix: "s", text: "3 cápsulas ZMA" }
             ]
           }
         ]
@@ -826,113 +942,114 @@
 
       santiago: {
         id: "santiago",
-        athlete: { nombre: "SANTIAGO", apellido: "MICELI", peso: "85.2", estatura: "183", edad: "22", grasa: "11.1" },
-        stats: { kcal: "~3.100", prote: "285g", carbo: "290g", grasa: "80g" },
+        name: "SANTIAGO MICELI",
+        subtitle: `"LIGHT WEIGHT!" • 15-9-26`,
+        weight: "85.2 KG",
         meals: [
           {
+            id: "sm1",
             time: "07:30",
             name: "DESAYUNO",
-            tag: "",
-            items: [
-              { type: "prote", text: "4 huevos completos revueltos" },
-              { type: "grasa", text: "aceite de coco / queso s/carbos / 1 cda oliva" },
-              { type: "verdura", text: "hojas verdes / champis / espárragos" },
-              { type: "grasa", text: "2 gajos de palta + 2 aceitunas o frutos secos" },
-              { type: "supl", text: "té verde (s/carbos ni endulzantes)" },
-              { type: "supl", text: "1 servicio Creatina (SOLO DÍAS OFF)", offOnly: true }
+            pills: [
+              { type: "prote", prefix: "p", text: "4 huevos revueltos (coco / oliva / queso 0 carb)" },
+              { type: "verdura", prefix: "v", text: "Hojas verdes / champis / espárragos" },
+              { type: "grasa", prefix: "g", text: "2 gajos palta + 2 aceitunas o frutos secos" },
+              { type: "supl", prefix: "s", text: "Té verde" },
+              { type: "supl", prefix: "s", text: "1 servicio Creatina (DÍAS OFF)", offOnly: true },
+              { type: "note", prefix: "!", text: "Sin carbos ni endulzantes" }
             ]
           },
           {
+            id: "sm2",
             time: "10:30",
-            name: "MEDIA MAÑANA",
-            tag: "",
-            items: [
-              { type: "prote", text: "1 servicio de Proteína con agua" },
-              { type: "carbo", text: "6 frutos secos O 1 banana" }
+            name: "COLACIÓN",
+            pills: [
+              { type: "prote", prefix: "p", text: "1 servicio Proteína con agua" },
+              { type: "carbo", prefix: "c", text: "6 frutos secos O 1 banana" }
             ]
           },
           {
+            id: "sm3",
             time: "13:00",
             name: "ALMUERZO",
-            tag: "",
-            items: [
-              { type: "prote", text: "1 palma de carne o pollo o pescado (hervido/grillado/horno)" },
-              { type: "grasa", text: "1 palta chica o 15 frutos secos o 15 aceitunas lavadas" },
-              { type: "carbo", text: "1 puño de papa o batata o arroz o quinoa" },
-              { type: "verdura", text: "ensalada verde o brócoli o tomate" },
-              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            pills: [
+              { type: "carbo", prefix: "c", text: "1 puño papa / batata / arroz / quinoa" },
+              { type: "prote", prefix: "p", text: "1 palma carne / pollo / pescado" },
+              { type: "grasa", prefix: "g", text: "1 palta chica o 15 frutos o 15 aceitunas" },
+              { type: "verdura", prefix: "v", text: "Ensalada verde o brócoli o tomate" },
+              { type: "supl", prefix: "s", text: "1 cap Omega 3 Fish Oil" }
             ]
           },
           {
+            id: "sm4",
             time: "16:30",
             name: "TARDE",
-            tag: "",
-            items: [
-              { type: "prote", text: "kanikama c/limón / yogur griego / atún / 3 claras / proteína" },
-              { type: "grasa", text: "media palta chica u 8 frutos secos u 8 aceitunas" },
-              { type: "carbo", text: "manzana verde o tamaño equivalente de berries" },
-              { type: "supl", text: "té verde" }
+            pills: [
+              { type: "prote", prefix: "p", text: "kanikama / yogur griego / atún / 3 claras / proteína" },
+              { type: "grasa", prefix: "g", text: "1/2 palta o 8 frutos o 8 aceitunas" },
+              { type: "carbo", prefix: "c", text: "Manzana verde o berries" },
+              { type: "supl", prefix: "s", text: "Té verde" }
             ]
           },
           {
+            id: "sm5",
             time: "17:45",
             name: "PRE ENTRENO",
-            tag: "ENTRENO",
             trainOnly: true,
-            items: [
-              { type: "supl", text: "1 servicio BCAA" },
-              { type: "supl", text: "1 servicio Creatina" },
-              { type: "supl", text: "1 servicio pre-entrenamiento o café" },
-              { type: "carbo", text: "1 fruta" }
+            pills: [
+              { type: "supl", prefix: "s", text: "1 servicio BCAA" },
+              { type: "supl", prefix: "s", text: "1 servicio Creatina" },
+              { type: "supl", prefix: "s", text: "pre-entreno o café" },
+              { type: "carbo", prefix: "c", text: "1 fruta" }
             ]
           },
           {
+            id: "sm6",
             time: "18:30",
             name: "INTRA ENTRENO",
-            tag: "ENTRENO",
             trainOnly: true,
-            items: [
-              { type: "supl", text: "ENTRENAMIENTO (1 medida Hydropus Endurance si hace falta)" }
+            pills: [
+              { type: "supl", prefix: "s", text: "1 medida Hydropus Endurance (si hace falta)" }
             ]
           },
           {
+            id: "sm7",
             time: "20:00",
             name: "POST ENTRENO",
-            tag: "ENTRENO",
             trainOnly: true,
-            items: [
-              { type: "prote", text: "1 servicio Proteína c/agua (si no cena en 1h)" },
-              { type: "supl", text: "1 servicio Glutamina" },
-              { type: "supl", text: "1 servicio BCAA" },
-              { type: "supl", text: "1 servicio Creatina" },
-              { type: "carbo", text: "1 banana + 1 fruta, o 1,5 puños papa / batata / arroz / quinoa" }
+            pills: [
+              { type: "prote", prefix: "p", text: "1 servicio Proteína c/agua (si no cena en 1h)" },
+              { type: "supl", prefix: "s", text: "1 servicio Glutamina" },
+              { type: "supl", prefix: "s", text: "1 servicio BCAA" },
+              { type: "supl", prefix: "s", text: "1 servicio Creatina" },
+              { type: "carbo", prefix: "c", text: "1 banana + 1 fruta o 1,5 puños papa / batata / arroz" }
             ]
           },
           {
+            id: "sm8",
             time: "21:30",
             name: "CENA",
-            tag: "",
-            items: [
-              { type: "prote", text: "1 palma de pollo o preferentemente pescado" },
-              { type: "verdura", text: "ensalada verde / brócoli / zapallo / zapallito / champignones" },
-              { type: "supl", text: "1 cápsula Omega 3 Fish Oil" }
+            pills: [
+              { type: "prote", prefix: "p", text: "1 palma pollo o preferentemente pescado" },
+              { type: "verdura", prefix: "v", text: "Ensalada verde o brócoli o zapallo / champis" },
+              { type: "supl", prefix: "s", text: "1 cap Omega 3 Fish Oil" }
             ]
           },
           {
+            id: "sm9",
             time: "23:00",
             name: "ANTOJO DULCE",
-            tag: "OPCIONAL",
-            items: [
-              { type: "prote", text: "receta antojo dulce o media tortilla o caseína (si pasaron 2h)" }
+            pills: [
+              { type: "prote", prefix: "p", text: "Receta antojo dulce o media tortilla o caseína" }
             ]
           },
           {
+            id: "sm10",
             time: "00:00",
             name: "A DORMIR",
-            tag: "",
-            items: [
-              { type: "supl", text: "1 servicio Arginina" },
-              { type: "supl", text: "1 servicio Glutamina" }
+            pills: [
+              { type: "supl", prefix: "s", text: "1 servicio Arginina" },
+              { type: "supl", prefix: "s", text: "1 servicio Glutamina" }
             ]
           }
         ]
@@ -940,168 +1057,267 @@
     };
 
     /* =========================================================
-       ESTADO DE LA APLICACIÓN
+       ESTADO Y RENDERIZADO
        ========================================================= */
     let currentMemberId = localStorage.getItem('cheddar_member') || 'facundo';
     if (!MEMBERS[currentMemberId]) currentMemberId = 'facundo';
-    
+
+    let currentView = 'cronograma';
     let isTrainingDay = true;
     let activeFilter = null;
-
-    // Vector estilizado de Ronnie Coleman
-    const RONNIE_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23111827'/%3E%3Cstop offset='100%25' stop-color='%2305070a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='36' r='20' fill='%23f5a623'/%3E%3Cpath d='M20 85 C20 58 80 58 80 85 Z' fill='%23f5a623'/%3E%3Ccircle cx='43' cy='34' r='2.5' fill='%23000'/%3E%3Ccircle cx='57' cy='34' r='2.5' fill='%23000'/%3E%3Cpath d='M42 44 Q50 50 58 44' stroke='%23000' stroke-width='2' fill='none'/%3E%3Ctext x='50' y='93' font-size='9' font-weight='900' fill='%23ffffff' text-anchor='middle' font-family='sans-serif'%3EYEAH BUDDY%3C/text%3E%3C/svg%3E";
+    let checkedMeals = JSON.parse(localStorage.getItem('nutri_checked_' + currentMemberId) || '{}');
 
     function init() {
-      // Detección de miembro por URL (?user=santiago)
       const urlParams = new URLSearchParams(window.location.search);
       const userParam = urlParams.get('user');
       if (userParam && MEMBERS[userParam.toLowerCase()]) {
         currentMemberId = userParam.toLowerCase();
         localStorage.setItem('cheddar_member', currentMemberId);
+        checkedMeals = JSON.parse(localStorage.getItem('nutri_checked_' + currentMemberId) || '{}');
       }
 
-      document.getElementById('avatarImg').src = RONNIE_AVATAR;
-
-      renderMembersList();
-      render();
+      applyAppIcon(currentIconDataUrl);
+      renderHeader();
+      renderContent();
+      renderMembersModal();
       attachEvents();
     }
 
-    function renderMembersList() {
-      const list = document.getElementById('membersList');
-      list.innerHTML = '';
-
-      Object.values(MEMBERS).forEach(m => {
-        const isCurrent = (m.id === currentMemberId);
-        const card = document.createElement('div');
-        card.className = `member-card ${isCurrent ? 'active-member' : ''}`;
-        
-        const initials = m.athlete.nombre.charAt(0) + (m.athlete.apellido ? m.athlete.apellido.charAt(0) : '');
-        card.innerHTML = `
-          <div class="member-info">
-            <div class="member-avatar">${initials}</div>
-            <div>
-              <div style="color:#fff; font-weight:800; font-size:13px">${m.athlete.nombre} ${m.athlete.apellido || ''}</div>
-              <div style="font-size:11px; color:var(--text-dim)">
-                ${m.athlete.peso} kg · ${m.athlete.estatura} cm · ${m.athlete.edad} años
-              </div>
-            </div>
-          </div>
-          <span style="font-size:12px; font-weight:700; color:${isCurrent ? '#f5a623' : '#7d8590'}">
-            ${isCurrent ? 'ACTIVO ✓' : 'Elegir &rarr;'}
-          </span>
-        `;
-
-        card.onclick = () => {
-          currentMemberId = m.id;
-          localStorage.setItem('cheddar_member', currentMemberId);
-          renderMembersList();
-          render();
-          document.getElementById('membersModal').style.display = 'none';
-        };
-
-        list.appendChild(card);
-      });
+    function applyAppIcon(dataUrl) {
+      currentIconDataUrl = dataUrl;
+      document.getElementById('avatarImg').src = dataUrl;
+      document.getElementById('iconPreviewImg').src = dataUrl;
+      document.getElementById('appleTouchIcon').href = dataUrl;
     }
 
-    function render() {
+    function renderHeader() {
       const plan = MEMBERS[currentMemberId];
-      if (!plan) return;
+      document.getElementById('headerSubtitle').textContent = plan.subtitle;
+    }
 
-      // Header
-      const ath = plan.athlete;
-      document.getElementById('athleteNameText').textContent = `${ath.nombre} ${ath.apellido || ''}`.trim();
-      document.getElementById('athleteWeightText').textContent = ath.peso + " KG";
+    function renderContent() {
+      const container = document.getElementById('mainContent');
+      container.innerHTML = '';
 
-      // Stats
-      if (plan.stats) {
-        document.getElementById('statKcal').textContent = plan.stats.kcal;
-        document.getElementById('statProte').textContent = plan.stats.prote;
-        document.getElementById('statCarbo').textContent = plan.stats.carbo;
-        document.getElementById('statGrasa').textContent = plan.stats.grasa;
+      if (currentView === 'cronograma') {
+        renderCronograma(container);
+      } else {
+        renderMacrosView(container);
       }
 
-      // Schedule container
-      const container = document.getElementById('scheduleContainer');
-      container.innerHTML = '';
+      updateChecklistCounter();
+    }
+
+    function renderCronograma(container) {
+      const plan = MEMBERS[currentMemberId];
 
       plan.meals.forEach(meal => {
         if (!isTrainingDay && meal.trainOnly) return;
 
-        const row = document.createElement('div');
-        row.className = 'meal-row';
-
-        const visibleItems = meal.items.filter(item => {
-          if (!isTrainingDay && item.trainOnly) return false;
-          if (isTrainingDay && item.offOnly) return false;
+        const visiblePills = meal.pills.filter(p => {
+          if (!isTrainingDay && p.trainOnly) return false;
+          if (isTrainingDay && p.offOnly) return false;
           return true;
         });
 
-        if (visibleItems.length === 0) return;
+        if (visiblePills.length === 0) return;
+
+        const isChecked = !!checkedMeals[meal.id];
+
+        const section = document.createElement('div');
+        section.className = `meal-section ${isChecked ? 'completed' : ''}`;
+        section.id = `section_${meal.id}`;
 
         let pillsHtml = '';
-        visibleItems.forEach(item => {
-          const prefix = item.type.charAt(0);
-          const isDimmed = activeFilter && activeFilter !== item.type;
+        visiblePills.forEach(p => {
+          const isDimmed = activeFilter && activeFilter !== p.type;
           pillsHtml += `
-            <div class="pill pill-${item.type} ${isDimmed ? 'dimmed' : ''}">
-              <span class="pill-prefix">[${prefix}]</span>
-              <span>${item.text}</span>
+            <div class="pill pill-${p.type} ${isDimmed ? 'dimmed' : ''}">
+              <span class="pill-prefix">${p.prefix}</span>
+              <span>${p.text}</span>
             </div>
           `;
         });
 
-        row.innerHTML = `
-          <div class="meal-time">${meal.time || '--:--'}</div>
-          <div class="meal-content">
-            <div class="meal-header">
-              <span class="meal-name">${meal.name}</span>
-              ${meal.tag ? `<span class="meal-tag-pill">${meal.tag}</span>` : ''}
+        section.innerHTML = `
+          <div class="meal-time-col">${meal.time}</div>
+          <div class="meal-body">
+            <div class="meal-header-row">
+              <span class="meal-title">${meal.name}</span>
+              <button class="meal-check-btn ${isChecked ? 'checked' : ''}" data-id="${meal.id}"></button>
             </div>
-            <div class="pills-container">
+            <div class="pills-flow">
               ${pillsHtml}
             </div>
           </div>
         `;
 
-        container.appendChild(row);
+        container.appendChild(section);
+      });
+
+      container.querySelectorAll('.meal-check-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const mealId = btn.getAttribute('data-id');
+          checkedMeals[mealId] = !checkedMeals[mealId];
+          localStorage.setItem('nutri_checked_' + currentMemberId, JSON.stringify(checkedMeals));
+          
+          btn.classList.toggle('checked', !!checkedMeals[mealId]);
+          const sec = document.getElementById(`section_${mealId}`);
+          if (sec) sec.classList.toggle('completed', !!checkedMeals[mealId]);
+          updateChecklistCounter();
+        };
+      });
+    }
+
+    function renderMacrosView(container) {
+      const plan = MEMBERS[currentMemberId];
+      const categories = [
+        { type: "prote", title: "PROTEÍNAS", color: "var(--c-prote)" },
+        { type: "carbo", title: "CARBOHIDRATOS & FRUTAS", color: "var(--c-carbo)" },
+        { type: "grasa", title: "GRASAS SALUDABLES", color: "var(--c-grasa)" },
+        { type: "verdura", title: "VERDURAS & FIBRAS", color: "var(--c-verdura)" },
+        { type: "supl", title: "SUPLEMENTACIÓN & BEBIDAS", color: "var(--c-supl)" }
+      ];
+
+      categories.forEach(cat => {
+        const group = document.createElement('div');
+        group.className = 'macros-group';
+
+        let pillsHtml = '';
+        plan.meals.forEach(meal => {
+          if (!isTrainingDay && meal.trainOnly) return;
+          meal.pills.forEach(p => {
+            if (!isTrainingDay && p.trainOnly) return false;
+            if (isTrainingDay && p.offOnly) return false;
+            if (p.type === cat.type) {
+              pillsHtml += `
+                <div class="pill pill-${p.type}">
+                  <span class="pill-prefix">${p.prefix}</span>
+                  <span>${p.text}</span>
+                  <span style="font-size:9.5px; opacity:0.6; margin-left:2px">(${meal.name})</span>
+                </div>
+              `;
+            }
+          });
+        });
+
+        if (pillsHtml) {
+          group.innerHTML = `
+            <div class="macros-group-title" style="color:${cat.color}">
+              <span>●</span> ${cat.title}
+            </div>
+            <div class="pills-flow">
+              ${pillsHtml}
+            </div>
+          `;
+          container.appendChild(group);
+        }
+      });
+    }
+
+    function updateChecklistCounter() {
+      const plan = MEMBERS[currentMemberId];
+      const activeMeals = plan.meals.filter(m => isTrainingDay || !m.trainOnly);
+      const total = activeMeals.length;
+      let count = 0;
+      activeMeals.forEach(m => {
+        if (checkedMeals[m.id]) count++;
+      });
+      document.getElementById('dockChecklist').textContent = `${count} / ${total}`;
+    }
+
+    function renderMembersModal() {
+      const list = document.getElementById('membersList');
+      list.innerHTML = '';
+
+      Object.values(MEMBERS).forEach(m => {
+        const isCurrent = (m.id === currentMemberId);
+        const item = document.createElement('div');
+        item.className = `member-item ${isCurrent ? 'active' : ''}`;
+        item.innerHTML = `
+          <div>
+            <div style="font-weight:800; font-size:13px; color:#fff">${m.name}</div>
+            <div style="font-size:11px; color:var(--text-dim)">${m.weight} · ${m.subtitle}</div>
+          </div>
+          <span style="font-size:11px; font-weight:700; color:${isCurrent ? '#f5a623' : '#717886'}">
+            ${isCurrent ? 'ACTIVO ✓' : 'Elegir &rarr;'}
+          </span>
+        `;
+
+        item.onclick = () => {
+          currentMemberId = m.id;
+          localStorage.setItem('cheddar_member', currentMemberId);
+          checkedMeals = JSON.parse(localStorage.getItem('nutri_checked_' + currentMemberId) || '{}');
+          renderHeader();
+          renderContent();
+          renderMembersModal();
+          document.getElementById('membersModal').style.display = 'none';
+        };
+
+        list.appendChild(item);
       });
     }
 
     function attachEvents() {
-      // Toggle entreno / off
+      const tabCronograma = document.getElementById('tabCronograma');
+      const tabMacros = document.getElementById('tabMacros');
+
+      tabCronograma.onclick = () => {
+        currentView = 'cronograma';
+        tabCronograma.classList.add('active');
+        tabMacros.classList.remove('active');
+        renderContent();
+      };
+
+      tabMacros.onclick = () => {
+        currentView = 'macros';
+        tabMacros.classList.add('active');
+        tabCronograma.classList.remove('active');
+        renderContent();
+      };
+
       const tabEntreno = document.getElementById('tabEntreno');
       const tabOff = document.getElementById('tabOff');
 
       tabEntreno.onclick = () => {
         isTrainingDay = true;
-        tabEntreno.classList.add('active');
+        tabEntreno.classList.add('active-gold');
+        tabOff.classList.remove('active-gold');
         tabOff.classList.remove('active');
-        render();
+        renderContent();
       };
 
       tabOff.onclick = () => {
         isTrainingDay = false;
-        tabOff.classList.add('active');
+        tabOff.classList.add('active-gold');
+        tabEntreno.classList.remove('active-gold');
         tabEntreno.classList.remove('active');
-        render();
+        renderContent();
       };
 
-      // Filtro de macronutrientes en la leyenda
       document.querySelectorAll('.legend-item').forEach(item => {
         item.onclick = () => {
           const type = item.getAttribute('data-type');
-          activeFilter = (activeFilter === type) ? null : type;
-          render();
+          if (activeFilter === type) {
+            activeFilter = null;
+            document.querySelectorAll('.legend-item').forEach(i => i.classList.remove('dimmed'));
+          } else {
+            activeFilter = type;
+            document.querySelectorAll('.legend-item').forEach(i => {
+              if (i.getAttribute('data-type') !== type) i.classList.add('dimmed');
+              else i.classList.remove('dimmed');
+            });
+          }
+          renderContent();
         };
       });
 
-      // Modales
       const membersModal = document.getElementById('membersModal');
       const appModal = document.getElementById('appModal');
 
       document.getElementById('openMembersBtn').onclick = () => {
-        renderMembersList();
+        renderMembersModal();
         membersModal.style.display = 'flex';
       };
       document.getElementById('closeMembersModal').onclick = () => membersModal.style.display = 'none';
@@ -1110,12 +1326,63 @@
       document.getElementById('avatarBtn').onclick = () => appModal.style.display = 'flex';
       document.getElementById('closeAppModal').onclick = () => appModal.style.display = 'none';
 
-      // Compartir link directo por WhatsApp
-      document.getElementById('shareMemberLinkBtn').onclick = () => {
+      /* SUBIDA DE FOTO PERSONALIZADA */
+      const photoInput = document.getElementById('photoFileInput');
+      document.getElementById('pickPhotoBtn').onclick = () => photoInput.click();
+
+      photoInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+              // Canvas center crop to square 180x180 px for Apple Touch Icon
+              const canvas = document.createElement('canvas');
+              canvas.width = 180;
+              canvas.height = 180;
+              const ctx = canvas.getContext('2d');
+
+              const minSide = Math.min(img.width, img.height);
+              const sx = (img.width - minSide) / 2;
+              const sy = (img.height - minSide) / 2;
+
+              ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, 180, 180);
+              const processedDataUrl = canvas.toDataURL('image/png');
+
+              localStorage.setItem('nutri_custom_icon', processedDataUrl);
+              applyAppIcon(processedDataUrl);
+              alert('¡Foto actualizada con éxito! Ahora podés instalar el perfil o descargar el ícono.');
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      /* RESTAURAR RONNIE COLEMAN */
+      document.getElementById('resetRonnieBtn').onclick = () => {
+        localStorage.removeItem('nutri_custom_icon');
+        applyAppIcon(RONNIE_DATA_URL);
+        alert('Se restauró el ícono original de Ronnie Coleman.');
+      };
+
+      /* DESCARGAR apple-touch-icon.png */
+      document.getElementById('dlPngBtn').onclick = () => {
+        const a = document.createElement('a');
+        a.href = currentIconDataUrl;
+        a.download = 'apple-touch-icon.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      /* COMPARTIR LINK */
+      document.getElementById('shareMemberBtn').onclick = () => {
         const cleanUrl = window.location.origin + window.location.pathname + '?user=' + currentMemberId;
         if (navigator.clipboard) {
           navigator.clipboard.writeText(cleanUrl).then(() => {
-            alert(`¡Link de ${MEMBERS[currentMemberId].athlete.nombre} copiado! Podés pasárselo por WhatsApp.`);
+            alert(`¡Link de ${MEMBERS[currentMemberId].name} copiado al portapapeles!`);
           }).catch(() => {
             prompt('Copiá este enlace directo:', cleanUrl);
           });
@@ -1124,17 +1391,16 @@
         }
       };
 
-      // Generar perfil standalone para iPhone
+      /* GENERAR PERFIL IOS CON EL ICONO ELEGIDO */
       document.getElementById('dlProfileBtn').onclick = generateAppleMobileConfig;
     }
 
-    /* =========================================================
-       GENERADOR DE PERFIL .MOBILECONFIG (PANTALLA COMPLETA IOS)
-       ========================================================= */
     function generateAppleMobileConfig() {
       const currentUrl = window.location.href.split('#')[0];
-      const ath = MEMBERS[currentMemberId].athlete;
-      const title = `Plan ${ath.nombre}`;
+      const title = `Plan Nutricional`;
+      
+      // Extrae la cadena Base64 pura
+      const rawBase64 = currentIconDataUrl.split(',')[1];
 
       const configXml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -1150,7 +1416,7 @@
             <key>Label</key>
             <string>${title}</string>
             <key>PayloadDescription</key>
-            <string>Configura el acceso directo a pantalla completa de tu plan nutricional</string>
+            <string>Acceso directo a pantalla completa de Plan Nutricional</string>
             <key>PayloadDisplayName</key>
             <string>${title}</string>
             <key>PayloadIdentifier</key>
@@ -1163,6 +1429,10 @@
             <integer>1</integer>
             <key>Precomposed</key>
             <true/>
+            <key>Icon</key>
+            <data>
+${rawBase64}
+            </data>
             <key>URL</key>
             <string>${currentUrl}</string>
         </dict>
@@ -1190,7 +1460,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'PiletitaCheddar.mobileconfig';
+      a.download = 'PlanNutricional.mobileconfig';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
