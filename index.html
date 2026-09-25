@@ -22,7 +22,7 @@
       --text-dim: #717886;
       --text-time: #555e6c;
 
-      /* Macronutrientes (colores de la primera imagen) */
+      /* Macronutrient Pill Colors (matching Image 1) */
       --c-carbo: #e3883a;
       --bg-carbo: rgba(227, 136, 58, 0.12);
       --border-carbo: rgba(227, 136, 58, 0.38);
@@ -70,7 +70,7 @@
       overflow-x: hidden;
     }
 
-    /* Línea superior con gradiente de neón */
+    /* Top glowing bar */
     .top-glow-bar {
       position: fixed;
       top: 0;
@@ -163,7 +163,7 @@
       gap: 6px;
     }
 
-    /* Toolbar superior */
+    /* Actions Toolbar */
     .toolbar {
       display: flex;
       gap: 7px;
@@ -202,7 +202,7 @@
       color: #ffffff;
     }
 
-    /* Barra de leyenda y filtros */
+    /* Legend Row */
     .legend-bar {
       display: flex;
       justify-content: flex-start;
@@ -247,7 +247,7 @@
     .legend-verdura { color: var(--c-verdura); }
     .legend-supl { color: var(--c-supl); }
 
-    /* Fila de controles dobles */
+    /* Dual Control Pills Row (Matching Image 1) */
     .controls-row {
       display: flex;
       justify-content: space-between;
@@ -290,7 +290,7 @@
       color: #f5a623;
     }
 
-    /* Lista de comidas espaciosa */
+    /* Meal Schedule Section (Clean, airy, spacious layout with dividers) */
     .schedule-list {
       display: flex;
       flex-direction: column;
@@ -378,7 +378,7 @@
       align-items: center;
     }
 
-    /* Estilo de pills finas y redondeadas */
+    /* Food pill style - matching Image 1 perfectly */
     .pill {
       display: inline-flex;
       align-items: center;
@@ -446,7 +446,7 @@
     }
     .pill-note .pill-prefix { color: #f5a623; }
 
-    /* Vista Por Macros */
+    /* POR MACROS VIEW */
     .macros-group {
       display: flex;
       flex-direction: column;
@@ -466,7 +466,7 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    /* Barra inferior fija tipo Dock */
+    /* Fixed Bottom Status Bar */
     .bottom-dock {
       position: fixed;
       bottom: 0;
@@ -522,7 +522,7 @@
       letter-spacing: 0.6px;
     }
 
-    /* Modales */
+    /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -815,10 +815,10 @@
     /* =========================================================
        DEFAULT RONNIE COLEMAN ICON (Base64 PNG 180x180)
        ========================================================= */
-    const RONNIE_DEFAULT_B64 = "{pal180_b64}";
+    const RONNIE_DEFAULT_B64 = "iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAAAKE/YAAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAB4FBMVEX06N/u0MDyxa3iw7LpuZ/ospLetJ3Ss6PkqonYqY/joXzYoIDSqJDRoITFoY3clWvQlXTFloHGknLPimLDiWrNg1C7knu7i2+5hW66gVuyiXGliXisf2fBeE60d1TJdTa6cTmpemCodV6pck63azSna0SqYzK6ZB2sXx6qWBGddF2dbE+cZUOUbVWUYkSGaFSTXT+UWzaZWCSKWz+KVzKDWD51WESkUQmXURieSwaVSQqKUiyITSaMSxKLRQyBUDB2TzZ8SitxSC6ASiF4SCJ5RByLPwWDPgd6Pxl8PQhyQB9wPRxxPBJ+NwN2NwZvNw5zMwVwLgJiRzJhPiRnORZZOSFmNBFmMwdeMxNQMxxmLglgLQlkLAJZLAtLLRZiKANbKAVdIwJVJwdVJAVVIQNNJwtOIwZOIARFIwo5IxJRHAJLGwNIHARHGQNDHARDGAM8GwY8FwRGFQFBEwI9EwI5FAM5EgM5DgI0GAgsGA00EQMrEQUzDQIrDQQxCQIrCQImCQMlBwIpBAEjBAEaDAYXBwQYBQIdAwIOAwIcAgETAgEKAgECAgIaAQERAQEMAQEJAQEEAQEBAQIBAQEBAQAZAAAPAAAKAAAHAAEEAAECAAEBAAIBAAAAAQEAAAEAAACbooVvAABRLElEQVR42sV9iz+iX79243w+nyJGoqESHRjjlIqRilA6SEkHlRIRkaKEiHEecv5X32s18zzvs99n7/3Z+7f3O8/tMIbSdX/X9b2+13fda90oH3/huH25fznfcVl1uomJqamh8eHxyfHvX79P9n371vGtv7S0ufpzc6t0fqKjvePbV3yvr6+Zz2DV5DY0lJTkNswefdy+f/xPDspfedLb3f17GvTUxNTENJ8/PD483N//fbz/29ev3zpKSxurcRS0TbS3479fv7U389v7qCWZDSxWV1duruFfA/r9/eX9dH3ZZEGgJ6bGpyaH+8a/938D5o4vHR0FeQXVjc3M6rzmL+0dX77hRJqZfXxGTmZmSUMXjtmj17u7Pw/64+3l/di3bFmYmpqemJ6ampoAPb73d3z50vr5S3teVmFhdkE1s7T5ayvO4evXr33Nza1tOQ01RZ04emd3/4WgnSbl1MwCwTwN0AgzIH+u/vIlIyPn06eMwsqC0vbW6nZE+2s/v5EvY9R0sgQ9vZ0jI+6nt/s/D/rl+e15z+u0Gqd0CwszMzMT4+Pj38GN5tLSyur27E/kyMrPymhsLK1ubW3/2tHHbGsbEAnY3M6ezpHZOZD64/X9T3P6/i3lXrY6bbqFxYWZ6XGC+fu3jvbP2Vl5Ba15gJyRkZGVk1FWmVfd+rm1r71viElldMtHRaLOrpGRXvfHxZ8H/fH2cQrQNsuCZWlxZmp4ambye//XL5+bS7OyspuzCeSMjMycDHCbCjq39n3vG2ZSpWNSqUbEFfT2GiAfr3+c03fvx+uOZbvFaLTYF2fGJ6Ym+9OgKzMy8hqBNzPjU0ZW5qf8vDxqY3NrR//XPqZMpZwfGxCLBNyROffT8/ufl7y316N1n9dmIcfC9MT45CTRjsbqtoyMbGrGryMnK6O4sKyxsbW9HwefKZUODEhHR8UjI2r39b8C9O3T0c66z2qzW+YXiX5MziDUHdUFVTkZedQ8AjkLRMkqLqyqbG7v+9rR38dv440JOVKlRiCRzM6dfvwLJO/uaXfHv2yyWUAP3fQMxJpkYnt1Qf6nfEZhflZWfl5hXnF+dnZhNbMdRyuTz+vu1lpUWhEXkQbo/0ke/kXQiPS6z6QHORaN87rpX7Xl29f2xmzQo7AwD+8FZWX52WVVTa2tTBx8Po8jFI7qeCKRZGTWfPTx8j/JxL8I+vXI7dArtDatSrc4MzM1Ptzf3t7R0cosy66oyssrKyssKKgoyy6kVoLUzc3M9r4+JoMrGhvrHhXLRyTmXaTynwZ9d/t+vOMyacQmp9Yyr4Po9X9tb21urK4sRHCzs/MK8vIKKvKyi8vKSqsbG9vboXl8Dl2s1RulowqJwQDQL+/v739Yp99P3S6TVaPwLls99oWZ8eFvXz5XV5cWFGZlVRQWFuRl5+Vlg9mFhWWVRD/a+4eHeTS51WlUaiRqBwH9dnt7+2dBE5Pn0ps0bPWaTy/o5vXx29s/VwNrNjQvK6+qLBuYISHAXgaX+rmVPzQhZos0GoVRK3YZXEfvz293r2+vfzEd/6J6fBzt+NRqPVe9LqHR2RxpYyO4UYDgoqpkZOUVZhHZQzXPz88rLa2ubkQuctl0iV5jlWt8s7277xe3Nxd3H69vf5DTF3enuyGTRK9WO+bMBvkgD7a/srQsOyPtlX4DxleZWRlZBZWV4HVTWzeXxuoZUYxa1YZZ98fr08frX67llL9Iq5R7HaGeMy+79iIu/aiQWllZmpeXQSFHGvmnzE8UfMCiVpZWUtt44IaExRqRQD3cZvOju3f26O72z4G++Lhw7x5F06ANjvXo3s66WS9iUMvy8ooR3jTo9Af5VFxQUEZl8IQaq9PrVXNHevA2NzdnEHBLZj8uXl7/HOjZ3N5et8sFdqh9/lD8LH7g0mvUAnpFVVV+Vhos5RfmjDJqQUW3UCx3+P3rvk2vWjLS0zsyKxlRdHPN5+g03/8caEPXXJdhC/Kh1vvNasTNvL617gq5RlqqUFfSpE7TJLuyjUodMTtc6+tzarVBv+ybG+kCaLVCzDY/3Ly9/jnQ928fbsnI1v46Ae1wSLo6O1msXvdZNB5SMyoqG0srG5vLSCoWVjdWMuZ2ojF3b00NratXoncYEOneWYOcKvnpJmXxz0ne3dvRiMS/7jLpHS4zCDo70tuQm9tljv2MmVuAuLmvr7WJWlZQ3dzMMcRiO7M1JazeOYNhzgzQvV2dvY4euvnnrAG/6M+Bfru9MmDQDQ6Da93lMkeie27DbENJQ6/7R9ws5jGHJifH+/iwHMwBVzzimu1idfWqDe5oyOUzS0Z6WZ1zgpGeOfUsVPrPgH5P9+KnLsmsw+xyuUPuiAEhRN/Xq54FWXfih5taWVsjtbSRP6hyhs92DAa3eXZ2dm7W4IYFd4wYZjt75yTimlrB7OvtHwL99vFKQM+Z1Wakn9m9s4MQ7u3F9nZ39+K75HvhoIKH5ps/vbIRPNhx7yUvL1NPD4mz5J7Z5VD3mmcFcw6XXiGsguR9/DVS//fp8fr29p6EHiDO62aEL+Z2R3bcboP76OTnj4jb5dXKZPzKSiZTqgm63NGTvV03Im2eG1H7l6Eh6lm1K3KwIp1u+5OgP97eXndB5OjOjtvl3nEb5ro6u3p7urq6OhtYPXK9ij803Fpd2drHH5rX6rtYJQ3gNJdeS5P4rHPqEbXZZ3bFV5hM2Q6G7c+Bfj2f0wfDkdiO2by+7p7dcfd2sjo764tK6OwBHn8cLW7zl884Wtv5Q8qe8pyi+k4aTeRYk2tM5lmHf3+EbZUPNTcB9B+qiG/oAF5PRsbsAlE0uu5yu11m107IbFb3jhhWV2RkOulrx+fPX760Vn/+goa2bz4YMMzN6Tf2HVyuXKOfdYW3BTxGdl5l9tzHxesfAv36fvGxW1fZJBtb/7lHmG1Wq0MHB4eHhxtyZvOXryTG1dVfPn+BjSZOupHRo3et+/RyTpt0UKGWbO97RbK2rIy8LHCapPUfAY30cZcVlKl0jsTOTsjhcFg1IkGPRNRGrW7+1t/+5XNpQUFBaUFpXkFp6ef21tZWuL/CwsLSav7U0IBQ4gquSnVNBZUFZbsfz6/vfwY0utqPPXoZY1EXiJh9PqtGI2NUFqInLK1sbv/a//0Lmi5gRsNVUFDd2jfDrG6tzMvKxtft7XypWK4PWEel6Bwr5Ze3L3+suLw9v52KqEKLcjVkcFjl4u62Nmop2pPG1r72b/2fK0ur8Z8CcqBpLGUuMasRe5xTYzufOagdletFQqOM3yyPPt2+v/+ZzuXl9e3l7XmWM6ob0LjMDueYkMPjN6MTb23v+P71a2tlJVhRSlAWlH6uLq0s5a0Mf0YnVlrd3MrsGx9TgNZ6W3flgPno/fbt5eXPeY9X8wDPKJTMrfvsyjHp0HAfn8ls//rta3tHa2l2XunnNDtKkZDZ2ZWt/JmJdpKS7R19QxNKo0btWuup6NYbzv/65YC/5PI+djsZcodave63KZVTU1Pjfe19/f0dfXB3pRlZ4EdB1qeMAtAiI7txhtk8852I4Nev/UMTOptJ7wpJ1Pvuo+e/Plvzl3rE+8ddgyvucoVCTp2SXL0Y6hse5rcPDc3ImAVZBdWVaBYJ6tIChnZjoJE/OdxO5k7HJ6YtVu+yw2HY2T16fvv4s6AvLp6i65HQVigSMOlmpqYm+oampvr6hvqM+5uSCkQ6j3TjSETBfnxzqJ3Jnxwf6usfn9JZLCaf36GedR/d3N29/VnQHy8Xx+a50M5OPLy+bFSqZGMT0zNDQ1ODo4dnZy5eK8SjEiLdPHB4tj3fx+czx8l038SUxWM0+Xy+yNH168f7yx+O9Mvr/dORe3drPRLb2/JqLSqlbnoaLJFKTWsHyYRa2ljZWF3N1O7HA9rBISTq8MzUxMTUgn1Za/X51kGNO7iuPz1rihrznDoK7+ztRWLhtWWrxbKg0ukGB8ZUWs/2yc+QgsMRDjgOD1w25WDfEMgBCiEJnRatc8234059/E+uuPx10G/3N0eRKAp5JBb3L1uNOuWCaoAj1c5bveuJq8Qucf+HQZtWOsgfmpgaGp+e1i2t2HQ6Atpw/j+7EPDXQX/cJff2TiI7rq2DsMthU6ksujHh6Jhc79syu48fH6+uojte46hQOCCdWJiYWNAtLGI8LB6vf8d9+vEvuPj5yzGcRo9O4jsux/oWQq2zGHUqpUI+qjG55npnzbtu92yPRiGXDgxKZQs63QI5dDqr1+ePAPTzvyDS7+9wwsd7RyeJ6LrD5fP7TCanUasFSJG8Z2S2q2tWPds7whWIRDyOVDamgtYt6IwLSt2yz7+1t3v+dvcvAY1e8erk6OQ4EUJX7vMvm5x6q14jFyvk4p6u3jk0YebZ3h65SDwwppQqjRaLRadEoFcheLu7N/+SC/rp4+oERzzkcjh8ftfy8rLJBGut1WvUJbm9BoOhK7e8U9Ajl8u1Gq3NYrcoCeg1nyuy637+l4F+v07iOImumwHa53OgYfTpNaNyubm3JDO3BB/oDHCI9Ta9FaDBa4vN6/cj0k9/CvRvu357+/5yi+Pu7u78OJm8PDnZQ8u1hTrncGy59HrFqGREPctLamD1jvSIRWLJiMa0vKwBP3Q6i9Xp9IWjht3nC5KI/79d3vvfj9tbclnq5eXl+fXp5ASRPouF1v3rLofLhc8uMu3kMpvNBrdrfd3sWneZ58wBs1evNRp1OpPHubwejbrJKgSc9/v/z0ijer183N/foNFAvJ+ezk9xXF2hjiePT6Afe2Se12yG59uJn8X2unrdDSVdcw01s7Mst3svFgmtO/QItU5rBeitaHS3q+Ho4/aCoCaX5dDcvv7vg0ZT9PJy9/z0lDo+Ptrbc5Njd9fd2+C+PD45wnfQkxNG7+wdHRlKcj9RSigUSibeySUM1m4iEjJLRqHj2mXvsj8U3dudLZndTeH3kitF5Pg1Y/P+vwn67eX2DQFO43Wt+3wun8tlAGkbWO4roE7s7fnXYZENO4mjI/dsLkB/ovw+Mlm5vcfHuxHXiFxjJAZveWsvtuve7eqdhTs9xe++uEBA0p3i+/8eaOTbxcXHx/kRKpzLAV1bdvjmUD1KGrpmZ3cfLpMnqORbkA6APjs+vflAsGfJtG9XQ0Ov2/2B71wf7flG5Fqj1oR0DUVOTnb3zADdRcrmDTL74uL+7v7u7v39/n8L9NvF7cfHEUqFwWEyzDkcaol6pLOzs4E1azC7d0+AmdDDTFJv9wSW8yL9rOebv1/puLt4PnKvqxUao255a90XiR6f7Lqj5lm1ZEQi6e2dIzxBU3HxSq7Q/VevPFP+01ldRPndMNuLwMxKJHghGq2zq5NW09A1h8Rb30EmgtOxHZcB/9vbPcWoXDzj4/YdeYZ/L+7ISZy6t5CIRgtA70ROHo7c7p1185xEPSrXijtZXbO7xPS9/3r8C5LyDUn09vafNQmU/zTMLx/uEkpDQ1cXoXBNQ0MDULNqarp6yey0eyeKSB/vRUMug8u8HnHjxe8JmV5eyIzGG97vEebdI/OWQ6E3Lft2dqInSYA2zxlcBvmoQifT6aScuppOEOXqiUjIPTnhj19y8v7XQF98XHQhnXJzG3JzUeNyc8tpLBqLxeoaASEJPY4uk4h1dIco8/qO+3GX4H4FP9NReruD3nR1gf0uk0ZjNYEbiWTyYc9t6J2dU4+KBnU6lW56RjXQVFdbU9/ZO+vevSZgLy5QBl4+3v4S6IuP05JfKvAp99On3MwSWn09MHeSFaNgjNm8d3L5cHp8FNnbgT0iQkiSj5D0In18fOzO9mJ0GnoNer3eZNqK7B1dXiaPdua6Rka4QhFvcIysr52alvF4HGpFeXl5DavXcHRNnv+fr1D4j0Hfv1w0/E26Mj8hzCxWfX09ncWiE9Qjs3Puo+OHh6vkURT2A4EmqtGAs4GIP6fOP17BjFkCGUricMyp51yhHXKWJ3vuua7ZLjpXyBscHBoeHx4anxweHBwQsqm0mpKikhqQ/AnM/O9zGlmMFr/3N2bUiMxyGpfeUkurr6F1prOxd1a9c3J8efX4cBIj15lDUXNXL86mN70EdnbWYJjtakgfJSUsl8+h1rt2do6SV4RNc729NBqDzeHx+Hx+39Dw8PDQEFDzOAx6XU1xUW5JF7rIi//k2sZ/CPriYzaTIM4FMT5l1rO7u+k08KOeRqfVAxdoCcVLnqZSpxA9F8IY6mqATer6DTWNtqShpqGkpqTB4XVAX9CdPVwd7UV3DL29Dfg9DE5bG5MJ0P19/cNDCDZPyGGzW2rLi4pKWLtIyruX/yY97j5gEUo+UTIRKJZAKJNxGAxaTQ34Qa9npSM9h27r6vzpOXV8EnWvb+2Ee3MBm+jM30CDpA0NuQ2IdHpWKZY4fSRnuLODQSBMYzRRm9raEOz+/u99TP4Anz/I5/Hauhm15fklvcmPi/v/YBqK8h9hPiLXMz9lltS0SNHn8ZltTVVI8praehqN3klCbYjunVxdP7/cXaPCrzv84dlMVlduQxp1Gnl5SXkDK7ekoaTHpPf6HDux5NXj1dEuQBs6G3D6tbUVtdQmRjOzv7+/lclnklXWwM3jDCBAdTm03Y+Ll/8O6Nvn810SjxJaj1g2yOcP8NraGE1VtNryelpnJw3UHRkxY7iTV0/P70+nyV3YvJChJKe8JLOmIf1WU1NeXgJyZDbklqv1eodhfe/n5eVj8mR3Z2fHzPr1gOJaKpXa2Nze31paSm1qbP61Fg7BHuA1Mcrq3PDdr/910G+vu+5liUQin1eODeH0Eeemqqaq2rpaGqtH0MkS9I7MwhmfJR+uUi/PT0dul9mw7mrILKrJzKwpr6mrA6LyknpYvk8lmTSTWqOXmKNJ4mThPNzrZhC/vr6mvKi4rKqqsrqZWZley1dGbQNoAE9/ZjbWmV8v3v9roMm5vRzvrWsVKplsaKhvCL+grQ2oqdTa2to6ukAi4fb0ds3uRGOJxMPV9dPz0zHM1JzL31NSVJ6Zm1tSjjDWlZcjzBQKslFglavn1O5Y8hFdZQyBXneRbMVpFZXXpmNdkb4qA+B5lUwSIn4ff7iPyWS0gCFvb/8F0KT4vz3truvlStnUxNDQeF8bk5cG3VRRW1FT18LiytXqnhH1zh5SK/n4eP309LjrcqnN/tnOYhoUHcWTjD6BTPlUk1Mnt2oc6tmdHw/X53Aq62bYb0ge1LMEqVpeXJyXl52dnU9wl+VlF1aSRVpECAcZjJauo4+7/0qkX1/e719Pd7xy5dL08PTEOM6Y2cZkMNqoDASFxsXRI9aPCOb2YnvR2MnD6WnqJrVrTvOjp6Ul8/cqpt8SX5RfxLICdI86mnhMnR+DGy4Y8hFWQxp0SVF+fk5WDjmyyXK4qsKy0krAboWkDNQgJ3rJ9YJ/0ut/psf72/PxbmjVOL+ECjs9TigNgjCYjDYGcr1bKBT2SPSmLkk0ETkA6uTDNQFtdhnW1/XddSV/g5texlRenlUzsunQj3Qa4iepm9PLXfQRLpNvBBWKVlMO0CVFOekFwFk5+JSNYJeVVTY1IycZxaSdyOz9uPgvRPrt9uLcvRfwGBeWZmZmpobHJzFYZI0rKMJo4/AGhCKRRK8noduLxiPx5EPq5vzETbxqyCtpKS4pzyzKQQ3NyczJKSnOL2c5Nh0OVtfO2eXTTepkx43mV7+s7oKFqQeHUEdyCOqsLLJ4maAm+djcXN1WkZmbdhBA/U9tO+XvvSu6bND5DnZ8d3fbs7K4mF75Ojk82dcH/ewjGQJjIxwUieUSOdQgkohE4tFI4vI6dX65O6v2mUMhs7g7J6cmNyuT7GQoysnIL29RB136nobZ3WOQ//p4B+Qwmaymka7OzvpyCMhvemSS5e34lJMNjpc1IoVqM39zzIAi8/rvgX4jOfr28XwHc3U6a4gHPSsLMwvTM9Pjk+PD40PEHPTxCfaBwbFRuUQyotGYEeadaCIaO364Tj0ezfWaDa6DsF7Ozs/4REm/YGZmTh0whw1qWsnc0enj+XnqOBpBHTJZkROdLFoNrba+pgiAgTfz1zJE4M/PQzI2U/PxLUIySsnpfxDpl/fbF7QcIPypoaRhdz+4YV9YWFxYmJkYn+wbHv7e3/d9uI9P9E+qHBWLRiQavS8Sj+1F4ol49PjqOnXs7uoyz+3Et/UKCa0kNwcYcmtauD3mwwMoR0mD+eT65vr0PHkSP9vxOUyaUUEnjV5Dg54XIczpvj39kZmZlVNcVVrdREDD9IDXlC5yDf3fAU16JLiT893ZhsxMQyi8tmpfmF8kW1jGpyfH+79/x/vwUN/41JBMJhLJFRqT3h8G6L3oz2ji6PTq+nG3t0GtngvFD9Ycermkp6unRyKZc+0fRlxqeWdNl/vh5iZ1dXr842ciEvab5IpR+NwaGlAXFYFHv0KdjnZmVn5FJbWxshxODc1oJiUz1/1x8W+tE+Wd9HNv6VZuFm1VSe5sNLzl2thYWlpanJmenJzGB9moAKKMT04MDaqko3r05I4tRDkWi8Z+Ro8ezlPXx3MNDYZZQ3plYSi47XKFw/g6sr6sl/eUsNRHqZfU49XlyRkqUizss2rkyEOUTlpdbRERPGDO/L3aMye/rIraSK2qKSrhirjlnzJzG1I3/3Y+m5ImBQpxL5xOj3qkpjccDGytbazaVlaWFqdB65kZAhfIx0HvCalKa7HanP718EHiJ0GdSBwRg/q421XSNTdrWA/hZBJxHNGQGe2KflRcX8IyP148PV4dJ9MqGT0IB9b09Jr6mvq62nR5IUrza23tp5xcRLqxurqxsqqubYA/LSvOzP3U+3Hz+qvu/ZrWAT2O0WmO9HSOqPVIkC5XYM0XWNvY8KzYEeqZ6YlJEurxNOjxqZmZBZtTb13bDu6jHJ7sRSJobo+B+vpETWvoHVFbrXo9ml6zea63q0eulQu53Pr6XvcxmWM9PtvbCUei8cPIftgvodeU1/cIqVVUakVxVgYJdgbecrLIktrqxsbGSmrTEOI0KABPdj9uLu7e/z4XRelFrz0iGTUuLi3Nzy8pJKbVtUBgdWNjYyVNkJnpKVBkBqhnpmamp6cX7CvLq2vB4P4BoUaC0PoM7WqSsLqG1dMDtitGRjSSEeiDSCjs5nbW13fO7R4/XSVPfsZC4VDo4DAei8aj214JvbxFLoS6VVQU5+cTmc4h8ldcVl1Z/bm1vbmxdWgSmSQVN2SWuH81nvf3L6+vL28QQppYNY8ILixMSGWCkdXNQDC8urpB2JFORVIXp0FtfAk1md/wrAW3tw8PDkAA4I3u7cV/Jk+OrlInc0g4QY9YLud2CrhkVVMLjdFCZ9G4hr2n16fj5ElkL7Tl3wqFYbQSZ5HwplVYlV/F4aDQVsF45OdAsrPy8wsrAbr5y7eOVubwzHjf975BFkxY7xEhyC2ZRnu+o1BY2nkUviG+bKCNw+FKAmuB7X3/KugBfuBkyJFGjNNC7O2bq4Hg/uEZghWPRWLxw8O9aPIheXR6/rTXS6d1CQRcAZcFQasHV2sZDHpnj2EvdXFxnkwe7Ua2ANkfDMfOfvw4i4fXPPq6vCpqU1PajRWSMpNfCJFuBGay+bJ/cnoYPc1gS1ENq7y+c9ZwlO70b18pvcaZadkAoyKfyoDzpOs3vGvB/f1gcJOwmkR6eoZ8XpjXLS7Or2yskZ8exs/OzhLxvVjkYH//IHr0ePWQPL5JuckCzR7YinoBl8YqL6pls9mdI+ad89tbNArJ6MGWb3s7FAyGImeJHz9Pzg6CG9qBtsrStuZqKrWsrDA7JzuvsKC68fOXjo6Ob9++I/uH+/phnWrLZBN8Jgwba3YXVfuCYlyQMYozchCXlrryWrbV6VwNHsYPwwS0bQkEmZggmJeWFiwmZyCwvb1/mObGGUp4eGc7vLWPXLw+f0heo9uZ6+3p4dLB4hGUOzqLy+5Uu49On29frsGOeMiHdNnahxhGDuLJy+TPQ79HNTXMbK2urqysLEtb6rJKYCb7RdOgp/sAmj/YVsX//n3yOxrJihKW4fSDIuXUlWdlFrHodQx6RYXICdCI5OFhcNPj8YDXyM8FZKjdbnNuBIPhg8PD/YP9MB4CTQvth8L70IOTq9QV2sXXqz3zrGQEVoglYdFYbIFIbthLXr+8vT1fA2J8b2vN5Qps4VnrISTCZTIRD9sXp2AkWyEW8HfAXVbaCMxfv3791v99cmayvb2vHX1TW3P7t684ke/DzdkZJb2UNmo+5L2Gw+G01NS2yO0ebwCxPIzvBzYRbIt9xW6H9i3ZPJubge00ZjAiHDo4iJHP+1uQkVj0+DyVSj2/3Z4f7c7NqQWdPXMoiBKzw310je/e3j0/gtJnUb/P5/P7t7f9oYN4NPHzZ+LsMEBQI4TN1dVtbdSygsrm9i9p1N++E9B97c1kSQ6/sbXjG8IP1vQzq3IobU3U4vLaKgaPUVdMlyoBOnh4sB+P7QfXVldXbTY7gozDubEWQKD3Dw/CYfLvPmHJlj+0FTpIxBDq61Tq6e325en6aNdtmDXvuN27KH7Hqde393d0kacnJ9E4Hu9bA0O2AxAoUoR+/DzbX1uxT09+BzgEu7Syua/jy+dWsgwnDXp6vK+1taP/OxOp2UoWVSJBYSgogzwhg82jcgbamqralDq7ZzUARHHC6mWnc8W+4rHZV1Y80JRfYFEwiXyQNwIiDH6fnaAtv049vbzdvb2+3pxfnZ6ePj6eo3t8vSfLuu9er49/JM7i+2tra941yNNm+vwPDqInP6EhqysLRI+H4Nn7+toJtl+RnpxEMe5v7/j+/XtraSNoX1BQWv0Zgf9KmRjgSwdkg7IhqVQonNfN252rKB4HBLTTZNRq7c4Vq211zb8NIge3gsHA2tomkRfCku3gFinniZ8nJw9XpMV9efkAzBdyBeji5fXt9o6sRX/7QKATZz8T+wGvd20TB6IN2MHgNqJ9uL/pWZqZHuIPj48PtTc3Q+2+fCZ5CE5PAzQJeX9jWWlpdWlWdkFBHgj0hTIxoVLpFpbmdQsLU6oFncVuVBo96p5wPBxc1SvkCqMNCUmGE7RAefd6V73BAN4IQ/YDAf/2QeIMxSL5+HB1/ntC6P7j7j59lfA+vebn7TV1fBJLoB4CNDQToDeDJGE2Ngm5D4MbTrJTt+9XX9fe2vHlFzu+Q20nv/fjq6/VeXnoHXGUZmdkl1ZTFqAPK0sWlOz0QoElu2rMaGIJguHtzdUV+agWZX0bTgNCtRVYc1rAFQ95VW8YRzAcCIQP4ZmiCRLq85t/d13S3TPY8SOROAhtBTY9qyTWG6seu31xyeLE0w/3g4FV++LCFPgBqej/Rm6f8JsdYPu3jv5v7a3ZWaXNZA0rQGdklVKkStUC6vXiEgBD3HRLRpVSKBmRmJwWnc4o4mogdFCM8Paa1+u0L5Gi6NnYwAiTCvRriOMxxDp5dfnw+PTvTv08XZ1AKWBZMXhOp3cTvgaChBedXrCseIL43ZtOCypCeuFQ35f2b98JNwjomUlyS4hvHZ8Ls0pBKUlEQV11fnZBVmEpRWpGZml1aTZUoX5jCckm6j1h8+PfZS5G19b/44k071qg39JqLRab0+pEpKGWjtbv8kVCW16n3ba8uuFc31y1W7Ra1fz8mEypUuoU4C1UKuWW7MhFNreFSNmAVDq3eH/JvgS63e6YV06oZqam/12Lp7G37W9v7x8g1o2h9S20Xg5v+7f2D7YQ1tA2vmt1dWX1i9UItNUKh/dDXu9yKBjY3d4LBfcP9kPrK2trDqft+4rdu+r0+kPr4XV/2OcNbm/vb4V/7u/7t/dDa9v+7U3b4pLVvub1+kMhb3BnbWNt3e+3h7fX/Fs7+9v72/tbiLrd5rG5Vjft9vVAbPvHj/39/e3t0I/f/4t323X+99+L+3eN9iW7xeu1Lpndm96NjXWPd821sbFqtzs8Xp/b6V1e828s2ReXzT7r8vrm5tqSfZkcw7Xq3rBs+NfXfV54mF7vmtu55vXaV7c2/BsbGxv724E1/7p1e93tWff7fRv74Z9r26v2pS/WzTXP1tb2ZqDf7w+svP75v/8L794/37452d3d3XFtdO/0dHd39/S0t4+4O3u6unv6xru62zt73D2dXR0dI4N97Z3dw+4ed0/nSO/w6KzB3d014u7r7O/p7BwZ7+0e6Rtxj/T3dY90dvd3dXd2d3eP9O31DPZ0dnR09vd1jI529g0OjfZ1jPT2dQx0dnb2DXf09vd3DHYN/K8e7+9vLxfPZ6f7+4cnh4eHR/s7e+m7c376jH0h418uTg4PD4/2dvd2Dk/3U8/n55cXR4eHp6dHR5ef/yYt629f6Z3t7x8f75+fHpyfHR3tnqV+/t/4c91/+f37+eU8fX2h33v+T8K/d/9F9f/w8P8BTtP/9K5Q55sAAAAASUVORK5CYII=";
     const RONNIE_DATA_URL = "data:image/png;base64," + RONNIE_DEFAULT_B64;
 
-    /* Icono actual de la app */
+    /* Current App Icon (Base64 PNG) */
     let currentIconDataUrl = localStorage.getItem('nutri_custom_icon') || RONNIE_DATA_URL;
 
     /* =========================================================
@@ -1050,6 +1050,148 @@
             pills: [
               { type: "supl", prefix: "s", text: "1 servicio Arginina" },
               { type: "supl", prefix: "s", text: "1 servicio Glutamina" }
+            ]
+          }
+        ]
+      },
+
+      francisco: {
+        id: "francisco",
+        name: "FRANCISCO SPIKERMANN",
+        subtitle: "\"LIGHT WEIGHT!\" • 14-9-26",
+        weight: "99.6 KG",
+        meals: [
+          {
+            id: "fs1",
+            time: "07:00",
+            name: "EN AYUNAS",
+            pills: [
+              { type: "carbo", prefix: "c", text: "Jugo de 1 limón y 1 pomelo" },
+              { type: "supl", prefix: "s", text: "1 cda sopera al ras Fibra Dr.MG" },
+              { type: "supl", prefix: "s", text: "1 servicio Termogénico" },
+              { type: "supl", prefix: "s", text: "1 vaso agua helada + té verde" }
+            ]
+          },
+          {
+            id: "fs2",
+            time: "09:00",
+            name: "MAÑANA / TRABAJO",
+            pills: [
+              { type: "prote", prefix: "p", text: "Opción A: 1 scoop proteína c/agua" },
+              { type: "grasa", prefix: "g", text: "5 frutos secos" },
+              { type: "carbo", prefix: "c", text: "1 fruta (no banana) + té verde" },
+              { type: "prote", prefix: "p", text: "Opción B: 3 huevos revueltos (coco / oliva / queso 0 carb)" },
+              { type: "verdura", prefix: "v", text: "Hojas verdes / champis / espárragos" },
+              { type: "note", prefix: "!", text: "En opción B sin carbos ni endulzantes" }
+            ]
+          },
+          {
+            id: "fs3",
+            time: "13:00",
+            name: "ALMUERZO",
+            pills: [
+              { type: "prote", prefix: "p", text: "1 palma carne / pollo / pescado" },
+              { type: "grasa", prefix: "g", text: "1/2 palta chica o 6 frutos o 6 aceitunas" },
+              { type: "verdura", prefix: "v", text: "Ensalada verde o brócoli o tomate" }
+            ]
+          },
+          {
+            id: "fs4",
+            time: "15:30",
+            name: "PRE GYM",
+            trainOnly: true,
+            pills: [
+              { type: "supl", prefix: "s", text: "1 servicio BCAA" },
+              { type: "supl", prefix: "s", text: "1 servicio Creatina (si entrena fuerza)" },
+              { type: "supl", prefix: "s", text: "pre-entreno o café si hace falta" }
+            ]
+          },
+          {
+            id: "fs5",
+            time: "16:00",
+            name: "ENTRENO GYM",
+            trainOnly: true,
+            pills: [
+              { type: "supl", prefix: "s", text: "ENTRENAMIENTO GYM" }
+            ]
+          },
+          {
+            id: "fs6",
+            time: "17:15",
+            name: "POST GYM",
+            trainOnly: true,
+            pills: [
+              { type: "prote", prefix: "p", text: "1 servicio Proteína con agua" },
+              { type: "supl", prefix: "s", text: "1 servicio BCAA" },
+              { type: "supl", prefix: "s", text: "1 serv Creatina (si entrena fuerza)" },
+              { type: "carbo", prefix: "c", text: "1 banana + 1 fruta o 1 puño papa / arroz / quinoa" }
+            ]
+          },
+          {
+            id: "fs7",
+            time: "18:30",
+            name: "TARDE (DÍAS RUGBY)",
+            pills: [
+              { type: "prote", prefix: "p", text: "kanikama / yogur griego / atún / 3 claras / isolada" },
+              { type: "grasa", prefix: "g", text: "1/2 palta chica o 6 frutos o 6 aceitunas" },
+              { type: "carbo", prefix: "c", text: "Manzana verde o berries" },
+              { type: "supl", prefix: "s", text: "Té verde" }
+            ]
+          },
+          {
+            id: "fs8",
+            time: "20:15",
+            name: "PRE RUGBY",
+            trainOnly: true,
+            pills: [
+              { type: "supl", prefix: "s", text: "1 servicio BCAA" },
+              { type: "supl", prefix: "s", text: "pre-entreno o café si hace falta" },
+              { type: "carbo", prefix: "c", text: "1 fruta (no banana) solo si hace falta" }
+            ]
+          },
+          {
+            id: "fs9",
+            time: "21:00",
+            name: "ENTRENO RUGBY",
+            trainOnly: true,
+            pills: [
+              { type: "supl", prefix: "s", text: "ENTRENAMIENTO RUGBY" }
+            ]
+          },
+          {
+            id: "fs10",
+            time: "22:30",
+            name: "POST RUGBY",
+            trainOnly: true,
+            pills: [
+              { type: "supl", prefix: "s", text: "1 servicio BCAA" },
+              { type: "carbo", prefix: "c", text: "1 banana + 1 fruta o 1 puño papa / arroz / quinoa" }
+            ]
+          },
+          {
+            id: "fs11",
+            time: "23:00",
+            name: "CENA",
+            pills: [
+              { type: "prote", prefix: "p", text: "1 palma pollo o preferentemente pescado" },
+              { type: "verdura", prefix: "v", text: "Ensalada verde / brócoli / zapallo / champis" }
+            ]
+          },
+          {
+            id: "fs12",
+            time: "23:45",
+            name: "ANTOJO DULCE",
+            pills: [
+              { type: "prote", prefix: "p", text: "Receta antojo dulce o media tortilla o caseína" }
+            ]
+          },
+          {
+            id: "fs13",
+            time: "00:15",
+            name: "A DORMIR",
+            pills: [
+              { type: "supl", prefix: "s", text: "3 cápsulas ZMA" },
+              { type: "supl", prefix: "s", text: "Té sweet dreams" }
             ]
           }
         ]
@@ -1337,7 +1479,6 @@
           reader.onload = (event) => {
             const img = new Image();
             img.onload = () => {
-              // Canvas center crop to square 180x180 px for Apple Touch Icon
               const canvas = document.createElement('canvas');
               canvas.width = 180;
               canvas.height = 180;
@@ -1398,8 +1539,6 @@
     function generateAppleMobileConfig() {
       const currentUrl = window.location.href.split('#')[0];
       const title = `Plan Nutricional`;
-      
-      // Extrae la cadena Base64 pura
       const rawBase64 = currentIconDataUrl.split(',')[1];
 
       const configXml = `<?xml version="1.0" encoding="UTF-8"?>
