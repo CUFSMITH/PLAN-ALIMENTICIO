@@ -157,7 +157,26 @@
       color: #ffffff;
     }
 
-    .athlete-sub {
+        .active-member-name {
+      color: #f5a623;
+      font-weight: 800;
+      font-size: 11.5px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .active-member-weight {
+      background: rgba(88, 166, 255, 0.14);
+      color: var(--c-supl);
+      border: 1px solid rgba(88, 166, 255, 0.35);
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+.athlete-sub {
       font-size: 11px;
       color: var(--text-dim);
       font-weight: 600;
@@ -481,7 +500,75 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    /* Fixed Bottom Status Bar */
+        /* Off-day Protocol Card */
+    .off-protocol-card {
+      background: rgba(245, 166, 35, 0.05);
+      border: 1px solid rgba(245, 166, 35, 0.28);
+      border-radius: 14px;
+      padding: 13px 15px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .off-protocol-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .off-protocol-badge {
+      background: #f5a623;
+      color: #060709;
+      font-size: 8.5px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .off-protocol-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .off-protocol-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .off-protocol-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 11.5px;
+      line-height: 1.35;
+      color: #cbd5e1;
+    }
+
+    .off-protocol-dot {
+      color: #f5a623;
+      font-size: 9px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .off-protocol-tag {
+      color: #f5a623;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+/* Fixed Bottom Status Bar */
     .bottom-dock {
       position: fixed;
       bottom: 0;
@@ -685,13 +772,16 @@
         </div>
         <div class="title-box">
           <div class="app-title">PLAN NUTRICIONAL</div>
-          <div class="athlete-sub" id="headerSubtitle">"YEAH BUDDY!" • 15-9-26</div>
+          <div class="athlete-sub" id="headerSubtitle">
+            <span class="active-member-name" id="headerMemberName">FACUNDO REINOSO</span>
+            <span class="active-member-weight" id="headerMemberWeight">103.6 KG</span>
+          </div>
         </div>
       </div>
 
       <div class="toolbar">
-        <button class="btn-action btn-cheddar" id="openMembersBtn">
-          <span>🧀</span> MIEMBRO
+        <button class="btn-action btn-cheddar" id="openMembersBtn" title="Cambiar miembro activo">
+          <span>🧀</span> <span id="btnMemberName">FACUNDO</span>
         </button>
         <button class="btn-action btn-app" id="openAppModalBtn">
           🍏 MODO APP
@@ -830,7 +920,7 @@
     /* =========================================================
        DATOS OFICIALES DE LOS PLANES (PILETITA DE CHEDDAR)
        ========================================================= */
-    const MEMBERS = {
+        const MEMBERS = {
       "facundo": {
             "id": "facundo",
             "name": "FACUNDO REINOSO",
@@ -865,7 +955,7 @@
                               {
                                     "type": "supl",
                                     "prefix": "s",
-                                    "text": "1 servicio de Creatina (EN DESAYUNO LOS DÍAS OFF)",
+                                    "text": "1 servicio de Creatina (días off: en desayuno o con el EAAS con estómago vacío)",
                                     "offOnly": true
                               },
                               {
@@ -953,6 +1043,39 @@
                                     "type": "bebida",
                                     "prefix": "b",
                                     "text": "Té verde"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "m_off_supl",
+                        "time": "OFF",
+                        "name": "SUPLEMENTOS DÍAS OFF",
+                        "offOnly": true,
+                        "pills": [
+                              {
+                                    "type": "supl",
+                                    "prefix": "s",
+                                    "text": "1 servicio de EAAS: en cualquier momento del día con el estómago vacío"
+                              },
+                              {
+                                    "type": "supl",
+                                    "prefix": "s",
+                                    "text": "1 servicio de Creatina: igual que el EAAS (estómago vacío) o en desayuno"
+                              },
+                              {
+                                    "type": "note",
+                                    "prefix": "!",
+                                    "text": "Lo asociado al entrenamiento (pre-entreno y shaker post) NO se toma"
+                              },
+                              {
+                                    "type": "supl",
+                                    "prefix": "s",
+                                    "text": "Glutamina: 1 servicio antes de dormir (en días que no entrenás)"
+                              },
+                              {
+                                    "type": "supl",
+                                    "prefix": "s",
+                                    "text": "Omega 3 (almuerzo y cena) y ZMA (antes de dormir) se toman igual"
                               }
                         ]
                   },
@@ -1072,9 +1195,37 @@
                               {
                                     "type": "supl",
                                     "prefix": "s",
+                                    "text": "1 servicio de Glutamina (los días que no entrenás tomar antes de dormir)",
+                                    "offOnly": true
+                              },
+                              {
+                                    "type": "supl",
+                                    "prefix": "s",
                                     "text": "3 cápsulas de ZMA"
                               }
                         ]
+                  }
+            ],
+            "offProtocol": [
+                  {
+                        "tag": "EAAS",
+                        "text": "1 servicio en cualquier momento del día con el estómago vacío."
+                  },
+                  {
+                        "tag": "Creatina",
+                        "text": "1 servicio igual que el EAAS (con el estómago vacío) o en el desayuno."
+                  },
+                  {
+                        "tag": "Glutamina",
+                        "text": "1 servicio antes de dormir los días que no entrenás."
+                  },
+                  {
+                        "tag": "Pre / Post Entreno",
+                        "text": "Lo asociado al entrenamiento (pre-entreno y batido post) NO se toma."
+                  },
+                  {
+                        "tag": "Omega 3 y ZMA",
+                        "text": "Se toman normalmente (Omega 3 en almuerzo/cena y ZMA antes de dormir)."
                   }
             ]
       },
@@ -1328,6 +1479,24 @@
                               }
                         ]
                   }
+            ],
+            "offProtocol": [
+                  {
+                        "tag": "Creatina",
+                        "text": "1 servicio en desayuno los días off."
+                  },
+                  {
+                        "tag": "Omega 3",
+                        "text": "1 cápsula en almuerzo y 1 cápsula en cena."
+                  },
+                  {
+                        "tag": "Arginina & Glutamina",
+                        "text": "1 servicio de cada uno antes de dormir."
+                  },
+                  {
+                        "tag": "Entrenamiento",
+                        "text": "BCAA, pre-entreno y batido post no se toman en días de descanso."
+                  }
             ]
       },
       "francisco": {
@@ -1564,6 +1733,32 @@
                                     "text": "Té sweet dreams"
                               }
                         ]
+                  }
+            ],
+            "offProtocol": [
+                  {
+                        "tag": "Creatina",
+                        "text": "1 servicio en el desayuno de 9 HS los días off."
+                  },
+                  {
+                        "tag": "Cardarine",
+                        "text": "Medio gotero en la merienda de la tarde los días off."
+                  },
+                  {
+                        "tag": "Ostarine",
+                        "text": "Medio gotero en la cena los días off."
+                  },
+                  {
+                        "tag": "Laragon",
+                        "text": "1 comprimido en almuerzo y 1 en cena."
+                  },
+                  {
+                        "tag": "ZMA & Té",
+                        "text": "3 cápsulas de ZMA y té sweet dreams antes de dormir."
+                  },
+                  {
+                        "tag": "Entrenamiento",
+                        "text": "Lo asociado al gimnasio y rugby no se toma en días de descanso."
                   }
             ]
       },
@@ -1817,9 +2012,28 @@
                               }
                         ]
                   }
+            ],
+            "offProtocol": [
+                  {
+                        "tag": "Creatina",
+                        "text": "1 servicio al levantarse los días off."
+                  },
+                  {
+                        "tag": "Omega 3",
+                        "text": "1 cápsula en almuerzo y 1 cápsula en cena."
+                  },
+                  {
+                        "tag": "ZMA & Té",
+                        "text": "3 cápsulas de ZMA y té sweet dreams antes de dormir."
+                  },
+                  {
+                        "tag": "Entrenamiento",
+                        "text": "Beta alanina, citrulina, BCAA y batido post no se toman en días de descanso."
+                  }
             ]
       }
 };
+;
 
     let currentMemberId = localStorage.getItem('cheddar_member') || 'facundo';
     if (!MEMBERS[currentMemberId]) currentMemberId = 'facundo';
@@ -1854,7 +2068,16 @@
 
     function renderHeader() {
       const plan = MEMBERS[currentMemberId];
-      document.getElementById('headerSubtitle').textContent = plan.subtitle;
+      if (document.getElementById('headerMemberName')) {
+        document.getElementById('headerMemberName').textContent = plan.name;
+      }
+      if (document.getElementById('headerMemberWeight')) {
+        document.getElementById('headerMemberWeight').textContent = plan.weight;
+      }
+      if (document.getElementById('btnMemberName')) {
+        const firstName = plan.name.split(' ')[0];
+        document.getElementById('btnMemberName').textContent = firstName;
+      }
     }
 
     function renderContent() {
@@ -1873,8 +2096,34 @@
     function renderCronograma(container) {
       const plan = MEMBERS[currentMemberId];
 
+      // Tarjeta con indicaciones de suplementación en días OFF
+      if (!isTrainingDay && plan.offProtocol && plan.offProtocol.length > 0) {
+        const offCard = document.createElement('div');
+        offCard.className = 'off-protocol-card';
+        let rowsHtml = '';
+        plan.offProtocol.forEach(item => {
+          rowsHtml += `
+            <div class="off-protocol-row">
+              <span class="off-protocol-dot">●</span>
+              <div><strong class="off-protocol-tag">${item.tag}:</strong> ${item.text}</div>
+            </div>
+          `;
+        });
+        offCard.innerHTML = `
+          <div class="off-protocol-header">
+            <span class="off-protocol-badge">DÍAS OFF</span>
+            <span class="off-protocol-title">INDICACIONES DE SUPLEMENTACIÓN</span>
+          </div>
+          <div class="off-protocol-body">
+            ${rowsHtml}
+          </div>
+        `;
+        container.appendChild(offCard);
+      }
+
       plan.meals.forEach(meal => {
         if (!isTrainingDay && meal.trainOnly) return;
+        if (isTrainingDay && meal.offOnly) return;
 
         const visiblePills = meal.pills.filter(p => {
           if (!isTrainingDay && p.trainOnly) return false;
@@ -1950,6 +2199,7 @@
         let pillsHtml = '';
         plan.meals.forEach(meal => {
           if (!isTrainingDay && meal.trainOnly) return;
+          if (isTrainingDay && meal.offOnly) return;
           meal.pills.forEach(p => {
             if (!isTrainingDay && p.trainOnly) return false;
             if (isTrainingDay && p.offOnly) return false;
@@ -1981,7 +2231,10 @@
 
     function updateChecklistCounter() {
       const plan = MEMBERS[currentMemberId];
-      const activeMeals = plan.meals.filter(m => isTrainingDay || !m.trainOnly);
+      const activeMeals = plan.meals.filter(m => {
+        if (isTrainingDay) return !m.offOnly;
+        else return !m.trainOnly;
+      });
       const total = activeMeals.length;
       let count = 0;
       activeMeals.forEach(m => {
